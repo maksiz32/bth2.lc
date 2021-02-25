@@ -1,0 +1,815 @@
+/*
+LIST OF MyFonts:
+--------------------
+Amerika
+AktivGroteskCorp
+Avatar
+ConthraxSb
+Celestina
+CormorantGaramond
+OldStandardTT
+Captureit
+CormorantGaramond2
+AktivGroteskCorp2
+PublicaPlay
+CormorantInfant
+CormorantGaramond3
+Sylar-Stencil
+AristotelicaDisplay
+CormorantGaramond4
+TkachenkoSketch4F
+DevroyeUnicode
+AristaPro-Fat
+AlphaEcho
+AristotelicaSmallCaps-Hairlin
+LECO1988-Blind
+GLYPHICONSHalflings
+HazelnutPro
+CormorantInfant3
+Lobster
+CormorantInfant4
+AktivGroteskCorp3
+AktivGroteskCorp4
+CormorantInfant6
+CormorantGaramond5
+TkachenkoSketch4F2
+SketchetikLight
+AktivGroteskCorp5
+CormorantInfant7
+CormorantGaramond7
+AristotelicaText
+NeuropoliticalRg
+AktivGroteskCorp6
+AktivGroteskCorp7
+AugustaTwo
+CormorantInfant9
+RBNaftalin
+BadScript
+CormorantInfantA
+GeometrySoftPro-BoldN
+CormorantGaramondA
+ZnikomitNo24
+TkachenkoSketch4F3
+FoglihtenBlackPcs
+NautilusPompilius
+Metro
+AmerikaPro2
+AristaPro-Fat2
+*/
+@font-face {
+    font-family: 'Amerika';
+    src: url('../fonts/my/Amerika.eot');
+    src: url('../fonts/my/Amerika.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/Amerika.woff2') format('woff2'),
+        url('../fonts/my/Amerika.woff') format('woff'),
+        url('../fonts/my/Amerika.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Aktiv Grotesk Corp';
+    src: url('../fonts/my/AktivGroteskCorp-Italic.eot');
+    src: url('../fonts/my/AktivGroteskCorp-Italic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AktivGroteskCorp-Italic.woff2') format('woff2'),
+        url('../fonts/my/AktivGroteskCorp-Italic.woff') format('woff'),
+        url('../fonts/my/AktivGroteskCorp-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Avatar';
+    src: url('../fonts/my/AvatarNormal.eot');
+    src: url('../fonts/my/AvatarNormal.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AvatarNormal.woff2') format('woff2'),
+        url('../fonts/my/AvatarNormal.woff') format('woff'),
+        url('../fonts/my/AvatarNormal.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'ConthraxSb';
+    src: url('../fonts/my/ConthraxSb-Regular.eot');
+    src: url('../fonts/my/ConthraxSb-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/ConthraxSb-Regular.woff2') format('woff2'),
+        url('../fonts/my/ConthraxSb-Regular.woff') format('woff'),
+        url('../fonts/my/ConthraxSb-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Celestina';
+    src: url('../fonts/my/Celestina.eot');
+    src: url('../fonts/my/Celestina.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/Celestina.woff2') format('woff2'),
+        url('../fonts/my/Celestina.woff') format('woff'),
+        url('../fonts/my/Celestina.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('../fonts/my/CormorantGaramond-BoldItalic.eot');
+    src: url('../fonts/my/CormorantGaramond-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantGaramond-BoldItalic.woff2') format('woff2'),
+        url('../fonts/my/CormorantGaramond-BoldItalic.woff') format('woff'),
+        url('../fonts/my/CormorantGaramond-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Old Standard TT';
+    src: url('../fonts/my/OldStandardTT-Regular.eot');
+    src: url('../fonts/my/OldStandardTT-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/OldStandardTT-Regular.woff2') format('woff2'),
+        url('../fonts/my/OldStandardTT-Regular.woff') format('woff'),
+        url('../fonts/my/OldStandardTT-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Capture it';
+    src: url('../fonts/my/Captureit.eot');
+    src: url('../fonts/my/Captureit.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/Captureit.woff2') format('woff2'),
+        url('../fonts/my/Captureit.woff') format('woff'),
+        url('../fonts/my/Captureit.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant Garamond2';
+    src: url('../fonts/my/CormorantGaramond-SemiBold.eot');
+    src: url('../fonts/my/CormorantGaramond-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantGaramond-SemiBold.woff2') format('woff2'),
+        url('../fonts/my/CormorantGaramond-SemiBold.woff') format('woff'),
+        url('../fonts/my/CormorantGaramond-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Aktiv Grotesk Corp2';
+    src: url('../fonts/my/AktivGroteskCorp-Bold.eot');
+    src: url('../fonts/my/AktivGroteskCorp-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AktivGroteskCorp-Bold.woff2') format('woff2'),
+        url('../fonts/my/AktivGroteskCorp-Bold.woff') format('woff'),
+        url('../fonts/my/AktivGroteskCorp-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PublicaPlay';
+    src: url('../fonts/my/PublicaPlay-Regular.eot');
+    src: url('../fonts/my/PublicaPlay-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/PublicaPlay-Regular.woff2') format('woff2'),
+        url('../fonts/my/PublicaPlay-Regular.woff') format('woff'),
+        url('../fonts/my/PublicaPlay-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant Infant';
+    src: url('../fonts/my/CormorantInfant-Medium.eot');
+    src: url('../fonts/my/CormorantInfant-Medium.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantInfant-Medium.woff2') format('woff2'),
+        url('../fonts/my/CormorantInfant-Medium.woff') format('woff'),
+        url('../fonts/my/CormorantInfant-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant Garamond3';
+    src: url('../fonts/my/CormorantGaramond-Bold.eot');
+    src: url('../fonts/my/CormorantGaramond-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantGaramond-Bold.woff2') format('woff2'),
+        url('../fonts/my/CormorantGaramond-Bold.woff') format('woff'),
+        url('../fonts/my/CormorantGaramond-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Sylar-Stencil';
+    src: url('../fonts/my/Sylar-Stencil.eot');
+    src: url('../fonts/my/Sylar-Stencil.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/Sylar-Stencil.woff2') format('woff2'),
+        url('../fonts/my/Sylar-Stencil.woff') format('woff'),
+        url('../fonts/my/Sylar-Stencil.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AristotelicaDisplay';
+    src: url('../fonts/my/AristotelicaDisplay-Extralight.eot');
+    src: url('../fonts/my/AristotelicaDisplay-Extralight.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AristotelicaDisplay-Extralight.woff2') format('woff2'),
+        url('../fonts/my/AristotelicaDisplay-Extralight.woff') format('woff'),
+        url('../fonts/my/AristotelicaDisplay-Extralight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant Garamond4';
+    src: url('../fonts/my/CormorantGaramond-Medium.eot');
+    src: url('../fonts/my/CormorantGaramond-Medium.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantGaramond-Medium.woff2') format('woff2'),
+        url('../fonts/my/CormorantGaramond-Medium.woff') format('woff'),
+        url('../fonts/my/CormorantGaramond-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tkachenko Sketch 4F';
+    src: url('../fonts/my/TkachenkoSketch4F-Bold.eot');
+    src: url('../fonts/my/TkachenkoSketch4F-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/TkachenkoSketch4F-Bold.woff2') format('woff2'),
+        url('../fonts/my/TkachenkoSketch4F-Bold.woff') format('woff'),
+        url('../fonts/my/TkachenkoSketch4F-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Devroye Unicode';
+    src: url('../fonts/my/DevroyeUnicode.eot');
+    src: url('../fonts/my/DevroyeUnicode.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/DevroyeUnicode.woff2') format('woff2'),
+        url('../fonts/my/DevroyeUnicode.woff') format('woff'),
+        url('../fonts/my/DevroyeUnicode.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AristaPro-Fat';
+    src: url('../fonts/my/AristaPro-Fat.eot');
+    src: url('../fonts/my/AristaPro-Fat.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AristaPro-Fat.woff2') format('woff2'),
+        url('../fonts/my/AristaPro-Fat.woff') format('woff'),
+        url('../fonts/my/AristaPro-Fat.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Alpha Echo';
+    src: url('../fonts/my/AlphaEcho.eot');
+    src: url('../fonts/my/AlphaEcho.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AlphaEcho.woff2') format('woff2'),
+        url('../fonts/my/AlphaEcho.woff') format('woff'),
+        url('../fonts/my/AlphaEcho.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AristotelicaSmallCaps-Hairlin';
+    src: url('../fonts/my/AristotelicaSmallCaps-Hairlin.eot');
+    src: url('../fonts/my/AristotelicaSmallCaps-Hairlin.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AristotelicaSmallCaps-Hairlin.woff2') format('woff2'),
+        url('../fonts/my/AristotelicaSmallCaps-Hairlin.woff') format('woff'),
+        url('../fonts/my/AristotelicaSmallCaps-Hairlin.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'LECO1988-Blind';
+    src: url('../fonts/my/LECO1988-Blind.eot');
+    src: url('../fonts/my/LECO1988-Blind.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/LECO1988-Blind.woff2') format('woff2'),
+        url('../fonts/my/LECO1988-Blind.woff') format('woff'),
+        url('../fonts/my/LECO1988-Blind.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GLYPHICONS Halflings';
+    src: url('../fonts/my/GLYPHICONSHalflings-Regular.eot');
+    src: url('../fonts/my/GLYPHICONSHalflings-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/GLYPHICONSHalflings-Regular.woff2') format('woff2'),
+        url('../fonts/my/GLYPHICONSHalflings-Regular.woff') format('woff'),
+        url('../fonts/my/GLYPHICONSHalflings-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HazelnutPro';
+    src: url('../fonts/my/HazelnutPro-Black.eot');
+    src: url('../fonts/my/HazelnutPro-Black.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/HazelnutPro-Black.woff2') format('woff2'),
+        url('../fonts/my/HazelnutPro-Black.woff') format('woff'),
+        url('../fonts/my/HazelnutPro-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant Infant3';
+    src: url('../fonts/my/CormorantInfant-LightItalic.eot');
+    src: url('../fonts/my/CormorantInfant-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantInfant-LightItalic.woff2') format('woff2'),
+        url('../fonts/my/CormorantInfant-LightItalic.woff') format('woff'),
+        url('../fonts/my/CormorantInfant-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Lobster';
+    src: url('../fonts/my/Lobster-Regular.eot');
+    src: url('../fonts/my/Lobster-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/Lobster-Regular.woff2') format('woff2'),
+        url('../fonts/my/Lobster-Regular.woff') format('woff'),
+        url('../fonts/my/Lobster-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant Infant4';
+    src: url('../fonts/my/CormorantInfant-Light.eot');
+    src: url('../fonts/my/CormorantInfant-Light.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantInfant-Light.woff2') format('woff2'),
+        url('../fonts/my/CormorantInfant-Light.woff') format('woff'),
+        url('../fonts/my/CormorantInfant-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Aktiv Grotesk Corp3';
+    src: url('../fonts/my/AktivGroteskCorp-BoldItalic.eot');
+    src: url('../fonts/my/AktivGroteskCorp-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AktivGroteskCorp-BoldItalic.woff2') format('woff2'),
+        url('../fonts/my/AktivGroteskCorp-BoldItalic.woff') format('woff'),
+        url('../fonts/my/AktivGroteskCorp-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Aktiv Grotesk Corp4';
+    src: url('../fonts/my/AktivGroteskCorp-MediumItalic.eot');
+    src: url('../fonts/my/AktivGroteskCorp-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AktivGroteskCorp-MediumItalic.woff2') format('woff2'),
+        url('../fonts/my/AktivGroteskCorp-MediumItalic.woff') format('woff'),
+        url('../fonts/my/AktivGroteskCorp-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Cormorant Infant6';
+    src: url('../fonts/my/CormorantInfant-BoldItalic.eot');
+    src: url('../fonts/my/CormorantInfant-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantInfant-BoldItalic.woff2') format('woff2'),
+        url('../fonts/my/CormorantInfant-BoldItalic.woff') format('woff'),
+        url('../fonts/my/CormorantInfant-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Cormorant Garamond5';
+    src: url('../fonts/my/CormorantGaramond-MediumItalic.eot');
+    src: url('../fonts/my/CormorantGaramond-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantGaramond-MediumItalic.woff2') format('woff2'),
+        url('../fonts/my/CormorantGaramond-MediumItalic.woff') format('woff'),
+        url('../fonts/my/CormorantGaramond-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Tkachenko Sketch 4F2';
+    src: url('../fonts/my/TkachenkoSketch4F.eot');
+    src: url('../fonts/my/TkachenkoSketch4F.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/TkachenkoSketch4F.woff2') format('woff2'),
+        url('../fonts/my/TkachenkoSketch4F.woff') format('woff'),
+        url('../fonts/my/TkachenkoSketch4F.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SketchetikLight';
+    src: url('../fonts/my/SketchetikLight.eot');
+    src: url('../fonts/my/SketchetikLight.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/SketchetikLight.woff2') format('woff2'),
+        url('../fonts/my/SketchetikLight.woff') format('woff'),
+        url('../fonts/my/SketchetikLight.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Aktiv Grotesk Corp5';
+    src: url('../fonts/my/AktivGroteskCorp-LightItalic.eot');
+    src: url('../fonts/my/AktivGroteskCorp-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AktivGroteskCorp-LightItalic.woff2') format('woff2'),
+        url('../fonts/my/AktivGroteskCorp-LightItalic.woff') format('woff'),
+        url('../fonts/my/AktivGroteskCorp-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Cormorant Infant7';
+    src: url('../fonts/my/CormorantInfant-SemiBold.eot');
+    src: url('../fonts/my/CormorantInfant-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantInfant-SemiBold.woff2') format('woff2'),
+        url('../fonts/my/CormorantInfant-SemiBold.woff') format('woff'),
+        url('../fonts/my/CormorantInfant-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant Garamond7';
+    src: url('../fonts/my/CormorantGaramond-Light.eot');
+    src: url('../fonts/my/CormorantGaramond-Light.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantGaramond-Light.woff2') format('woff2'),
+        url('../fonts/my/CormorantGaramond-Light.woff') format('woff'),
+        url('../fonts/my/CormorantGaramond-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AristotelicaText';
+    src: url('../fonts/my/AristotelicaText-ExtraLight.eot');
+    src: url('../fonts/my/AristotelicaText-ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AristotelicaText-ExtraLight.woff2') format('woff2'),
+        url('../fonts/my/AristotelicaText-ExtraLight.woff') format('woff'),
+        url('../fonts/my/AristotelicaText-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NeuropoliticalRg';
+    src: url('../fonts/my/NeuropoliticalRg-Regular.eot');
+    src: url('../fonts/my/NeuropoliticalRg-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/NeuropoliticalRg-Regular.woff2') format('woff2'),
+        url('../fonts/my/NeuropoliticalRg-Regular.woff') format('woff'),
+        url('../fonts/my/NeuropoliticalRg-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Aktiv Grotesk Corp6';
+    src: url('../fonts/my/AktivGroteskCorpMedium-Regular.eot');
+    src: url('../fonts/my/AktivGroteskCorpMedium-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AktivGroteskCorpMedium-Regular.woff2') format('woff2'),
+        url('../fonts/my/AktivGroteskCorpMedium-Regular.woff') format('woff'),
+        url('../fonts/my/AktivGroteskCorpMedium-Regular.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Aktiv Grotesk Corp7';
+    src: url('../fonts/my/AktivGroteskCorp-Light.eot');
+    src: url('../fonts/my/AktivGroteskCorp-Light.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AktivGroteskCorp-Light.woff2') format('woff2'),
+        url('../fonts/my/AktivGroteskCorp-Light.woff') format('woff'),
+        url('../fonts/my/AktivGroteskCorp-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Augusta Two';
+    src: url('../fonts/my/AugustaTwo.eot');
+    src: url('../fonts/my/AugustaTwo.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AugustaTwo.woff2') format('woff2'),
+        url('../fonts/my/AugustaTwo.woff') format('woff'),
+        url('../fonts/my/AugustaTwo.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant Infant9';
+    src: url('../fonts/my/CormorantInfant-Bold.eot');
+    src: url('../fonts/my/CormorantInfant-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantInfant-Bold.woff2') format('woff2'),
+        url('../fonts/my/CormorantInfant-Bold.woff') format('woff'),
+        url('../fonts/my/CormorantInfant-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'RBNaftalin';
+    src: url('../fonts/my/RBNaftalin.eot');
+    src: url('../fonts/my/RBNaftalin.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/RBNaftalin.woff2') format('woff2'),
+        url('../fonts/my/RBNaftalin.woff') format('woff'),
+        url('../fonts/my/RBNaftalin.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Bad Script';
+    src: url('../fonts/my/BadScript-Regular.eot');
+    src: url('../fonts/my/BadScript-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/BadScript-Regular.woff2') format('woff2'),
+        url('../fonts/my/BadScript-Regular.woff') format('woff'),
+        url('../fonts/my/BadScript-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant InfantA';
+    src: url('../fonts/my/CormorantInfant-MediumItalic.eot');
+    src: url('../fonts/my/CormorantInfant-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantInfant-MediumItalic.woff2') format('woff2'),
+        url('../fonts/my/CormorantInfant-MediumItalic.woff') format('woff'),
+        url('../fonts/my/CormorantInfant-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'GeometrySoftPro-BoldN';
+    src: url('../fonts/my/GeometrySoftPro-BoldN.eot');
+    src: url('../fonts/my/GeometrySoftPro-BoldN.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/GeometrySoftPro-BoldN.woff2') format('woff2'),
+        url('../fonts/my/GeometrySoftPro-BoldN.woff') format('woff'),
+        url('../fonts/my/GeometrySoftPro-BoldN.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cormorant GaramondA';
+    src: url('../fonts/my/CormorantGaramond-LightItalic.eot');
+    src: url('../fonts/my/CormorantGaramond-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/CormorantGaramond-LightItalic.woff2') format('woff2'),
+        url('../fonts/my/CormorantGaramond-LightItalic.woff') format('woff'),
+        url('../fonts/my/CormorantGaramond-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'ZnikomitNo24';
+    src: url('../fonts/my/ZnikomitNo24.eot');
+    src: url('../fonts/my/ZnikomitNo24.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/ZnikomitNo24.woff2') format('woff2'),
+        url('../fonts/my/ZnikomitNo24.woff') format('woff'),
+        url('../fonts/my/ZnikomitNo24.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tkachenko Sketch 4F3';
+    src: url('../fonts/my/TkachenkoSketch4F-Bold_1.eot');
+    src: url('../fonts/my/TkachenkoSketch4F-Bold_1.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/TkachenkoSketch4F-Bold_1.woff2') format('woff2'),
+        url('../fonts/my/TkachenkoSketch4F-Bold_1.woff') format('woff'),
+        url('../fonts/my/TkachenkoSketch4F-Bold_1.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FoglihtenBlackPcs';
+    src: url('../fonts/my/FoglihtenBlackPcs.eot');
+    src: url('../fonts/my/FoglihtenBlackPcs.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/FoglihtenBlackPcs.woff2') format('woff2'),
+        url('../fonts/my/FoglihtenBlackPcs.woff') format('woff'),
+        url('../fonts/my/FoglihtenBlackPcs.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Nautilus Pompilius';
+    src: url('../fonts/my/NautilusPompilius.eot');
+    src: url('../fonts/my/NautilusPompilius.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/NautilusPompilius.woff2') format('woff2'),
+        url('../fonts/my/NautilusPompilius.woff') format('woff'),
+        url('../fonts/my/NautilusPompilius.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Metro';
+    src: url('../fonts/my/Metro.eot');
+    src: url('../fonts/my/Metro.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/Metro.woff2') format('woff2'),
+        url('../fonts/my/Metro.woff') format('woff'),
+        url('../fonts/my/Metro.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AmerikaPro2';
+    src: url('../fonts/my/AmerikaPro_1.eot');
+    src: url('../fonts/my/AmerikaPro_1.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AmerikaPro_1.woff2') format('woff2'),
+        url('../fonts/my/AmerikaPro_1.woff') format('woff'),
+        url('../fonts/my/AmerikaPro_1.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AristaPro-Fat2';
+    src: url('../fonts/my/AristaPro-Fat_1.eot');
+    src: url('../fonts/my/AristaPro-Fat_1.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/my/AristaPro-Fat_1.woff2') format('woff2'),
+        url('../fonts/my/AristaPro-Fat_1.woff') format('woff'),
+        url('../fonts/my/AristaPro-Fat_1.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.Amerika {
+    font-family: 'Amerika';
+}
+.AktivGroteskCorp {
+    font-family: 'Aktiv Grotesk Corp';
+}
+.Avatar {
+    font-family: 'Avatar';
+}
+.ConthraxSb {
+    font-family: 'ConthraxSb';
+}
+.Celestina {
+    font-family: 'Celestina';
+}
+.CormorantGaramond {
+    font-family: 'Cormorant Garamond';
+}
+.OldStandardTT {
+    font-family: 'Old Standard TT';
+}
+.Captureit {
+    font-family: 'Capture it';
+}
+.CormorantGaramond2 {
+    font-family: 'Cormorant Garamond2';
+}
+.AktivGroteskCorp2 {
+    font-family: 'Aktiv Grotesk Corp2';
+}
+.PublicaPlay {
+    font-family: 'PublicaPlay';
+}
+.CormorantInfant {
+    font-family: 'Cormorant Infant';
+}
+.CormorantGaramond3 {
+    font-family: 'Cormorant Garamond3';
+}
+.Sylar-Stencil {
+    font-family: 'Sylar-Stencil';
+}
+.AristotelicaDisplay {
+    font-family: 'AristotelicaDisplay';
+}
+.CormorantGaramond4 {
+    font-family: 'Cormorant Garamond4';
+}
+.TkachenkoSketch4F {
+    font-family: 'Tkachenko Sketch 4F';
+}
+.DevroyeUnicode {
+    font-family: 'Devroye Unicode';
+}
+.AristaPro-Fat {
+    font-family: 'AristaPro-Fat';
+}
+.AlphaEcho {
+    font-family: 'Alpha Echo';
+}
+.AristotelicaSmallCaps-Hairlin {
+    font-family: 'AristotelicaSmallCaps-Hairlin';
+}
+.LECO1988-Blind {
+    font-family: 'LECO1988-Blind';
+}
+.GLYPHICONSHalflings {
+    font-family: 'GLYPHICONS Halflings';
+}
+.HazelnutPro {
+    font-family: 'HazelnutPro';
+}
+.CormorantInfant3 {
+    font-family: 'Cormorant Infant3';
+}
+.Lobster {
+    font-family: 'Lobster';
+}
+.CormorantInfant4 {
+    font-family: 'Cormorant Infant4';
+}
+.AktivGroteskCorp3 {
+    font-family: 'Aktiv Grotesk Corp3';
+}
+.AktivGroteskCorp4 {
+    font-family: 'Aktiv Grotesk Corp4';
+}
+.CormorantInfant6 {
+    font-family: 'Cormorant Infant6';
+}
+.CormorantGaramond5 {
+    font-family: 'Cormorant Garamond5';
+}
+.TkachenkoSketch4F2 {
+    font-family: 'Tkachenko Sketch 4F2';
+}
+.SketchetikLight {
+    font-family: 'SketchetikLight';
+}
+.AktivGroteskCorp5 {
+    font-family: 'Aktiv Grotesk Corp5';
+}
+.CormorantInfant7 {
+    font-family: 'Cormorant Infant7';
+}
+.CormorantGaramond7 {
+    font-family: 'Cormorant Garamond7';
+}
+.AristotelicaText {
+    font-family: 'AristotelicaText';
+}
+.NeuropoliticalRg {
+    font-family: 'NeuropoliticalRg';
+}
+.AktivGroteskCorp6 {
+    font-family: 'Aktiv Grotesk Corp6';
+}
+.AktivGroteskCorp7 {
+    font-family: 'Aktiv Grotesk Corp7';
+}
+.AugustaTwo {
+    font-family: 'Augusta Two';
+}
+.CormorantInfant9 {
+    font-family: 'Cormorant Infant9';
+}
+.RBNaftalin {
+    font-family: 'RBNaftalin';
+}
+.BadScript {
+    font-family: 'Bad Script';
+}
+.CormorantInfantA {
+    font-family: 'Cormorant InfantA';
+}
+.GeometrySoftPro-BoldN {
+    font-family: 'GeometrySoftPro-BoldN';
+}
+.CormorantGaramondA {
+    font-family: 'Cormorant GaramondA';
+}
+.ZnikomitNo24 {
+    font-family: 'ZnikomitNo24';
+}
+.TkachenkoSketch4F3 {
+    font-family: 'Tkachenko Sketch 4F3';
+}
+.FoglihtenBlackPcs {
+    font-family: 'FoglihtenBlackPcs';
+}
+.NautilusPompilius {
+    font-family: 'Nautilus Pompilius';
+}
+.Metro {
+    font-family: 'Metro';
+}
+.AmerikaPro2 {
+    font-family: 'AmerikaPro2';
+}
+.AristaPro-Fat2 {
+    font-family: 'AristaPro-Fat2';
+}
+

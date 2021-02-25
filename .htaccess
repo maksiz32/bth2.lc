@@ -1,0 +1,9 @@
+php_value date.timezone 'Europe/Moscow'
+<IfModule mod_rewrite.c>
+    AuthType SSPI
+    AuthName "SSPI Protected Place"
+    require valid-user
+    RewriteEngine On
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    RewriteRule ^(.*)$ public/$1 [QSA,L]
+</IfModule>
