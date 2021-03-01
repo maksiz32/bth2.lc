@@ -1,8 +1,7 @@
-@extends('layouts.app')
 <?php $h = ($tech->id) ? "Редактирование техники " . $tech->tech : "Добавление новой техники" ?>
-@section('title', $h)
-@section('content')
-@push("head")
+<?php $__env->startSection('title', $h); ?>
+<?php $__env->startSection('content'); ?>
+<?php $__env->startPush("head"); ?>
 <script>
       function addName(cb, mat) {
     cb = document.getElementById(cb);
@@ -14,28 +13,32 @@
 	}
   }
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
 <article class="container main_page">
-    @if ($message = Session::get('success'))
+    <?php if($message = Session::get('success')): ?>
             <div class="alert alert-success" role="alert">
-                {{ Session::get('success') }}
+                <?php echo e(Session::get('success')); ?>
+
             </div>
-            @endif
-            @if ($message = Session::get('error'))
+            <?php endif; ?>
+            <?php if($message = Session::get('error')): ?>
             <div class="alert alert-danger" role="alert">
-                {{ Session::get('error') }}
+                <?php echo e(Session::get('error')); ?>
+
             </div>
-            @endif
-            <form action="{{ action('TechController@store') }}" method="POST" enctype="multipart/form-data">
-                @if ($tech->id)
-                            {{ method_field('PUT') }}
-                        <input type="hidden" name="id" value="{{ old('id', $tech->id) }}">
-                @endif
-                            {{ csrf_field() }}
+            <?php endif; ?>
+            <form action="<?php echo e(action('TechController@store')); ?>" method="POST" enctype="multipart/form-data">
+                <?php if($tech->id): ?>
+                            <?php echo e(method_field('PUT')); ?>
+
+                        <input type="hidden" name="id" value="<?php echo e(old('id', $tech->id)); ?>">
+                <?php endif; ?>
+                            <?php echo e(csrf_field()); ?>
+
                 <div class="row">
                     <div class="form-group col-lg-12">
-                @if ($tech->id)
-                    <img src="{{ asset('/img/tech/'.$tech->photo) }}" class="img-thumbnail h110">
+                <?php if($tech->id): ?>
+                    <img src="<?php echo e(asset('/img/tech/'.$tech->photo)); ?>" class="img-thumbnail h110">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" id="sw1" name="sw1" onchange='addName("sw1", "photo1");'>
                             <label class="custom-control-label" for="sw1">Будем менять картинку?</label><br />
@@ -44,22 +47,22 @@
                                 <input type="file" class="form-control-file" name="photo1" value="">
                             </div>
                         </div>
-                @else
+                <?php else: ?>
                         <label for="photo1">Выберите изображение устройства:</label>
                         <input type="file" class="form-control-file" name="photo1" required>
-                @endif
+                <?php endif; ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-12">
                         <label for="tech" class="control-label">Модель устройства:</label>
-                        <input type="text" class="form-control" name="tech" value="{{ old('tech', $tech->tech) }}" required>
+                        <input type="text" class="form-control" name="tech" value="<?php echo e(old('tech', $tech->tech)); ?>" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-12">
                         <label for="model" class="control-label">Модель картриджа:</label>
-                        <input type="text" class="form-control" name="model" value="{{ old('model', $tech->model) }}" required>
+                        <input type="text" class="form-control" name="model" value="<?php echo e(old('model', $tech->model)); ?>" required>
                     </div>
                 </div>
                 <div class="row">
@@ -79,5 +82,7 @@
                 </div>
             </form>
 </article>
-@endsection
+<?php $__env->stopSection(); ?>
 
+
+<?php echo $__env->make('layouts.app', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

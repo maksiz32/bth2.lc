@@ -10,6 +10,7 @@ class CreateOrderTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('firm');
+            $table->string('user_name')->nullable();
             $table->ipAddress('real_ip');
             $table->dateTime('created');
             $table->string('tech')->nullable();

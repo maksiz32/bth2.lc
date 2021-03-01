@@ -12,7 +12,7 @@ class CreateTechTable extends Migration
             $table->string('photo');
             $table->string('tech');
             $table->string('model');
-            $table->integer('category');
+            $table->integer('category_id');
             $table->timestamps();
             $table->index(['tech', 'model']);
         });

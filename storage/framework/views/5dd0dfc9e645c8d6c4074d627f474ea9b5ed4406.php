@@ -1,33 +1,6 @@
 <?php $__env->startSection('title', "Оформление заказа картриджей и расходных материалов"); ?>
 <?php $__env->startSection('content'); ?>
 <?php $__env->startPush("head"); ?>
-<script src="<?php echo e(asset('/js/bs-custom-file-input.min.js')); ?>"></script>
-<script type="text/javascript">
-    function addName(cb, cat, mat, tec) {
-        cb = document.getElementById(cb);
-        cat = document.getElementById(cat);
-	mat = document.getElementById(mat);
-        tec = document.getElementById(tec);
-    if (cb.checked) {
-	cat.setAttribute('name', 'count_m[]');
-	mat.setAttribute('style', 'visibility:visible');
-	cat.setAttribute("min", "1");
-        tec.setAttribute('name', 'tech[]');
-    } else {
-	cat.removeAttribute('name');
-	mat.setAttribute('style', 'visibility:hidden');
-	cat.setAttribute("min", "0");
-        tec.removeAttribute('name');
-	}
-  }
-</script>
-<link href="<?php echo e(asset('/css/lightbox.css')); ?>" rel="stylesheet">
-<script src="<?php echo e(asset('/js/lightbox.min.js')); ?>"></script>
-<script>
-    $(document).ready(function () {
-    bsCustomFileInput.init();
-    });
-</script>
 <script>
     $(document).ready(function() {
         $('#forclick').on('click', function(){
@@ -35,9 +8,48 @@
             $('#second').css('display', 'block');
         });
     });
+    function doPlus(id) {
+        var inpNum = document.getElementById('inpNum'+id);
+        var answer = parseInt(inpNum.value) + 1;
+        var div = document.getElementById('div'+id);
+        if (answer > 0) {
+            document.getElementById('tech'+id).setAttribute('name', 'tech[]');
+            document.getElementById('model'+id).setAttribute('name', 'model[]');
+            inpNum.setAttribute('name', 'count_m[]');
+            div.setAttribute('style', 'border:1px solid rgb(46, 170, 247)');
+            div.setAttribute('style', 'background-color:lightskyblue');
+        }
+        let max = parseInt(document.getElementById('remain'+id).innerHTML);
+        if (answer <= max) {
+            inpNum.value = answer;
+        } else {
+            answer = answer - 1;
+            if (answer <= 0) {
+                div.setAttribute('style', 'border:none');
+                div.setAttribute('style', 'background-color:none');
+            }
+            alert('Нельзя выбрать больше остатка на складе '+max+"you: "+answer);
+        }
+    };
+    function doMinus(id) {
+        let answerM = parseInt(document.getElementById('inpNum'+id).value) - 1;
+        let inpNum = document.getElementById('inpNum'+id);
+        let div = document.getElementById('div'+id);
+        if (answerM >= 0) {
+            inpNum.value = answerM;
+        } 
+        if (answerM <= 0) {
+            document.getElementById('tech'+id).removeAttribute('name');
+            document.getElementById('model'+id).removeAttribute('name');
+            inpNum.removeAttribute('name');
+            div.setAttribute('style', 'border:none');
+            div.setAttribute('style', 'background-color:none');
+        }
+    }
 </script>
 <?php $__env->stopPush(); ?>
-<article class="container main_page">
+<article>
+    <div class="container main_page orders">
     <?php $real_ip = ip2long($ip); ?>
     <?php if($message = Session::get('success')): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -71,252 +83,61 @@
     <?php endif; ?>
 
     <form action="<?php echo e(action('OrderController@store')); ?>" method="post">
-        <div class="row">
-            <?php echo e(method_field('PUT')); ?>
+        <?php echo e(method_field('PUT')); ?>
 
-            <?php echo e(csrf_field()); ?>
+        <?php echo e(csrf_field()); ?>
 
-            <input type="hidden" name="real_ip" value="<?php echo e(old('real_ip', $ip)); ?>">
-            <input type="hidden" name="created" value="<?php echo e(date('Y-m-d H:i:s')); ?>">
-            <input type="hidden" name="firm" value="<?php echo e(old('firm', isset($firm->name) ? $firm->name : 'Test')); ?>">
-            <input type="hidden" name="userRealName" value="<?php echo e($userRealName); ?>">
-    
-        </div>
-        <div class="accordion" id="accordionOne">
-            <div class="card" id="order">
-                <div class="card-header text-center alert alert-success" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    <div class="row">
-                        <div class="col-12">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link text-dark collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Принтеры
-                                </button>
-                            </h5>
-                        </div>
-                    </div>
-                    <div class="row">
-<?php $__currentLoopData = $picsP; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pic): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <div class="col-lg-3">
-                            <img src="<?php echo e(asset('/img/tech/'.$pic->photo)); ?>" class="img-thumbnail h110" />
-                        </div>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>			
-                    </div>
-                </div>
-            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionOne">
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <colgroup>
-                            <col width="150">
-                            <col width="200">
-                            <col width="220">
-                            <col width="170">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>Выбрать</th>
-                                <th>Фото</th>
-                                <th>Модель</th>
-                                <th>Количество</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-<?php $__currentLoopData = $prints; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $print): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <tr>
-                                <td>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="pr<?php echo e($loop->iteration); ?>" name="model[]" onchange='addName("pr<?php echo e($loop->iteration); ?>", "inpr<?php echo e($loop->iteration); ?>", "hidepr<?php echo e($loop->iteration); ?>", "tecpr<?php echo e($loop->iteration); ?>");' value="<?php echo e(old('model', $print->model)); ?>">
-                                        <label class="custom-control-label" for="pr<?php echo e($loop->iteration); ?>">Выбрать</label>
-                                    </div>
-                                </td>
-                                <td class="listing-inquiry-status">
-                                    <input type="hidden" id="tecpr<?php echo e($loop->iteration); ?>" value="<?php echo e(old('tech', $print->tech)); ?>">
-                                    <a href="<?php echo e(asset('img/tech/'.$print->photo)); ?>" data-lightbox="1150" data-title="<?php echo e($print->tech); ?>" alt="<?php echo e($print->tech); ?>" title="<?php echo e($print->tech); ?>">
-                                        <img src="<?php echo e(asset('img/tech/'.$print->photo)); ?>" class="img-thumbnail h110" />
-                                    </a>
-                                </td>
-                                <td>
-                                    <div class="flex-child-grow">
-                                    <h6 class="dashboard-table-text"><?php echo e($print->tech); ?></h6>
-                                        <span class="dashboard-table-timestamp text-muted">Картридж <?php echo e($print->model); ?></span>
-                                    </div>
-                                </td>
-                                <td id="hidepr<?php echo e($loop->iteration); ?>" style="visibility:hidden">
-                                    <h6 class="text-center">Количество (шт.)</h6>
-                                    <div class="input-group input-number-group">
-                                        <div class="input-group-button">
-                                            <button type="button" class="btn btn-info input-number-decrement">-</button>
-                                        </div>
-                                        <input class="input-number text-center" type="number" id="inpr<?php echo e($loop->iteration); ?>" value="0" min="0" max="10">
-                                        <div class="input-group-button">
-                                            <button type="button" class="btn btn-info input-number-increment">+</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            </div>
-        </div>
-        <div class="accordion" id="accordionTwo">
-            <div class="card" id="order">
-                <div class="card-header text-center alert alert-info" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                    <div class="row">
-                        <div class="col-12">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link text-dark collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                    Копиры
-                                </button>
-                            </h5>
-                        </div>
-                    </div>
-                    <div class="row">
-<?php $__currentLoopData = $picsC; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pic): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <div class="col-lg-3">
-                            <img src="<?php echo e(asset('/img/tech/'.$pic->photo)); ?>" class="img-thumbnail h110" />
-                        </div>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>			
-                    </div>
-                </div>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionTwo">
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <colgroup>
-                            <col width="150">
-                            <col width="200">
-                            <col width="220">
-                            <col width="170">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>Выбрать</th>
-                                <th>Фото</th>
-                                <th>Модель</th>
-                                <th>Количество</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-<?php $__currentLoopData = $copyrs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $print): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <tr>
-                                <td>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="cop<?php echo e($loop->iteration); ?>" name="model[]" onchange='addName("cop<?php echo e($loop->iteration); ?>", "incop<?php echo e($loop->iteration); ?>", "hidecop<?php echo e($loop->iteration); ?>", "teccop<?php echo e($loop->iteration); ?>");' value="<?php echo e(old('model', $print->model)); ?>">
-                                        <label class="custom-control-label" for="cop<?php echo e($loop->iteration); ?>">Выбрать</label>
-                                    </div>
-                                </td>
-                                <td class="listing-inquiry-status">
-                                    <input type="hidden" id="teccop<?php echo e($loop->iteration); ?>" value="<?php echo e(old('tech', $print->tech)); ?>">
-                                    <a href="<?php echo e(asset('img/tech/'.$print->photo)); ?>" data-lightbox="1150" data-title="<?php echo e($print->tech); ?>" alt="<?php echo e($print->tech); ?>" title="<?php echo e($print->tech); ?>">
-                                        <img src="<?php echo e(asset('img/tech/'.$print->photo)); ?>" class="img-thumbnail h110" />
-                                    </a>
-                                </td>
-                                <td>
-                                    <div class="flex-child-grow">
-                                    <h6 class="dashboard-table-text"><?php echo e($print->tech); ?></h6>
-                                        <span class="dashboard-table-timestamp text-muted">Картридж <?php echo e($print->model); ?></span>
-                                    </div>
-                                </td>
-                                <td id="hidecop<?php echo e($loop->iteration); ?>" style="visibility:hidden">
-                                    <h6 class="text-center">Количество (шт.)</h6>
-                                    <div class="input-group input-number-group">
-                                        <div class="input-group-button">
-                                            <button type="button" class="btn btn-info input-number-decrement">-</button>
-                                        </div>
-                                        <input class="input-number text-center" type="number" id="incop<?php echo e($loop->iteration); ?>" value="0" min="0" max="10">
-                                        <div class="input-group-button">
-                                            <button type="button" class="btn btn-info input-number-increment">+</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            </div>
-        </div>
-        <div class="accordion" id="accordionThree">
-            <div class="card" id="order">
-                <div class="card-header text-center alert alert-primary" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                    <div class="row">
-                        <div class="col-12">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link text-dark collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                    МФУ
-                                </button>
-                            </h5>
-                        </div>
-                    </div>
-                    <div class="row">
-<?php $__currentLoopData = $picsM; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pic): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <div class="col-lg-3">
-                            <img src="<?php echo e(asset('/img/tech/'.$pic->photo)); ?>" class="img-thumbnail h110" />
-                        </div>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>			
-                    </div>
-                </div>
-            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionThree">
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <colgroup>
-                            <col width="150">
-                            <col width="200">
-                            <col width="220">
-                            <col width="170">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>Выбрать</th>
-                                <th>Фото</th>
-                                <th>Модель</th>
-                                <th>Количество</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-<?php $__currentLoopData = $mfus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $print): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <tr>
-                                <td>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="mf<?php echo e($loop->iteration); ?>" name="model[]" onchange='addName("mf<?php echo e($loop->iteration); ?>", "inmf<?php echo e($loop->iteration); ?>", "hidemf<?php echo e($loop->iteration); ?>", "tecmf<?php echo e($loop->iteration); ?>");' value="<?php echo e(old('model', $print->model)); ?>">
-                                        <label class="custom-control-label" for="mf<?php echo e($loop->iteration); ?>">Выбрать</label>
-                                    </div>
-                                </td>
-                                <td class="listing-inquiry-status">
-                                    <input type="hidden" id="tecmf<?php echo e($loop->iteration); ?>" value="<?php echo e(old('tech', $print->tech)); ?>">
-                                    <a href="<?php echo e(asset('img/tech/'.$print->photo)); ?>" data-lightbox="1150" data-title="<?php echo e($print->tech); ?>" alt="<?php echo e($print->tech); ?>" title="<?php echo e($print->tech); ?>">
-                                        <img src="<?php echo e(asset('img/tech/'.$print->photo)); ?>" class="img-thumbnail h110" />
-                                    </a>
-                                </td>
-                                <td>
-                                    <div class="flex-child-grow">
-                                    <h6 class="dashboard-table-text"><?php echo e($print->tech); ?></h6>
-                                        <span class="dashboard-table-timestamp text-muted">Картридж <?php echo e($print->model); ?></span>
-                                    </div>
-                                </td>
-                                <td id="hidemf<?php echo e($loop->iteration); ?>" style="visibility:hidden">
-                                    <h6 class="text-center">Количество (шт.)</h6>
-                                    <div class="input-group input-number-group">
-                                        <div class="input-group-button">
-                                            <button type="button" class="btn btn-info input-number-decrement">-</button>
-                                        </div>
-                                        <input class="input-number text-center" type="number" id="inmf<?php echo e($loop->iteration); ?>" value="0" min="0" max="10">
-                                        <div class="input-group-button">
-                                            <button type="button" class="btn btn-info input-number-increment">+</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            </div>
-        </div>
+        <input type="hidden" name="real_ip" value="<?php echo e(old('real_ip', $ip)); ?>">
         
+        <input type="hidden" name="firm" value="<?php echo e(old('firm', isset($firm->name) ? $firm->name : 'Test')); ?>">
+        <input type="hidden" name="userRealName" value="<?php echo e($userRealName); ?>">
+        <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <div class="form-group">
+            <div class="card-header text-center alert alert-success">
+                <div class="row">
+                    <div class="col-12">
+                        <h5 class="mb-0">
+                                <?php echo e($cat->category); ?>
+
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row form-body-order">
+            <?php $__currentLoopData = $technics; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tech): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if($tech->category_id == $cat->id): ?>
+                <div class="card-orders" id="div<?php echo e($tech->id); ?>">
+                    <input type="hidden" id="model<?php echo e($tech->id); ?>" value="<?php echo e(old('model', $tech->model)); ?>">
+                    <input type="hidden" id="tech<?php echo e($tech->id); ?>" value="<?php echo e(old('tech', $tech->tech)); ?>">
+                        <img src="<?php echo e(asset('img/tech/'.$tech->photo)); ?>" class="img-thumbnail h110" />
+                    <div class="flex-child-grow">
+                        <h4 class="dashboard-table-text"><?php echo $tech->tech; ?></h4>
+                        <span class="dashboard-table-timestamp text-muted">Картридж <?php echo e($tech->model); ?></span>
+                    </div>
+                    <div>
+                        <h6 class="text-center badge badge-info">Остаток на складе:  <span id="remain<?php echo e($tech->id); ?>"><?php echo e($tech->count); ?></span> шт.</h6>
+                    </div>
+                    <br>
+                    <div class="order-bottom">
+                        <div class="input-group input-number-group row">
+                            <div class="input-group-button col">
+                                <i class="bi bi-dash-square s500 orderMinus" data-id="<?php echo e($tech->id); ?>" 
+                                onclick="doMinus(<?php echo e($tech->id); ?>)"></i>
+                            </div>
+                            <input class="input-number text-center col" type="number" id="inpNum<?php echo e($tech->id); ?>" value="0" min="0" readonly>
+                            <div class="input-group-button col">
+                                <i class="bi bi-plus-square orderPlus s500" data-id="<?php echo e($tech->id); ?>" 
+                                onclick="doPlus(<?php echo e($tech->id); ?>)"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            </div>
+<hr><hr>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         <br/>
         <div class="row">
             <div class="col-12 text-center">
@@ -338,8 +159,7 @@
                     </div>
                 <div id="first">
                     <button type="submit" class="btn btn-primary" 
-                            id="forclick">Сохранить</button>
-                <a href="#" class="btn btn-secondary" onClick="window.location.href=window.location.href">Отмена</a>
+                        id="forclick">Отправить</button>
                 </div>
             </div>
         </div>
@@ -354,8 +174,53 @@
             </span>
         </div>
     </div>
+</div>
+    <script type="text/javascript">
+    // var buttons_plus = document.querySelectorAll('.orderPlus');
+    //     buttons_plus.forEach((elem) => {
+    //         elem.addEventListener('click', function() {
+    //             var id = elem.getAttribute('data-id');
+    //             var inpNum = document.getElementById('inpNum'+id);
+    //             var answer = parseInt(inpNum.value) + 1;
+    //             var div = document.getElementById('div'+id);
+    //             if (answer > 0) {
+    //                 document.getElementById('tech'+id).setAttribute('name', 'tech[]');
+    //                 document.getElementById('model'+id).setAttribute('name', 'mosel[]');
+    //                 inpNum.setAttribute('name', 'count_m[]');
+    //                 div.setAttribute('style', 'border:1px solid rgb(46, 170, 247)');
+    //                 div.setAttribute('style', 'background-color:lightskyblue');
+    //             }
+    //             var max = parseInt(document.getElementById('remain'+id).innerHTML);
+    //             if (answer <= max) {
+    //                inpNum.value = answer;
+    //            } else {
+    //                alert('Нельзя выбрать больше остатка на складе '+max);
+    //            }
+    //        })
+    //     });
+    // var buttons_minus = document.querySelectorAll('.orderMinus');
+    //     buttons_minus.forEach((elem) => {
+//            elem.addEventListener('click', function() {
+//                var id = elem.getAttribute('data-id');
+//                var answerM = parseInt(document.getElementById('inpNum'+id).value) - 1;
+//                var inpNum = document.getElementById('inpNum'+id);
+//                var div = document.getElementById('div'+id);
+//                // console.log(inpNum.hasOwnProperty(name));
+//                if (answerM >= 0) {
+//                    inpNum.value = answerM;
+//                } 
+//                if (answerM <= 0) {//
+//                    document.getElementById('tech'+id).removeAttribute('name');
+//                    document.getElementById('model'+id).removeAttribute('name');
+//                    inpNum.removeAttribute('name');
+//                    div.setAttribute('style', 'border:none');
+//                    div.setAttribute('style', 'background-color:none');
+//                }
+//            })
+//        });
+//        };
+</script>
 </article>
-<script src="<?php echo e(asset('/js/input-number-group.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
 
 

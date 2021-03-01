@@ -1,123 +1,136 @@
 @font-face {
-    font-family: 'Aktiv Grotesk Corp6';
-    src: url('../fonts/my/AktivGroteskCorpMedium-Regular.eot');
-    src: url('../fonts/my/AktivGroteskCorpMedium-Regular.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/my/AktivGroteskCorpMedium-Regular.woff2') format('woff2'),
-        url('../fonts/my/AktivGroteskCorpMedium-Regular.woff') format('woff'),
-        url('../fonts/my/AktivGroteskCorpMedium-Regular.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
+  font-family: 'Aktiv Grotesk Corp6';
+  src: url("../fonts/my/AktivGroteskCorpMedium-Regular.eot");
+  src: url("../fonts/my/AktivGroteskCorpMedium-Regular.eot?#iefix") format("embedded-opentype"), url("../fonts/my/AktivGroteskCorpMedium-Regular.woff2") format("woff2"), url("../fonts/my/AktivGroteskCorpMedium-Regular.woff") format("woff"), url("../fonts/my/AktivGroteskCorpMedium-Regular.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
 }
+
 @font-face {
-    font-family: 'Celestina';
-    src: url('../fonts/my/Celestina.woff2') format('woff2'),
-        url('../fonts/my/Celestina.woff') format('woff'),
-        url('../fonts/my/Celestina.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Celestina';
+  src: url("../fonts/my/Celestina.woff2") format("woff2"), url("../fonts/my/Celestina.woff") format("woff"), url("../fonts/my/Celestina.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
+
 @font-face {
-    font-family: 'Devroye Unicode';
-    src: url('../fonts/my/DevroyeUnicode.eot');
-    src: url('../fonts/my/DevroyeUnicode.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/my/DevroyeUnicode.woff2') format('woff2'),
-        url('../fonts/my/DevroyeUnicode.woff') format('woff'),
-        url('../fonts/my/DevroyeUnicode.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Devroye Unicode';
+  src: url("../fonts/my/DevroyeUnicode.eot");
+  src: url("../fonts/my/DevroyeUnicode.eot?#iefix") format("embedded-opentype"), url("../fonts/my/DevroyeUnicode.woff2") format("woff2"), url("../fonts/my/DevroyeUnicode.woff") format("woff"), url("../fonts/my/DevroyeUnicode.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 .Celestina {
-    font-family: 'Celestina';
+  font-family: 'Celestina';
 }
+
 .AktivGroteskCorp6 {
-font-family: 'Aktiv Grotesk Corp6';
+  font-family: 'Aktiv Grotesk Corp6';
 }
+
 .rgs-body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
+
 .top-page {
-    flex-grow: 1;
-    margin: 0 auto;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  margin: 0 auto;
 }
+
 .container {
-    margin-top: 110px;
+  margin-top: 110px;
 }
 
 .top-110 {
-    margin-top: 110px;
+  margin-top: 110px;
 }
+
 .top-130 {
-    margin-top: 130px;
+  margin-top: 130px;
 }
-.top-150{
-    margin-top: 150px;
+
+.top-150 {
+  margin-top: 150px;
 }
 
 .h150 {
-    height: 150px;
+  height: 150px;
 }
+
 .h110 {
-    height: 110px;
+  height: 110px;
 }
+
 .h90 {
-    height: 90px;
+  height: 90px;
 }
+
 .h80 {
-    height: 80px;
+  height: 80px;
 }
+
 .h60 {
-    height: 60px;
+  height: 60px;
 }
+
 .h50 {
-    height: 50px;
+  height: 50px;
 }
 
 .mar15 {
-    margin: 15px;
+  margin: 15px;
 }
 
 .top-red {
-    border-top: 6px solid #b21f2d;
-    }
-        
+  border-top: 6px solid #b21f2d;
+}
+
 .m-100 {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .word-b {
-    /*width: 160px;*/
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
+  /*width: 160px;*/
+  hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
 }
 
 a.nav-link:hover {
-    background-color: #EEE;
-    border-radius: 10px;
-    border-left: 2px solid gray;
-    border-right: 2px solid gray;
+  background-color: #EEE;
+  border-radius: 10px;
+  border-left: 2px solid gray;
+  border-right: 2px solid gray;
 }
 
 .footer {
-    width: 100%;
-    margin-top: 100px;
-    padding: 20px;
-    height: 250px;
-    background-color: #f5f5f5;
+  width: 100%;
+  margin-top: 100px;
+  padding: 20px;
+  height: 250px;
+  background-color: #f5f5f5;
 }
 
 .main_nav {
   display: inline-block;
   width: 300px;
-	height: 210px;
-	vertical-align: middle;
+  height: 210px;
+  vertical-align: middle;
 }
 
 figcaption strong {
-	display: block;
+  display: block;
 }
 
 .main_page figure {
@@ -127,6 +140,7 @@ figcaption strong {
   margin: 15px;
   position: relative;
 }
+
 .main_page figcaption {
   position: absolute;
   top: 15%;
@@ -142,14 +156,16 @@ figcaption strong {
   font-size: 1.4em;
   color: white;
   opacity: 0;
-  transition: opacity .75s ease-out;  
+  -webkit-transition: opacity .75s ease-out;
+  transition: opacity .75s ease-out;
 }
+
 .main_page figure:hover figcaption {
   opacity: 1;
 }
 
 .video_link {
-	margin-left: 222px;
+  margin-left: 222px;
 }
 
 .main_nav figcaption {
@@ -167,84 +183,208 @@ figcaption strong {
   font-size: 1em;
   color: white;
   opacity: 0;
-  transition: opacity .75s ease-out;  
+  -webkit-transition: opacity .75s ease-out;
+  transition: opacity .75s ease-out;
 }
+
 .main_nav figure:hover figcaption {
   opacity: 1;
 }
+
 .color_red {
-	color: red;
-	font-weight: bolder;
+  color: red;
+  font-weight: bolder;
 }
+
 .color_rgs {
-    color: #b21f2d;
-    font-weight: bolder;
+  color: #b21f2d;
+  font-weight: bolder;
 }
 
 #link:hover {
-    border-color: #007bff !important;
-    background-color: #cce5ff !important;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22) !important;
+  border-color: #007bff !important;
+  background-color: #cce5ff !important;
+  -webkit-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22) !important;
+          box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22) !important;
 }
 
 #adminka:hover {
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22) !important;
+  -webkit-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22) !important;
+          box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22) !important;
 }
 
 .main_nav {
-	width: 300px;
-	height: 210px;
-	vertical-align: middle;
+  width: 300px;
+  height: 210px;
+  vertical-align: middle;
 }
 
 .main_nav img {
-	padding-left: 39px;
-	height: 210px;
+  padding-left: 39px;
+  height: 210px;
 }
 
 .cent {
-    text-align: center;
+  text-align: center;
 }
 
 .text-link {
-    font-family: 'Devroye Unicode';
+  font-family: 'Devroye Unicode';
 }
 
 .booking:hover {
-    background-color: gray !important;
+  background-color: gray !important;
 }
+
 .booking a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 #weekend, #weekend a {
-    color: red;
+  color: red;
 }
 
 figcaption.fileW {
-    border-radius: 5px;
-    background-color: white;
-    color: black !important;
+  border-radius: 5px;
+  background-color: white;
+  color: black !important;
 }
 
 #wikiText {
-    background-color: white;
-    border-top: .5px solid lightgrey;
-    border-right: .5px solid lightgrey;
-    border-bottom: .5px solid lightgrey;
-    border-left: 10px dotted grey;
-    border-radius: 0 10px 10px 0;
-    box-shadow: 5px 2px 10px rgba(0,0,0,0.5);
-    padding: 20px 15px 0 0;
-    min-height: 400px;
+  background-color: white;
+  border-top: .5px solid lightgrey;
+  border-right: .5px solid lightgrey;
+  border-bottom: .5px solid lightgrey;
+  border-left: 10px dotted grey;
+  border-radius: 0 10px 10px 0;
+  -webkit-box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.5);
+          box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.5);
+  padding: 20px 15px 0 0;
+  min-height: 400px;
 }
 
 .redRightBorder {
-    margin: -10px 60px 0 0;
-    padding-top: 30px;
-    padding-bottom: 20px;
-    border-right: 2px solid #b21f2d;
-    height: 100%;
+  margin: -10px 60px 0 0;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  border-right: 2px solid #b21f2d;
+  height: 100%;
 }
 
+.check-hide {
+  visibility: hidden;
+}
 
+.card-orders {
+  text-align: center;
+  margin: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid lightgrey;
+  background-color: lavender;
+  width: 250px;
+  word-wrap: break-word;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: inline-table;
+  -ms-flex-flow: wrap;
+      flex-flow: wrap;
+  -ms-flex-line-pack: justify;
+      align-content: space-between;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.card-orders .img-thumbnail {
+  border: none !important;
+}
+
+.card-orders:hover {
+  border: 1px solid #2eaaf7;
+  background-color: lightskyblue;
+  -webkit-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22) !important;
+          box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22) !important;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.check-orders {
+  border: 1px solid #2eaaf7;
+  background-color: lightskyblue;
+}
+
+.rgs-body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: wrap;
+      flex-flow: wrap;
+}
+
+.orders {
+  max-width: 90vw;
+  text-align: center;
+}
+
+.form-body-order {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.remains-tr:hover {
+  cursor: pointer;
+  background-color: lightskyblue !important;
+}
+
+.remains-tr:focus {
+  background-color: black !important;
+}
+
+i.orderPlus:hover {
+  display: inline-block;
+}
+
+.order-bottom {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+}
+
+.s500 {
+  font-size: large;
+}
+
+.orderPlus:hover, .orderMinus:hover {
+  cursor: pointer;
+  color: red;
+}
+
+.orderPlus:active, .orderMinus:active {
+  color: #830404;
+  font-size: medium;
+}
+
+.td-red {
+  background-color: coral !important;
+}
+
+td i {
+  font-size: 2rem;
+}
+
+td input {
+  text-align: center;
+}
+/*# sourceMappingURL=app.css.map */

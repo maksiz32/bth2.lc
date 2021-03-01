@@ -96,6 +96,9 @@ Route::get('/byfirm', 'OrderController@byFirm');
 Route::get('/bydate', 'OrderController@byDate');
 Route::get('/bytech', 'OrderController@byTech');
 Route::match(["post", "get"],'/order/bf/{what}', 'OrderController@getByFirm');
+Route::get('/suborder/{ip}/{dateO}', 'OrderController@linkSubmit');
+Route::get('/admin/suborder', 'OrderController@linkSubmitAdmin');
+Route::match(["post", "put"], '/order/submit', 'OrderController@submitOrder');
 //Route::get('/order/send', 'OrderController@sendmail');
 
 Route::resource('/firms', 'FirmController', ['except' => ['update', 'edit', 'show']]);
@@ -108,8 +111,11 @@ Route::get('/firms/no-all', 'FirmController@noall');
 Route::resource('/tech', 'TechController', ['except' => ['update', 'edit', 'show']]);
 Route::get('/tech/{id}/edit', 'TechController@create');
 Route::match(["post", "put"], '/tech', 'TechController@store');
-Route::get('/category', 'TechController@viewCategory');
-Route::get('/category/{id?}', 'TechController@makeCategory');
+Route::get('/category/{id?}', 'TechController@viewCategory');
+Route::match(["post", "put", "get"], '/cat/{id?}', 'TechController@makeCategory');
+Route::get('/rem', 'TechController@viewRemains');
+Route::get('/rem-edit/{id}', 'TechController@editRemain');
+Route::match(["post", "put"], '/rem-save', 'TechController@saveRemain');
 
 Route::get('/links', 'LinkController@links');
 Route::get('/new_link', 'LinkController@new_link');

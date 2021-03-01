@@ -15,6 +15,23 @@
             </div>
         </div>
     </div>
+    <div class="row justify-content-md-center">
+        <div class="col-md-12 card text-white bg-secondary m-3 text-center" id="adminka">
+            <div class="card-body">
+                <h5 class="card-title">Картриджи и остатки</h5>
+                <p class="card-text">Раздел виден и доступен только тем, чья группа AD наследуется от Regional Admins.</p>
+                <p>
+                    <a href="/rem" class="btn btn-light stretched-link">Bвод/редактирование остатков расходников</a>
+                </p>
+                <p>
+                    <a href="/category" class="btn btn-light stretched-link">Создать Категорию Оргтехники</a>
+                </p>
+                <p>
+                    <a href="/admin/suborder" class="btn btn-light stretched-link">Просмотр всех заказов</a>
+                </p>
+            </div>
+        </div>
+    </div>
     @endif
     @if(RGSPortal::isAdmin(getenv('REMOTE_USER')))
     <div class="row justify-content-md-center">

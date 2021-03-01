@@ -1,8 +1,7 @@
-@extends('layouts.app')
-@section('title', 'Вся техника')
-@section('content')
+<?php $__env->startSection('title', 'Вся техника'); ?>
+<?php $__env->startSection('content'); ?>
 <article class="container main_page">
-    @if (RGSPortal::isAdmin(getenv('REMOTE_USER')))
+    <?php if(RGSPortal::isAdmin(getenv('REMOTE_USER'))): ?>
     <div class="row alert alert-danger" role="alert">
         <div class="col-12 text-center">
             <a href="/tech/create" class="btn btn-primary">
@@ -10,7 +9,7 @@
             </a>
         </div>
     </div>
-    @endif
+    <?php endif; ?>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -22,34 +21,39 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($teches as $tech)
+            <?php $__currentLoopData = $teches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tech): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
                 <td>
-                    <img src="{{ asset('img/tech/'.$tech->photo) }}" class="img-thumbnail h110" />
+                    <img src="<?php echo e(asset('img/tech/'.$tech->photo)); ?>" class="img-thumbnail h110" />
                 </td>
                 <td>
-                    {{ $tech->tech }}
+                    <?php echo e($tech->tech); ?>
+
                 </td>
                 <td>
-                    {!! $tech->model !!}
+                    <?php echo $tech->model; ?>
+
                 </td>
                 <td>
-                    {{ $tech->category }}
+                    <?php echo e($tech->category); ?>
+
                 </td>
                 <td>
-                <a href="{{ action('TechController@create', ['id' => $tech->id]) }}" class="btn btn-primary btn-block">
+                <a href="<?php echo e(action('TechController@create', ['id' => $tech->id])); ?>" class="btn btn-primary btn-block">
                     Изменить
                 </a>
-                <a href="{{ action('TechController@destroy', ['id' => $tech->id]) }}" 
+                <a href="<?php echo e(action('TechController@destroy', ['id' => $tech->id])); ?>" 
                    OnClick="return confirm('Подтвердите удаление элемента')" 
                    class="btn btn-danger btn-block">
                     Удалить
                 </a>
                 </td>
             </tr>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>
     </table>
 </article>
-@endsection
+<?php $__env->stopSection(); ?>
 
+
+<?php echo $__env->make('layouts.app', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

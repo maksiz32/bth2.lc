@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Order;
 use App\Tech;
 use App\Firm;
+use App\Remain;
 use App\Http\Requests\OrderRequest;
 use Mail;
 use Adldap\Laravel\Facades\Adldap;
@@ -12,6 +13,11 @@ use App\Facade\BryanskPortal;
 
 class OrderController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('isADAdmin')->except(['index', 'store', 'linkSubmit']);
+    }
+    
     public function index(Request $request) {
         $ip = $request->ip();
         $long_ip = ip2long($ip);
@@ -19,55 +25,52 @@ class OrderController extends Controller
         $firm = Firm::where('ipStart', '<=', $long_ip)->where('ipEnd', '>=', $long_ip)->first();
         return view('orders.main', ['ip' => $ip, 'firm' => $firm, 
             'userRealName' => $userRealName,
-            'prints' => Tech::where('category',1)->orderBy('id', 'DESC')->get(), 
-            'copyrs' => Tech::where('category',2)->orderBy('id', 'DESC')->get(), 
-            'mfus' => Tech::where('category',3)->orderBy('id', 'DESC')->get(), 
-            'picsP' => Tech::where('category',1)->orderBy('id', 'DESC')->take(4)->get(), 
-            'picsC' => Tech::where('category',2)->orderBy('id', 'DESC')->take(4)->get(), 
-            'picsM' => Tech::where('category',3)->orderBy('id', 'DESC')->take(4)->get()]);
+            'technics' => Tech::allTechnics(),
+            'categories' => Tech::allCategories()]);
     }
     
     public function store(Request $request) {
-        $order = $request->all();
-        $firm = $request->firm;
-        $other = $order['others'];
-        $userRealName = $order['userRealName'];
-        if (isset($order['model'])) {
-        for($i=0; $i < count($order['model']); $i++) {
-                if(!$i) {
-                    $other = $order['others'];
-                } else {
-                    $other = null;
-                }
-            $data1[] = [
-                'tech' => $order['tech'][$i],
-                'model' => $order['model'][$i],
-                'count_m' => $order['count_m'][$i],
-                'firm' => $firm,
-                'real_ip' => ip2long($order['real_ip']),
-                'created' => $order['created'],
-                'others' => $other,
-            ];
-        }
-        $order1 = Order::insert($data1);
-        $this->sendmail($data1, $userRealName);
-            return view("orders.success", ['order' => $data1])->with("success", "Ваш заказ отправлен");
-        } else if ($order['others'] != null) {
-            $data1[] = [
-                'firm' => $firm,
-                'real_ip' => ip2long($order['real_ip']),
-                'created' => $order['created'],
-                'others' => $other,
-            ];
-        $order1 = Order::insert($data1);
-        $this->sendmail($data1, $userRealName);
-            return view("orders.success", ['order' => $data1])->with("success", "Ваш заказ отправлен");
+        if ($result = Order::orderAction($request)) {
+            $link = url(action('OrderController@linkSubmit', ['ip' => $result['ip'], 'dateO' => $result['date']]));
+            $this->sendmail($result['data'], $result['userRealName'], $link);
+            return view("orders.success", ['order' => $result['data']])->with("success", "Ваш заказ отправлен");
         }
             return redirect(action("OrderController@index"))->with("danger", 
                     "Нельзя отправить пустой заказ. Повторите заказ еще раз");
     }
     
-    protected function sendmail($order, $userRealName) {
+    public function linkSubmit($ip, $dateO) {
+            $res = Order::getSubOrderFromLink($ip, $dateO);
+        return view('orders.submitorder', ['orders' => $res, 'nobutton' => false]);
+    }
+    
+    public function linkSubmitAdmin() {
+        $res = Order::getAllSubOrderFromLink();
+        return view('orders.submitorder', ['orders' => $res, 'nobutton' => true]);
+    }
+    
+    public function submitOrder(Request $request) {
+        $confirmed = 1;
+        //В orders.db подтвердить confirmed и изменить count_м.
+        for ($i=0; $i<count($request->ordId); $i++) {
+            $data = Order::where('id', $request->ordId[$i])->first();
+            if ($data) {
+                $data->confirmed = $confirmed;
+                $data->count_m = $request->count[$i];
+                $data->save();
+            }
+        //В remains отминусовать count
+            $data2 = Remain::where('id', $request->remainId[$i])->first();
+            if ($data2) {
+                $data2->count = $data2->count - $request->count[$i];
+                $data2->save();
+            }
+        }
+        return redirect(action('OrderController@linkSubmitAdmin'))->with("susses", 
+            "Данные были изменены");
+    }
+
+    protected function sendmail($order, $userRealName, $link) {
         $firm = $order[0]['firm'];
         /*
         //Здесь отправка html
@@ -93,13 +96,14 @@ class OrderController extends Controller
         //Отправляю просто текст
         $text = $title."\r\n"."\r\n"."\r\n".
                 'Заказ картриджей от '.$firm.' с адреса '.long2ip($order[0]['real_ip']).':'."\r\n"."\r\n".
+                'Для учета остатков обязательно подтвердить отгрузку: '.$link."\r\n"."\r\n".
                 'Отправлено от '.$userRealName.
                 $mes."\r\n"."\r\n"."\r\n".
                 'Дополнительно:'.
                 $mes2;
         Mail::raw($text, function($formail) use($title){
             $formail->from('report@bryansk.rgs.ru', "Заказ картриджей");
-            $formail->to(['maksim_manzulin@bryansk.rgs.ru','vladislav_spinskiy@bryansk.rgs.ru']);
+            $formail->to(['maksim_manzulin@bryansk.rgs.ru']);
             $formail->subject($title);
         });
         return true;

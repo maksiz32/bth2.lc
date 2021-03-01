@@ -2,9 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
 use App\Tech;
 use App\Categories;
 use App\Http\Requests\TechRequest;
+use App\Remain;
 
 class TechController extends Controller
 {
@@ -15,7 +17,7 @@ class TechController extends Controller
     
     public function index()
     {
-        return view('tech.index', ['teches' => Tech::orderBy('category')->get()]);
+        return view('tech.index', ['teches' => Tech::allTechWithCategory()]);
     }
     
     public function create(Tech $id) {
@@ -44,48 +46,73 @@ class TechController extends Controller
     }
     
     public function store(TechRequest $request) {
-    if ($request->has("id")) {
-        $tech = Tech::where('id', $request->id)->first();
-        $ltech = $this->do_translit($request->tech);
-        $photo = str_ireplace(" ", "_", $ltech) . '.' . $request->file('photo1')->getClientOriginalExtension();
-        $path = $request->file('photo1')->storeAs('img/tech', $photo, 'my_files');
-        $request->request->add(['photo' => $photo]);
-      $tech->fill($request->all())->save();
-      $s = " исправлена";
-      return redirect()->action("TechController@create", ['id' => $request->id])
-              ->with("success", "Запись о " . $tech->name . $s);
-    } else {
-            $ltech = $this->do_translit($request->tech);
-            $photo = str_ireplace(" ", "_", $ltech) . '.' . $request->file('photo1')->getClientOriginalExtension();
+        if ($request->has("id")) {
+            $tech = Tech::where('id', $request->id)->first();
+            if ($request->has("photo1")){
+                $photo = uniqid() . '.' . $request->file('photo1')->getClientOriginalExtension();
+                $path = $request->file('photo1')->storeAs('img/tech', $photo, 'my_files');
+                $request->request->add(['photo' => $photo]);
+            }
+            $tech->fill($request->all())->save();
+            $s = " исправлена";
+            
+            return redirect()->action("TechController@index")
+                  ->with("success", "Запись о " . $tech->name . $s);
+        } else {
+            $photo = uniqid() . '.' . $request->file('photo1')->getClientOriginalExtension();
             $path = $request->file('photo1')->storeAs('img/tech', $photo, 'my_files');
             $request->request->add(['photo' => $photo]);
-      $tech = Tech::create($request->all());
-      $s = " создана";
-    return redirect()->action("TechController@index")
-            ->with("success", "Запись о " . $tech->name . $s);
+            $tech = Tech::create($request->all());
+            $s = " создана";
+            
+            return redirect()->action("TechController@index")
+                ->with("success", "Запись о " . $tech->name . $s);
+        }
     }
-  }
-  /*
-    public function show($id)
-    {
-        return view('firms.all', ['firms' => Firm::findOrFail($id)]);
-    }
-    */
+    
     public function destroy($id)
     {
         Tech::destroy($id);
         return view('tech.all', ['techs' => Tech::all()])->with('success', 'Запись удалена');
     }
-
-    public function viewCategory() {
-        return view ('tech.category', ['categories' => Categories::all()]);
+    
+    public function viewRemains() {
+        return view('tech.remains', ['teches' => Tech::getTechsAndRemains()]);
+    }
+    
+    public function editRemain($id) {
+        $id = (int) $id;
+        return view('tech.add-remain', ['rem' => Remain::editRemain($id)[0]]);
+    }
+    
+    public function saveRemain(TechRequest $request) {
+        if(!is_null($request->rem_id)) {
+            $rem = Remain::editRem($request);
+        } else {
+            $rem = Remain::newRem($request);
+        }
+        return redirect()->action('TechController@viewRemains')->with('success', $rem);
     }
 
-    public function makeCategory($id=null) {
+    public function viewCategory(Request $request, $id = null) {
         if (is_null($id)) {
-
+            return view ('tech.category', ['categories' => Categories::all(), 'cat' => $request]);
         } else {
-
+            return view ('tech.category', ['categories' => Categories::all(), 'cat' => Categories::find($id)]);
         }
+    }
+
+    public function makeCategory(CategoryRequest $request) {
+        if (isset($request->id)) {
+            $category = Categories::find($request->id);
+            $category->category = $request->category;
+            $text = 'изменена.';
+        } else {
+            $category = new Categories;
+            $category->category = $request->category;
+            $text = 'создана.';
+        }
+            $category->save();
+        return redirect()->action('TechController@viewCategory')->with('success', 'Запись ' . $text);
     }
 }
