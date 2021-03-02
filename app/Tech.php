@@ -25,4 +25,8 @@ class Tech extends Model
     public static function getTechsAndRemains() {
         return DB::select('SELECT teches.id as id, teches.photo, teches.tech, teches.model, teches.category_id, remains.count, categories.category FROM teches LEFT JOIN remains ON teches.id=remains.tech_id LEFT JOIN categories ON teches.category_id=categories.id ORDER BY teches.category_id');
     }
+    
+    public static function destroy($ids) {
+        parent::destroy($ids);
+    }
 }

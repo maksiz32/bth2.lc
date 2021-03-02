@@ -73,7 +73,7 @@ class TechController extends Controller
     public function destroy($id)
     {
         Tech::destroy($id);
-        return view('tech.all', ['techs' => Tech::all()])->with('success', 'Запись удалена');
+        return redirect()->action('TechController@index')->with('success', 'Запись удалена');
     }
     
     public function viewRemains() {

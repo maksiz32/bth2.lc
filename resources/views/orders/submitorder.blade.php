@@ -104,12 +104,14 @@
                     <input type="hidden" value="{{$order->id}}" name="remainId[]">
                     <input type="hidden" value="{{$order->tech_id}}" name="techId[]">
                     <input type="text" value="{{$order->count_m}}" id="inpNum{{$order->id}}" name="count[]">
+            @if (!$nobutton)
                     <div>
                         <i class="bi bi-dash-square s500 orderMinus" 
                         onclick="doMinus({{$order->id}})"></i>
                         <i class="bi bi-plus-square orderPlus s500" 
                         onclick="doPlus({{$order->id}})"></i>
                     </div>
+            @endif
                 </td>
                 <td @if($order->count <= 5) {{_('class=td-red')}}@endif>
                     <span id="remain{{$order->id}}">{{ $order->count }}</span>

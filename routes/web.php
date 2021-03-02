@@ -110,6 +110,7 @@ Route::get('/firms/no-all', 'FirmController@noall');
 //Контроллер для операций с техникой и заказами расходников
 Route::resource('/tech', 'TechController', ['except' => ['update', 'edit', 'show']]);
 Route::get('/tech/{id}/edit', 'TechController@create');
+Route::get('/tech/{id}', 'TechController@destroy');
 Route::match(["post", "put"], '/tech', 'TechController@store');
 Route::get('/category/{id?}', 'TechController@viewCategory');
 Route::match(["post", "put", "get"], '/cat/{id?}', 'TechController@makeCategory');
