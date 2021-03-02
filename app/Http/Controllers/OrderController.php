@@ -50,24 +50,13 @@ class OrderController extends Controller
     }
     
     public function submitOrder(Request $request) {
-        $confirmed = 1;
-        //В orders.db подтвердить confirmed и изменить count_м.
-        for ($i=0; $i<count($request->ordId); $i++) {
-            $data = Order::where('id', $request->ordId[$i])->first();
-            if ($data) {
-                $data->confirmed = $confirmed;
-                $data->count_m = $request->count[$i];
-                $data->save();
-            }
-        //В remains отминусовать count
-            $data2 = Remain::where('id', $request->remainId[$i])->first();
-            if ($data2) {
-                $data2->count = $data2->count - $request->count[$i];
-                $data2->save();
-            }
+        if (Order::submitOrderAdmin($request)) {
+            return redirect(action('OrderController@linkSubmitAdmin'))->with("susses", 
+                "Данные были изменены");
+        } else {
+            return redirect(action('OrderController@linkSubmitAdmin'))->with("danger", 
+                "Ошибка при изменении данных");
         }
-        return redirect(action('OrderController@linkSubmitAdmin'))->with("susses", 
-            "Данные были изменены");
     }
 
     protected function sendmail($order, $userRealName, $link) {
@@ -80,8 +69,7 @@ class OrderController extends Controller
                 $message->subject('Заказ картриджей от '.$firm);
             });
             return $ok = 'OK';
-         * 
-         */
+        */
         $mes = "\r\n"."\r\n";
         $mes2 = "\r\n"."\r\n";
         if(isset($order[0]['model'])) {
@@ -93,6 +81,7 @@ class OrderController extends Controller
             $mes2 .= $order[0]['others']."\r\n"."\r\n";
         }
         $title = 'Заказ картриджей от '.$firm;
+        $titleTarget = "Заказ картриджей для {$firm}";
         //Отправляю просто текст
         $text = $title."\r\n"."\r\n"."\r\n".
                 'Заказ картриджей от '.$firm.' с адреса '.long2ip($order[0]['real_ip']).':'."\r\n"."\r\n".
@@ -101,15 +90,24 @@ class OrderController extends Controller
                 $mes."\r\n"."\r\n"."\r\n".
                 'Дополнительно:'.
                 $mes2;
-        Mail::raw($text, function($formail) use($title){
+        $textTarget = "{$userRealName}, ваш заказ картриджей для {$firm} отправлен."."\r\n"."\r\n".
+                "Ожидайте подтверждения отправки."."\r\n"."\r\n";
+        $userForAddress = BryanskPortal::getEmail(getenv('REMOTE_USER'));
+        $this->mailTo($text, $title, "it@bryansk.rgs.ru");
+        $this->mailTo($textTarget, $titleTarget, $userForAddress);
+        return true;
+    }
+    
+    protected function mailTo($text, $title, $userForAddress) {
+        Mail::raw($text, function($formail) use($title, $userForAddress){
             $formail->from('report@bryansk.rgs.ru', "Заказ картриджей");
-            $formail->to(['maksim_manzulin@bryansk.rgs.ru']);
+            $formail->to([$userForAddress]);
             $formail->subject($title);
         });
         return true;
     }
-    
-    public function viewRep() {
+
+        public function viewRep() {
         return view('orders.allrep');
     }
     

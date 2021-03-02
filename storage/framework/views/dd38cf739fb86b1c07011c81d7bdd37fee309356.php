@@ -114,12 +114,14 @@
                     <input type="hidden" value="<?php echo e($order->id); ?>" name="remainId[]">
                     <input type="hidden" value="<?php echo e($order->tech_id); ?>" name="techId[]">
                     <input type="text" value="<?php echo e($order->count_m); ?>" id="inpNum<?php echo e($order->id); ?>" name="count[]">
+            <?php if(!$nobutton): ?>
                     <div>
                         <i class="bi bi-dash-square s500 orderMinus" 
                         onclick="doMinus(<?php echo e($order->id); ?>)"></i>
                         <i class="bi bi-plus-square orderPlus s500" 
                         onclick="doPlus(<?php echo e($order->id); ?>)"></i>
                     </div>
+            <?php endif; ?>
                 </td>
                 <td <?php if($order->count <= 5): ?> <?php echo e(_('class=td-red')); ?><?php endif; ?>>
                     <span id="remain<?php echo e($order->id); ?>"><?php echo e($order->count); ?></span>

@@ -257,7 +257,7 @@ figcaption.fileW {
     border-radius: 10px;
     border: 1px solid lightgrey;
     background-color: lavender;
-    width: 250px;
+    max-width: 200px;
     word-wrap: break-word;
     box-sizing: border-box;
     display: inline-table;

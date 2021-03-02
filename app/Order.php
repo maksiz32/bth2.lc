@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Remain;
 
 class Order extends Model
 {
@@ -74,5 +75,25 @@ class Order extends Model
                 join('remains', 'teches.id', '=', 'remains.tech_id')->
                 orderBy('order_id', 'desc')->paginate(30);
         return $res;
+    }
+    
+    public static function submitOrderAdmin($request) {
+        $confirmed = 1;
+        //В orders.db подтвердить confirmed и изменить count_м.
+        for ($i=0; $i<count($request->ordId); $i++) {
+            $data = Order::where('id', $request->ordId[$i])->first();
+            if ($data) {
+                $data->confirmed = $confirmed;
+                $data->count_m = $request->count[$i];
+                $data->save();
+            }
+        //В remains отминусовать count
+            $data2 = Remain::where('id', $request->remainId[$i])->first();
+            if ($data2) {
+                $data2->count = $data2->count - $request->count[$i];
+                $data2->save();
+            }
+        }
+        return true;
     }
 }
