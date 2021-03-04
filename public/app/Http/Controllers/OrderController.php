@@ -53,7 +53,6 @@ class OrderController extends Controller
         if ($res = Order::submitOrderAdmin($request)) {
             $userForAddress = BryanskPortal::getEmail($res['ad_name']);
             $this->mailTo($res['text'], $res['title'], $userForAddress);
-            session_reset();
             return redirect(action('OrderController@linkSubmitAdmin'))->with("susses", 
                 "Данные были изменены");
         } else {

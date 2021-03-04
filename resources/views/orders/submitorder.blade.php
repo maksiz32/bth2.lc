@@ -100,6 +100,9 @@
                     {{$order->model}}
                 </td>
                 <td>
+                    <input type="hidden" value="{{$order->created}}" name="dateO">
+                    <input type="hidden" value="{{$order->real_ip}}" name="ip">
+                    <input type="hidden" value="{{$order->ad_name}}" name="adName">
                     <input type="hidden" value="{{$order->order_id}}" name="ordId[]">
                     <input type="hidden" value="{{$order->id}}" name="remainId[]">
                     <input type="hidden" value="{{$order->tech_id}}" name="techId[]">

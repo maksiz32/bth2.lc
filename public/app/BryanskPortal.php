@@ -10,9 +10,9 @@ use Adldap\Laravel\Facades\Adldap;
 class BryanskPortal {
     
     public function __construct() {
-//        if (session()->has('aduser')) {
-//            return true;
-//        } else {
+        if (session()->has('aduser')) {
+            return true;
+        } else {
             $userName = getenv('REMOTE_USER');
             $userRealName = Adldap::search()->users()->where('samaccountname', '=', $userName)->first();
             $userNameTMP = explode(" ", $userRealName['cn'][0]);
@@ -22,7 +22,7 @@ class BryanskPortal {
             $mail = $userRealName['mail'][0];
             session(['aduser' => $userName, 'adphoto' => $userPhotoTh,
                 'roles' => $adGroups, 'mail' => $mail]);
-//        }
+        }
     }
     
     public function hasRole($user, $role) {
@@ -118,10 +118,10 @@ class BryanskPortal {
     }
 
     public static function getEmail($user) {
-//        if (session()->has('mail')) {
-//            $mail = session()->get('mail');
-//            return $mail;
-//        } else {
+        if (session()->has('mail')) {
+            $mail = session()->get('mail');
+            return $mail;
+        } else {
             //$userName = getenv('REMOTE_USER');
             $userRealName = Adldap::search()->users()->where('samaccountname', '=', $user)->first();
             $userNameTMP = explode(" ", $userRealName['cn'][0]);
@@ -132,7 +132,7 @@ class BryanskPortal {
             session(['aduser' => $userName, 'adphoto' => $userPhotoTh,
                 'roles' => $adGroups, 'mail' => $mail]);
             return $mail;
-//        }
+        }
     }
     
     public static function canBookingCar($ip){

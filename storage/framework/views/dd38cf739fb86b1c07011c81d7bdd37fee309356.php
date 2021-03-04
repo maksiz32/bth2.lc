@@ -110,6 +110,9 @@
 
                 </td>
                 <td>
+                    <input type="hidden" value="<?php echo e($order->created); ?>" name="dateO">
+                    <input type="hidden" value="<?php echo e($order->real_ip); ?>" name="ip">
+                    <input type="hidden" value="<?php echo e($order->ad_name); ?>" name="adName">
                     <input type="hidden" value="<?php echo e($order->order_id); ?>" name="ordId[]">
                     <input type="hidden" value="<?php echo e($order->id); ?>" name="remainId[]">
                     <input type="hidden" value="<?php echo e($order->tech_id); ?>" name="techId[]">

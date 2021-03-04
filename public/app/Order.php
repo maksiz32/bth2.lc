@@ -71,7 +71,7 @@ class Order extends Model
     
     public static function getAllSubOrderFromLink() {
         $res = Order::select(
-                'remains.id as id', 'orders.id as order_id', 'orders.firm', 'orders.created',  
+                'remains.id as id', 'orders.id as order_id', 'orders.firm', 
                 'orders.user_name','orders.ad_name', 'orders.real_ip', 'orders.tech', 'orders.confirmed', 
                 'orders.model', 'orders.count_m', 'remains.tech_id', 
                 'remains.count')->
@@ -101,7 +101,7 @@ class Order extends Model
         $text = Order::makeMailBody($request);
         $res['title'] = $text['title'];
         $res['text'] = $text['text'];
-        $res['ad_name'] = $request->adName;
+        $res['ad_name'] = $data->ad_name;
         return $res;
     }
     
