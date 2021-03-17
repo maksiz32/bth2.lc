@@ -25,27 +25,32 @@
         <div class="col-12">
             Категории:
         </div>
+        <?php if(isset($categories)): ?>
         <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="col-12">
                 <?php echo e($category->id . ". ". $category->category); ?>
 
+                <a href="/category/<?php echo e($category->id); ?>" class="btn btn-info">Редактировать</a>
+                <a href="" class="btn btn-danger">Удалить</a>
             </div>
+                <br>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endif; ?>
         <form action="<?php echo e(action('TechController@makeCategory')); ?>" method="post">
             <div class="form-row">
-    
-        <?php if(isset($cat) && $cat->id): ?>
-            <?php echo e(method_field('PUT')); ?>
+                <?php if(isset($cat) && $cat->id): ?>
+                    <?php echo e(method_field('PUT')); ?>
 
-        <input type="hidden" name="id" value="<?php echo e(old('id', $cat->id)); ?>">
-        <?php endif; ?>
-        <?php echo e(csrf_field()); ?>
+                <input type="hidden" name="id" value="<?php echo e(old('id', $cat->id)); ?>">
+                <?php endif; ?>
+                <?php echo e(csrf_field()); ?>
 
-            <div class="form-group col-10">
-                <label for="number" class="control-label small">Номер машины (6 символов, без пробелов):</label>
-                <input type="text" class="form-control" name="number" value="" required>
+                    <div class="form-group col-10">
+                        <label for="category" class="control-label small">Название категории:</label>
+                        <input type="text" class="form-control" name="category" value="<?php echo e(old('category', $cat->category)); ?>" required>
+                    </div>
             </div>
-            </div>
+            <button type="submit">Ввод</button>
     </form>
 </div>
 <?php $__env->stopSection(); ?>

@@ -99,7 +99,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-row form-body-order">
+            <div class="form-row form-body-order cards-row">
             @foreach($technics as $tech)
                 @if($tech->category_id == $cat->id)
                 <div class="card-orders" id="div{{$tech->id}}">

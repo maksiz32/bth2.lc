@@ -103,7 +103,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-row form-body-order">
+            <div class="form-row form-body-order cards-row">
             <?php $__currentLoopData = $technics; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tech): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php if($tech->category_id == $cat->id): ?>
                 <div class="card-orders" id="div<?php echo e($tech->id); ?>">

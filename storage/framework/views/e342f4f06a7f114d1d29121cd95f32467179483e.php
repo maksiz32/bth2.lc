@@ -16,6 +16,7 @@ function rndBg() {
                 Создать альбом
             </a>
         </div>
+    </div>
 <?php if (count($blocks) >= 1) { ?>
         <div class="col-lg-8 text-center">
         <!-- Button trigger modal -->

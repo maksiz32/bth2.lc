@@ -250,6 +250,10 @@ figcaption.fileW {
 .check-hide {
     visibility: hidden;
 }
+.cards-row {
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
 .card-orders {
     text-align: center;
     margin: 10px;
@@ -257,13 +261,14 @@ figcaption.fileW {
     border-radius: 10px;
     border: 1px solid lightgrey;
     background-color: lavender;
-    max-width: 200px;
+    max-width: 220px;
     word-wrap: break-word;
     box-sizing: border-box;
     display: inline-table;
     flex-flow: wrap;
     align-content: space-between;
     justify-content: center;
+    margin: 20px;
 }
 .card-orders .img-thumbnail {
     border: none !important;
@@ -326,4 +331,37 @@ td i {
 }
 td input {
     text-align: center;
+}
+.tdtoclick {
+    position: relative;
+}
+.my-info {
+    display: none;
+    top: 0px;
+    width: 114px;
+    height: 60px;
+    right: -50px;
+    position: absolute;
+    z-index: -1;
+}
+.tdtoclick:hover > .my-info {
+    display: block;
+    border-radius: 5px;
+    top: 0px;
+    width: 114px;
+    height: 60px;
+    right: -80px;
+    position: absolute;
+    z-index: 2;
+    background-color: blue;
+    color: #fff;
+}
+.tdtoclick:hover > .my-info::before {
+    content: "";
+    display: block;
+    border: 10px solid transparent;
+    border-right: 10px solid blue;
+    position: absolute;
+    top: 20px;
+    left: -26px;
 }
