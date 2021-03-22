@@ -60,6 +60,9 @@
     @if (RGSPortal::isAdmin(getenv('REMOTE_USER')))
     {{ $orders->links() }}
     @endif
+    <div id="pers">
+        
+    </div>
     <form action="{{action('OrderController@submitOrder')}}" method="post">
         Подтверждение отправки:
             {{ method_field('PUT') }}
@@ -70,7 +73,7 @@
                 <th>IP-адрес</th>
                 <th>Дата</th>
                 <th>Подразделение</th>
-                <th>Имя пользователя</th>
+                <th>Имя пользователя (можно изменить, нажми)</th>
                 <th>Техника</th>
                 <th>Расходка</th>
                 <th>Заказано</th>
@@ -90,8 +93,10 @@
                 <td>
                     {{$order->firm}}
                 </td>
-                <td>
+                <td style="cursor: pointer" class="tdtoclick" data-id="{{$order->order_id}}">
+<!--                    onclick="window.location.reload()"-->
                     {{$order->user_name}}
+                    <div class="my-info">Нажми чтобы изменить</div>
                 </td>
                 <td>
                     {!! $order->tech !!}
@@ -137,10 +142,26 @@
                     Отправляю
                 </td>
             </tr>
+            <tr class="bg-success">
+                <td class="success" colspan="9" style="text-align: center" id="first">
+                    <a class="btn btn-light btn-lg">Добавить картриджи</a>
+                </td>
+            </tr>
         </tbody>
         @endif
     </table>
     </form>
+    <script>
+        $("td[class=tdtoclick").click(function(e) {
+            var id = e.target.getAttribute('data-id');
+            console.log(id);
+            var request = new XMLHttpRequest();
+            request.open('GET', 'http://10.32.1.23/ad/persons', false);
+            request.send();
+            var arrResp = JSON.parse(request.responseText);
+            
+        });
+    </script>
     @if (RGSPortal::isAdmin(getenv('REMOTE_USER')))
     {{ $orders->links() }}
     @endif

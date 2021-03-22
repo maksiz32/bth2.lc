@@ -1,36 +1,6 @@
 <?php $__env->startSection('title', 'Вся техника'); ?>
 <?php $__env->startSection('content'); ?>
 <article class="container main_page">
-    <?php if($message = Session::get('success')): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <?php echo e(Session::get('success')); ?>
-
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    <?php endif; ?>
-    <?php if($message = Session::get('danger')): ?>
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <?php echo e($message); ?>
-
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    <?php endif; ?>
-    <?php if(count($errors)>0): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <ul>
-                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <li><?php echo e($error); ?></li>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </ul>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    <?php endif; ?>
     <?php if(RGSPortal::isAdmin(getenv('REMOTE_USER'))): ?>
     <div class="row alert alert-danger" role="alert">
         <div class="col-12 text-center">
