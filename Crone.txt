@@ -1,1 +1,2 @@
 php c:\OpenServer\domains\bth2.lc\artisan schedule:run
+
