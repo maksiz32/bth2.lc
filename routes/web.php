@@ -161,6 +161,7 @@ Route::get('/arm', function () {
 //Контроллер для работы с записями ActiveDirectory
 //Route::get('/adldapt', 'AdWorkController@adldapt');
 Route::get('/ad', 'AdWorkController@adldapView');
+Route::get('/ad/persons', 'AdWorkController@listOuPersons');
 Route::match(["get", "post", "put"], '/adlist', 'AdWorkController@adViewEdit');
 Route::match(["get", "post", "put"], '/admod', 'AdWorkController@adModify');
 

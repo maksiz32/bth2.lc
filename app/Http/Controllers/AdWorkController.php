@@ -12,14 +12,10 @@ class AdWorkController extends Controller
     //Переменная префикса пути
     private $mainOuPath = "rgs.ru/Structure/ПАО Росгосстрах/Филиал ПАО Росгосстрах в Брянской области";
 
-
-    /*
     public function __construct()
     {
-        $this->middleware('isADAdmin')->except('search');
+        $this->middleware('isADAdmin')->only('listOuPersons');
     }
-     * Пока не нужен
-     */
     
 function removeDirectory($dir) {
     //Очищает все внутри переданной директории (папки и файлы), а затем и саму 
@@ -626,4 +622,38 @@ unlink($zip_name);
             'ouDepartments' => $ouDepartments, 'ouPersons' => $ouPersons]);
             
 }
+
+    public function listOuPersons() {
+        $ldapuser="RGSMAIN\\MVManzulin";
+        $ldappass=encrypt("123456Qw");
+        $base_dn="OU=Филиал ПАО Росгосстрах в Брянской области,OU=ПАО Росгосстрах,OU=Structure,DC=rgs,DC=ru";
+        $filter2 = '(&(objectcategory=Person)(!(userAccountControl=514))'
+                . '(!(userAccountControl=66050))(!(title=Страховой агент))'
+                . '(!(title=Специалист по исследованию рынка))'
+                . '(!(title=Страховой консультант))'
+                . '(!(title=Уборщик))'
+                . '(!(title=Уборщица))'
+                . '(!(title=Охранник))'
+                . '(!(title=Дворник))'
+                . '(!(title=Водитель))'
+                . '(!(title=Генеральный директор))'
+                . '(!(givenname=Scan*)))';
+    $justthese2 = array("sn", "givenName", "title", "sAMAccountName", "department");
+    $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter2, $justthese2);
+    foreach($ouPersons as $pers) {
+        isset($pers["sn"][0])?$sn=$pers["sn"][0]:$sn='';
+        isset($pers["givenname"][0])?$givenname=$pers["givenname"][0]:$givenname='';
+        isset($pers["title"][0])?$title=$pers["title"][0]:$title='';
+        isset($pers["samaccountname"][0])?$samaccountname=$pers["samaccountname"][0]:$samaccountname='';
+        isset($pers["department"][0])?$department=$pers["department"][0]:$department='';
+        $arrPers[] = [
+            'name' => $sn." ".$givenname,
+            'work' => $title,
+            'user_name' => $samaccountname,
+            'dep' => $department
+        ];
+    }
+    $r = json_encode($arrPers, JSON_UNESCAPED_UNICODE);
+    return $r;
+    }
 }

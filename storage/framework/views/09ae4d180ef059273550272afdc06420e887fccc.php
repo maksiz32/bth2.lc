@@ -60,7 +60,7 @@
 
 	</div>	
 	<div class="video">
-		<video src="<?php echo e(asset('/video/'.$video->file)); ?>" width="320" height="240" controls preload></video>
+		<video poster="<?php echo e(asset('/img/video_placeholders/'.$video->poster)); ?>" src="<?php echo e(asset('/video/'.$video->file)); ?>" width="320" height="240" controls preload></video>
 	</div>
             <p><a href="<?php echo e(action('AlbumController@inputVideo', ['id' => $video->id])); ?>" class="btn btn-primary btn-block">
                         Редактировать
@@ -85,7 +85,7 @@
 
 	</div>	
 	<div class="video">
-		<video src="<?php echo e(asset('/video/'.$video->file)); ?>" width="320" height="240" controls preload></video>
+		<video poster="<?php echo e(asset('/img/video_placeholders/'.$video->poster)); ?>" src="<?php echo e(asset('/video/'.$video->file)); ?>" width="320" height="240" controls preload></video>
 	</div>
         </div>
     </div>

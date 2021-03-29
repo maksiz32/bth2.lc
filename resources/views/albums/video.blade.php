@@ -57,7 +57,7 @@
 		{!! $video->name !!}
 	</div>	
 	<div class="video">
-		<video src="{{ asset('/video/'.$video->file) }}" width="320" height="240" controls preload></video>
+		<video poster="{{asset('/img/video_placeholders/'.$video->poster)}}" src="{{ asset('/video/'.$video->file) }}" width="320" height="240" controls preload></video>
 	</div>
             <p><a href="{{ action('AlbumController@inputVideo', ['id' => $video->id]) }}" class="btn btn-primary btn-block">
                         Редактировать
@@ -80,7 +80,7 @@
 		{!! $video->name !!}
 	</div>	
 	<div class="video">
-		<video src="{{ asset('/video/'.$video->file) }}" width="320" height="240" controls preload></video>
+		<video poster="{{asset('/img/video_placeholders/'.$video->poster)}}" src="{{ asset('/video/'.$video->file) }}" width="320" height="240" controls preload></video>
 	</div>
         </div>
     </div>
