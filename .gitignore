@@ -1,4 +1,5 @@
 storage/framework/view/*
+storage/framework/sessions/*
 storage/framework/cache/*
 /public/video/*
 /public/wikidoc/*.zip
