@@ -102,7 +102,7 @@ class Order extends Model
         $res['title'] = $text['title'];
         $res['text'] = $text['text'];
         $res['ad_name'] = $request->adName;
-        echo $res;
+        return $res;
     }
     
     public static function makeMailBody($request) {
