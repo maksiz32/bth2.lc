@@ -284,10 +284,11 @@ public function adViewEdit(Request $request) {
                     . '(!(givenname=Scan*)))';
             $justthese2 = array("canonicalName", "name", "postalCode", "postalAddress", 
                 "telephoneNumber", "company", "givenName", 
-                "middlename", "sn", "title", "department","ipphone", "oubkid", "sAMAccountName");
-            
+                "middlename", "sn", "title", "department","ipphone", "oubkid", 
+                "thumbnailPhoto", "sAMAccountName");
             $ouRegions = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter, $justthese);
             $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter2, $justthese2);
+            dd($ouPersons);
         if (!is_array($ouPersons)) {
             return view ('adirectory.errad')->with('message', $ouPersons);
         }
