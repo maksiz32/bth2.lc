@@ -246,6 +246,7 @@ public function adldapView() {
         }
         unset($a1);
         $ldapuser = "RGSMAIN\\".$userName;  // Login Domain admin
+
         return view ('adirectory.formad', ['ldapuser' => $ldapuser, 
             'company' => $company, 'companyDN' => $companyDN]);
 }
@@ -255,66 +256,73 @@ public function adViewEdit(Request $request) {
         if (!$input) {
             return redirect()->action('AdWorkController@adldapView');
         }
-    $base_dn = $input['companyDN'];
-    $company = $input['company'];
-    $ldapuser = $input['ldapuser'];
-    (array_key_exists('pass', $input))?$ldappass = encrypt($input['pass']):$ldappass = ''; //Password
-            $filter = '(&(objectcategory=organizationalUnit)'
-                    . '(&(!(ou='.$company.'))'
-                    . '(!(name=Groups))'
-                    . '(!(name=Inactive))'
-                    . '(!(name=Servers))'
-                    . '(!(name=Service Accounts))'
-                    . '(!(name=Scan))'
-                    . '(!(name=Технэкспро))))';
-            $justthese = array("ou", "canonicalName", "distinguishedname", "name", "displayname", "objectclass",
-                "postalCode", "postalAddress", "telephonenumber", "company", "givenName", "userAccountControl");
-            $filter2 = '(&(objectcategory=Person)(!(userAccountControl=514))'
-                    . '(!(userAccountControl=66050))(!(title=Страховой агент))'
-                    . '(!(title=Специалист по исследованию рынка))'
-                    . '(!(title=Страховой консультант))'
-                    . '(!(title=Tech))'
-                    . '(!(title=Разнорабочий))'
-                    . '(!(title=Уборщик))'
-                    . '(!(title=Уборщица))'
-                    . '(!(title=Охранник))'
-                    . '(!(title=Дворник))'
-                    . '(!(title=Водитель))'
-                    . '(!(title=Генеральный директор))'
-                    . '(!(givenname=Scan*)))';
-            $justthese2 = array("canonicalName", "name", "postalCode", "postalAddress", 
-                "telephoneNumber", "company", "givenName", 
-                "middlename", "sn", "title", "department","ipphone", "oubkid", 
-                "thumbnailPhoto", "sAMAccountName");
-            $ouRegions = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter, $justthese);
-            $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter2, $justthese2);
-            dd($ouPersons);
-        if (!is_array($ouPersons)) {
-            return view ('adirectory.errad')->with('message', $ouPersons);
-        }
-        if (!is_array($ouRegions)) {
-            return view ('adirectory.errad')->with('message', $ouRegions);
-        }
-            $ouRegionsTop = array_filter($ouRegions, function ($var) {
-                if (!preg_match('/^(na_)/', $var['name'][0])) {
-                $canName = explode("/", $var['canonicalname'][0]);
-                if (count($canName) == 5) {
-                    return $var;
-                }
-                }
-            });
-            $ouDepartments = array_filter($ouRegions, function ($var) {
-                if (!preg_match('/^(na_)/', $var['name'][0])) {
-                $canName = explode("/", $var['canonicalname'][0]);
-                if (count($canName) > 5) {
-                    return $var;
-                }
-                }
-            });
-        return view ('adirectory.whochange', ['ouRegionsTop' => $ouRegionsTop, 
+        $base_dn = $input['companyDN'];
+        $company = $input['company'];
+        $ldapuser = $input['ldapuser'];
+        (array_key_exists('pass', $input))?$ldappass = encrypt($input['pass']):$ldappass = ''; //Password
+                $filter = '(&(objectcategory=organizationalUnit)'
+                        . '(&(!(ou='.$company.'))'
+                        . '(!(name=Groups))'
+                        . '(!(name=Inactive))'
+                        . '(!(name=Servers))'
+                        . '(!(name=Service Accounts))'
+                        . '(!(name=Scan))'
+                        . '(!(name=Технэкспро))))';
+                $justthese = array("ou", "canonicalName", "distinguishedname", "name", "displayname", "objectclass",
+                    "postalCode", "postalAddress", "telephonenumber", "company", "givenName", "userAccountControl");
+                $filter2 = '(&(objectcategory=Person)(!(userAccountControl=514))'
+                        . '(!(userAccountControl=66050))(!(title=Страховой агент))'
+                        . '(!(title=Специалист по исследованию рынка))'
+                        . '(!(title=Страховой консультант))'
+                        . '(!(title=Tech))'
+                        . '(!(title=Разнорабочий))'
+                        . '(!(title=Уборщик))'
+                        . '(!(title=Уборщица))'
+                        . '(!(title=Охранник))'
+                        . '(!(title=Дворник))'
+                        . '(!(title=Водитель))'
+                        . '(!(title=Генеральный директор))'
+                        . '(!(givenname=Scan*)))';
+                $justthese2 = array("canonicalName", "name", "postalCode", "postalAddress", 
+                    "telephoneNumber", "company", "givenName", 
+                    "middlename", "sn", "title", "department","ipphone", "oubkid", 
+                    "thumbnailPhoto", "sAMAccountName");
+                $ouRegions = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter, $justthese);
+                $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter2, $justthese2);
+            if (!is_array($ouPersons)) {
+                return view ('adirectory.errad')->with('message', $ouPersons);
+            }
+            if (!is_array($ouRegions)) {
+                return view ('adirectory.errad')->with('message', $ouRegions);
+            }
+                $ouRegionsTop = array_filter($ouRegions, function ($var) {
+                    if (!preg_match('/^(na_)/', $var['name'][0])) {
+                    $canName = explode("/", $var['canonicalname'][0]);
+                    if (count($canName) == 5) {
+                        return $var;
+                    }
+                    }
+                });
+                $ouDepartments = array_filter($ouRegions, function ($var) {
+                    if (!preg_match('/^(na_)/', $var['name'][0])) {
+                    $canName = explode("/", $var['canonicalname'][0]);
+                    if (count($canName) > 5) {
+                        return $var;
+                    }
+                    }
+                });
+        // dd($input);
+        if ($input['redirect-link'] == 'html') {
+            return view ('adirectory.whochange', ['ouRegionsTop' => $ouRegionsTop, 
             'ldapuser' => $ldapuser, 'ldappass' => encrypt($ldappass), 
             'ouDepartments' => $ouDepartments, 'ouPersons' => $ouPersons,
             'companyDN' => $base_dn]);
+        } else {
+            return view ('adirectory.listphoto', ['ouRegionsTop' => $ouRegionsTop, 
+            'ldapuser' => $ldapuser, 'ldappass' => encrypt($ldappass), 
+            'ouDepartments' => $ouDepartments, 'ouPersons' => $ouPersons,
+            'companyDN' => $base_dn]);
+        }
 }
     
 public function adModify(Request $request) {

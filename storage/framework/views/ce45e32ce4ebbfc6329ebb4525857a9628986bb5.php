@@ -1,7 +1,6 @@
-@extends('layouts.nolinks')
-@section('title', "Редактирование записей в AD")
-@section('content')
-@push("head")
+<?php $__env->startSection('title', "Редактирование записей в AD"); ?>
+<?php $__env->startSection('content'); ?>
+<?php $__env->startPush("head"); ?>
 <script type="text/javascript">
     function addName(adid, adkey, dn, name) {
         adid = document.getElementById(adid);
@@ -11,21 +10,24 @@
         dn.setAttribute('name', adkey+'[dn]');
   }
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
 <article class="container main_page">
-    @if ($message = Session::get('message'))
+    <?php if($message = Session::get('message')): ?>
     <div class="alert alert-danger" role="alert">
-        {{ Session::get('message') }}
-    </div>
-    @endif
+        <?php echo e(Session::get('message')); ?>
 
-    <form action="{{ action('AdWorkController@adModify') }}" method="post">
+    </div>
+    <?php endif; ?>
+
+    <form action="<?php echo e(action('AdWorkController@adModify')); ?>" method="post">
         <div class="row">
-            {{ method_field('PUT') }}
-            {{ csrf_field() }}
-            <input type="hidden" name="ldapuser" value="{{ old('ldapuser', $ldapuser) }}">
-            <input type="hidden" name="ldappass" value="{{ old('ldappass', $ldappass) }}">
-            <input type="hidden" name="companyDN" value="{{ old('companyDN', $companyDN) }}">
+            <?php echo e(method_field('PUT')); ?>
+
+            <?php echo e(csrf_field()); ?>
+
+            <input type="hidden" name="ldapuser" value="<?php echo e(old('ldapuser', $ldapuser)); ?>">
+            <input type="hidden" name="ldappass" value="<?php echo e(old('ldappass', $ldappass)); ?>">
+            <input type="hidden" name="companyDN" value="<?php echo e(old('companyDN', $companyDN)); ?>">
         </div>
         <div class="accordion" id="accordionOne">
             
@@ -44,35 +46,36 @@
 <?php
 $i = 1;
 ?>
-@foreach($ouRegionsTop as $reg)    
-        <p class="regAD{{ $i }}">
-            <input type="hidden" id="dn1-{{ $i }}" value="{{ $reg['dn'] }}">
+<?php $__currentLoopData = $ouRegionsTop; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reg): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>    
+        <p class="regAD<?php echo e($i); ?>">
+            <input type="hidden" id="dn1-<?php echo e($i); ?>" value="<?php echo e($reg['dn']); ?>">
                 <table class="table table-striped table-bordered">
                     <tr>
-                        <td colspan="3">{{ $reg['name'][0] }}</td>
+                        <td colspan="3"><?php echo e($reg['name'][0]); ?></td>
                     </tr>
                     <tr>
                         <td width="220">
                             <input type="text" class="form-control-sm col-12" 
-                                id="pA1{{$i}}" value="{{ (isset($reg['postaladdress'][0]))?$reg['postaladdress'][0]:'' }}" readonly 
-                                onclick='addName("pA1{{$i}}", "main1[varAD{{$i}}]", "dn1-{{$i}}", "postaladdress");'
+                                id="pA1<?php echo e($i); ?>" value="<?php echo e((isset($reg['postaladdress'][0]))?$reg['postaladdress'][0]:''); ?>" readonly 
+                                onclick='addName("pA1<?php echo e($i); ?>", "main1[varAD<?php echo e($i); ?>]", "dn1-<?php echo e($i); ?>", "postaladdress");'
                                 placeholder="Адрес">
                         </td>
                         <td width="80">
                             <input type="text" class="form-control-sm col-12" 
-                                id="pC1{{$i}}" value="{{ (isset($reg['postalcode'][0]))?$reg['postalcode'][0]:'' }}" readonly 
-                                onclick='addName("pC1{{$i}}", "main1[varAD{{$i}}]", "dn1-{{$i}}", "postalcode");'
+                                id="pC1<?php echo e($i); ?>" value="<?php echo e((isset($reg['postalcode'][0]))?$reg['postalcode'][0]:''); ?>" readonly 
+                                onclick='addName("pC1<?php echo e($i); ?>", "main1[varAD<?php echo e($i); ?>]", "dn1-<?php echo e($i); ?>", "postalcode");'
                                 placeholder="Индекс">
                         </td>
                         <td width="220">
-                            @if($reg['name'][0] != "Дирекция")
+                            <?php if($reg['name'][0] != "Дирекция"): ?>
                             <input type="text" class="form-control-sm col-12" 
-                                id="tN1{{$i}}" value="{{ (isset($reg['telephonenumber'][0]))?$reg['telephonenumber'][0]:'' }}" readonly 
-                                onclick='addName("tN1{{$i}}", "main1[varAD{{$i}}]", "dn1-{{$i}}", "telephonenumber");'
+                                id="tN1<?php echo e($i); ?>" value="<?php echo e((isset($reg['telephonenumber'][0]))?$reg['telephonenumber'][0]:''); ?>" readonly 
+                                onclick='addName("tN1<?php echo e($i); ?>", "main1[varAD<?php echo e($i); ?>]", "dn1-<?php echo e($i); ?>", "telephonenumber");'
                                 placeholder="Городские телефоны">
-                            @else
-                            {{ (isset($reg['telephonenumber'][0]))?$reg['telephonenumber'][0]:'' }}
-                            @endif
+                            <?php else: ?>
+                            <?php echo e((isset($reg['telephonenumber'][0]))?$reg['telephonenumber'][0]:''); ?>
+
+                            <?php endif; ?>
                         </td>
                     </tr>
                 </table>
@@ -80,7 +83,7 @@ $i = 1;
 <?php
     $i++;
 ?>
-@endforeach
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
             </div>
@@ -101,32 +104,35 @@ $i = 1;
 <?php
 $i = 1;
 ?>
-@foreach($ouDepartments as $dep)
+<?php $__currentLoopData = $ouDepartments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dep): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
     <?php
         $canName = explode("/", $dep['canonicalname'][0]);
     ?>
-        <p class="depAD{{ $i }}">
-            <input type="hidden" id="dn2-{{ $i }}" value="{{ $dep['dn'] }}">
+        <p class="depAD<?php echo e($i); ?>">
+            <input type="hidden" id="dn2-<?php echo e($i); ?>" value="<?php echo e($dep['dn']); ?>">
                 <table class="table table-striped table-bordered">
                     <tr>
-                        <td colspan="3"><strong>{{ $dep['name'][0] }}</strong> - {{ $canName[4] }}</td>
+                        <td colspan="3"><strong><?php echo e($dep['name'][0]); ?></strong> - <?php echo e($canName[4]); ?></td>
                     </tr>
                     <tr>
                         <td width="220">
-                            {!! (isset($dep['postaladdress'][0]))?$dep['postaladdress'][0]:'<em>Адрес</em>' !!}
+                            <?php echo (isset($dep['postaladdress'][0]))?$dep['postaladdress'][0]:'<em>Адрес</em>'; ?>
+
                         </td>
                         <td width="80">
-                            {!! (isset($dep['postalcode'][0]))?$dep['postalcode'][0]:'<em>Индекс</em>' !!}
+                            <?php echo (isset($dep['postalcode'][0]))?$dep['postalcode'][0]:'<em>Индекс</em>'; ?>
+
                         </td>
                         <td width="220">
-                            @if($canName[4] == 'Дирекция')
+                            <?php if($canName[4] == 'Дирекция'): ?>
                             <input type="text" class="form-control-sm col-12" 
-                                id="tN2{{$i}}" value="{{ (isset($dep['telephonenumber'][0]))?$dep['telephonenumber'][0]:'' }}" readonly 
-                                onclick='addName("tN2{{$i}}", "main2[depAD{{$i}}]", "dn2-{{$i}}", "telephonenumber");'
+                                id="tN2<?php echo e($i); ?>" value="<?php echo e((isset($dep['telephonenumber'][0]))?$dep['telephonenumber'][0]:''); ?>" readonly 
+                                onclick='addName("tN2<?php echo e($i); ?>", "main2[depAD<?php echo e($i); ?>]", "dn2-<?php echo e($i); ?>", "telephonenumber");'
                                 placeholder="Городские телефоны">
-                            @else
-                            {!! (isset($dep['telephonenumber'][0]))?$dep['telephonenumber'][0]:'<em>Телефоны</em>' !!}
-                            @endif
+                            <?php else: ?>
+                            <?php echo (isset($dep['telephonenumber'][0]))?$dep['telephonenumber'][0]:'<em>Телефоны</em>'; ?>
+
+                            <?php endif; ?>
                         </td>
                     </tr>
                 </table>
@@ -134,7 +140,7 @@ $i = 1;
 <?php
     $i++;
 ?>
-@endforeach			
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>			
                     </div>
                 </div>
             </div>
@@ -155,32 +161,37 @@ $i = 1;
 <?php
 $i = 1;
 ?>
-@foreach($ouPersons as $pers)
-        <p class="perAD{{ $i }}">
-            <input type="hidden" id="dn3-{{ $i }}" value="{{ $pers['dn'] }}">
+<?php $__currentLoopData = $ouPersons; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pers): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <p class="perAD<?php echo e($i); ?>">
+            <input type="hidden" id="dn3-<?php echo e($i); ?>" value="<?php echo e($pers['dn']); ?>">
                 <table class="table table-striped table-bordered">
                     <tr>
                         <td colspan="4">
                             <strong>
-                                {{ $pers['name'][0] }}
+                                <?php echo e($pers['name'][0]); ?>
+
                             </strong>
-                            {{ (isset($pers['title'][0]))?" - ".$pers['title'][0]:'' }}
+                            <?php echo e((isset($pers['title'][0]))?" - ".$pers['title'][0]:''); ?>
+
                         </td>
                     </tr>
                     <tr>
                         <td width="200">
-                            {!! (isset($pers['postaladdress'][0]))?$pers['postaladdress'][0]:'<em>Адрес</em>' !!}
+                            <?php echo (isset($pers['postaladdress'][0]))?$pers['postaladdress'][0]:'<em>Адрес</em>'; ?>
+
                         </td>
                         <td width="80">
-                            {!! (isset($pers['postalcode'][0]))?$pers['postalcode'][0]:'<em>Индекс</em>' !!}
+                            <?php echo (isset($pers['postalcode'][0]))?$pers['postalcode'][0]:'<em>Индекс</em>'; ?>
+
                         </td>
                         <td width="180">
-                            {!! (isset($pers['telephonenumber'][0]))?$pers['telephonenumber'][0]:'<em>Городской телефон</em>' !!}
+                            <?php echo (isset($pers['telephonenumber'][0]))?$pers['telephonenumber'][0]:'<em>Городской телефон</em>'; ?>
+
                         </td>
                         <td width="120">
                             <input type="text" class="form-control-sm col-12" 
-                                id="iN3{{$i}}" value="{{ (isset($pers['ipphone'][0]))?$pers['ipphone'][0]:'' }}" readonly 
-                                onclick='addName("iN3{{$i}}", "main3[perAD{{$i}}]", "dn3-{{$i}}", "ipphone");'
+                                id="iN3<?php echo e($i); ?>" value="<?php echo e((isset($pers['ipphone'][0]))?$pers['ipphone'][0]:''); ?>" readonly 
+                                onclick='addName("iN3<?php echo e($i); ?>", "main3[perAD<?php echo e($i); ?>]", "dn3-<?php echo e($i); ?>", "ipphone");'
                                 placeholder="Внутренний телефон">
                         </td>
                     </tr>
@@ -189,7 +200,7 @@ $i = 1;
 <?php
     $i++;
 ?>
-@endforeach			
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>			
                     </div>
                 </div>
             </div>
@@ -205,4 +216,6 @@ $i = 1;
         </div>
     </form>
 </article>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.nolinks', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

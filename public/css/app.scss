@@ -364,3 +364,32 @@ td input {
     top: 20px;
     left: -26px;
 }
+.form-check-redirect {
+    display: flex;
+    min-width: 100%;
+}
+.form-check__input {
+    display: none; 
+}
+.form-check__lable {
+    color: #000;
+    background-color: lightgray;
+    box-sizing: border-box;
+    min-width: 50%;
+    text-align: center;
+    padding: 10px;
+}
+.form-check__checked {
+    color: #fff;
+    background-color: cornflowerblue;
+    padding: 10px;
+}
+.form-check__lable:hover {
+    color: #fff;
+    background-color: #03458b;
+}
+.form-check__lable:active {
+    color: #fff;
+    font-weight: 800;
+    background-color: #02264d;
+}

@@ -30,6 +30,15 @@
             </div>
         </div>
         <br/>
+        <h2 class="form-check-title">Выберите дальнейшее действие</h2>
+        <section class="form-check-redirect">
+        <input class="form-check__input" type="radio" name="redirect-link" id="redirect-link1" 
+        value="html" checked>
+        <label class="form-check__lable" id="redirect-label1" for="redirect-link1">Внести изменения в УЗ/Получить html-подписи</label>
+        <input class="form-check__input" type="radio" name="redirect-link" id="redirect-link2" 
+        value="photo">
+        <label class="form-check__lable" id="redirect-label2" for="redirect-link2">Изменить фотографии в УЗ</label>
+        </section>
         <div class="row">
             <div class="col-12 text-center">
                 <button type="submit" class="btn btn-primary">Войти</button>
@@ -38,6 +47,30 @@
         </div>
     </form>
 </article>
+<script>
+    function isCheck() {
+        if ($('#redirect-link1').prop('checked')) {
+            $('#redirect-label1').addClass('form-check__checked');
+            $('#redirect-label2').removeClass('form-check__checked');
+        } else {
+            $('#redirect-label2').addClass('form-check__checked');
+            $('#redirect-label1').removeClass('form-check__checked');
+        }
+    }
+$(document).ready(function() {
+    $('#redirect-label1').addClass('form-check__checked');
+        $('#redirect-label1').on('click', function(){
+            $('#redirect-link1').prop('checked', true);
+            $('#redirect-link2').prop('checked', false);
+            isCheck();
+        });
+        $('#redirect-label2').on('click', function(){
+            $('#redirect-link2').prop('checked', true);
+            $('#redirect-link1').prop('checked', false);
+            isCheck();
+        });
+    });
+</script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.nolinks', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
