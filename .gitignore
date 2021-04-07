@@ -1,4 +1,4 @@
-storage/framework/view/*
+storage/framework/views/*
 storage/framework/sessions/*
 storage/framework/cache/*
 /public/video/*
