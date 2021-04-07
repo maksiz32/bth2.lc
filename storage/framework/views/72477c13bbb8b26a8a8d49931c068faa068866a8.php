@@ -33,7 +33,7 @@
         <div class="row">
             <div class="col-12 text-center">
                 <button type="submit" class="btn btn-primary">Войти</button>
-                <a href="#" class="btn btn-secondary" onClick="window.location.href=window.location.href">Отмена</a>
+                <button type="reset" class="btn btn-secondary">Отмена</a>
             </div>
         </div>
     </form>
