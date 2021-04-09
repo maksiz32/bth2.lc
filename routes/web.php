@@ -162,7 +162,8 @@ Route::get('/arm', function () {
 //Route::get('/adldapt', 'AdWorkController@adldapt');
 Route::get('/ad', 'AdWorkController@adldapView');
 Route::get('/ad/persons', 'AdWorkController@listOuPersons');
-Route::match(["get", "post", "put"], '/adchoys', 'AdWorkController@adViewEdit');
+Route::match(["get", "post", "put"], '/adlist', 'AdWorkController@adViewEdit');
+Route::match(["get", "post", "put"], '/adphotochng', 'AdWorkController@adViewEditPhoto');
 Route::match(["get", "post", "put"], '/admod', 'AdWorkController@adModify');
 
 //Контроллер для работы с изображениями (resize)
