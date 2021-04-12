@@ -25,7 +25,7 @@
     <?php echo $__env->yieldPushContent("head"); ?>
     <title><?php echo $__env->yieldContent("title"); ?></title>
 </head>
-<body>
+<body id="body">
 <div class="rgs-body">
     <div class="top-page col">
     <header>

@@ -26,7 +26,7 @@
 
     <title><?php echo $__env->yieldContent("title"); ?></title>
 </head>
-<body>
+<body id="body">
     <header>
 <nav class="navbar navbar-default navbar-mobile bootsnav fixed-top navbar-expand-lg navbar-light bg-light top-red">
     <a class="navbar-brand text-danger" href="/">

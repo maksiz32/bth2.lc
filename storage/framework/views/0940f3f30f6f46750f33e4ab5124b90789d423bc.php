@@ -20,9 +20,9 @@
             <input type="hidden" name="ldappass" value="<?php echo e(old('ldappass', $ldappass)); ?>">
             <input type="hidden" name="companyDN" value="<?php echo e(old('companyDN', $companyDN)); ?>">
         </div>
-        <section class="personline" id="line-<?php echo e($loop->index); ?>" app-data="<?php echo e($loop->index); ?>">
+        <section class="personline" app-data="<?php echo e($loop->index); ?>" id="line-<?php echo e($loop->index); ?>">
             <input type="hidden" id="dn-<?php echo e($loop->index); ?>" value="<?php echo e($pers['dn']); ?>">
-                <div class="personline__img personline__rounded" app-data="<?php echo e($loop->index); ?>">
+                <div class="personline__img personline__rounded" id="img-<?php echo e($loop->index); ?>" app-data="<?php echo e($loop->index); ?>">
                     <?php if(isset($pers['thumbnailphoto'][0])): ?>
                     <img width="60" height="60" class="personline__rounded" app-data="<?php echo e($loop->index); ?>" 
                         src="<?php echo e('data:image/jpeg;base64,'.base64_encode($pers['thumbnailphoto'][0])); ?>">
@@ -32,7 +32,7 @@
                     </span>
                     <?php endif; ?>
                 </div>
-                <p class="personline-txt" app-data="<?php echo e($loop->index); ?>">
+                <p class="personline-txt" app-data="<?php echo e($loop->index); ?>" id="txt-<?php echo e($loop->index); ?>">
                     <strong app-data="<?php echo e($loop->index); ?>">
                         <?php echo e($pers['name'][0]); ?>
 
@@ -53,19 +53,21 @@
     <script>
         function modifyInner(id) {
             const elFormM = document.getElementById('f-'+id);
-            const elDescr = document.getElementById('line-'+id);
+            // const elDescr = document.getElementById('line-'+id);
             const elDiv = document.getElementById('h-'+id);
             const elInput = document.getElementById('i-'+id);
             const blur = document.getElementById('blur');
-            const body = document.getElementsByTagName('body');
+            const body = document.getElementById('body');
             console.log(body);
+            body.classList.add('overflow');
+            document.getElementById('formR').setAttribute('style', 'z-index:-4');
             blur.classList.remove('hide');
             blur.classList.add('blur');
             elDiv.classList.remove('hide');
             elFormM.classList.remove('hide');
-            elDescr.setAttribute('style', 'z-index: 2');
+            document.getElementById('line-'+id).setAttribute('style', 'z-index: 2');
             elDiv.setAttribute('style', 'z-index: 2');
-            elInput.setAttribute('name', 'i-')
+            elInput.setAttribute('name', 'i-'.id);
         }
         document.getElementById('formR').onclick = function(ev) {
             let target = ev.target;
@@ -79,12 +81,6 @@
         //     console.log(p);
         // })
     </script>
-        <div class="row">
-            <div class="col-12 text-center">
-                <button type="submit" class="btn btn-primary">Сохранить</button>
-                <button type="reset" class="btn btn-secondary">Отмена</button>
-            </div>
-        </div>
 </article>
 <?php $__env->stopSection(); ?>
 
