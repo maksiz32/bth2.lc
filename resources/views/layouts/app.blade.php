@@ -25,7 +25,7 @@
     @stack("head")
     <title>@yield("title")</title>
 </head>
-<body id="body">
+<body>
 <div class="rgs-body">
     <div class="top-page col">
     <header>

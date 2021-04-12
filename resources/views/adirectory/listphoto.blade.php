@@ -52,13 +52,16 @@
             // const elDescr = document.getElementById('line-'+id);
             const elDiv = document.getElementById('h-'+id);
             const elInput = document.getElementById('i-'+id);
+            const elDn = document.getElementById('dn-'+id);
             const blur = document.getElementById('blur');
-            const body = document.getElementById('body');
-            console.log(body);
+            const body = document.getElementsByTagName('body')[0];
+            const addr = window.location.origin+'//'; //+'/admod'
+            let top = Math.abs(body.getBoundingClientRect().top);
+
             body.classList.add('overflow');
-            document.getElementById('formR').setAttribute('style', 'z-index:-4');
             blur.classList.remove('hide');
             blur.classList.add('blur');
+            elDn.setAttribute('name', 'dn');
             elDiv.classList.remove('hide');
             elFormM.classList.remove('hide');
             document.getElementById('line-'+id).setAttribute('style', 'z-index: 2');
