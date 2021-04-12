@@ -2,11 +2,11 @@
 @section('title', "Редактирование записей в AD")
 @section('content')
 @push("head")
-<script type="text/javascript">
+<script>
     function addName(adid, adkey, dn, name) {
         adid = document.getElementById(adid);
         dn = document.getElementById(dn);
-	adid.removeAttribute('readonly');
+	    adid.removeAttribute('readonly');
         adid.setAttribute('name', adkey+'['+name+']');
         dn.setAttribute('name', adkey+'[dn]');
   }
