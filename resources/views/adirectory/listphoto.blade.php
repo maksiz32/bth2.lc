@@ -9,8 +9,7 @@
     </div>
     @endif
 <main id="formR">
-@foreach($ouPersons as $pers)
-    <form action="{{ action('AdWorkController@adModify') }}" method="post" id="f-{{$loop->index}}">
+    <form method="post" id="formF" enctype="multipart/form-data">
         <div class="row hide">
             {{ method_field('PUT') }}
             {{ csrf_field() }}
@@ -18,6 +17,7 @@
             <input type="hidden" name="ldappass" value="{{ old('ldappass', $ldappass) }}">
             <input type="hidden" name="companyDN" value="{{ old('companyDN', $companyDN) }}">
         </div>
+@foreach($ouPersons as $pers)
         <section class="personline" app-data="{{$loop->index}}" id="line-{{$loop->index}}">
             <input type="hidden" id="dn-{{$loop->index}}" value="{{ $pers['dn'] }}">
                 <div class="personline__img personline__rounded" id="img-{{$loop->index}}" app-data="{{$loop->index}}">
@@ -38,47 +38,17 @@
                 </p>
             <div class="hide personline-group" id="h-{{$loop->index}}">
                 <label for="i-{{$loop->index}}">Выберите фото на компьютере, чтобы изменить в Домене</label>
-                <input class="personline-group-file" type="file" 
+                <input class="personline-group-file" type="file" accept="image/*" 
                 id="i-{{$loop->index}}" placeholder="Выберите фото на компьютере, чтобы изменить в Домене">
-                <button class="personline-group-btn" type="submit">Поменять</button>
+                <button class="personline-group-btn" type="submit" onclick="sendPhoto({{$loop->index}})">
+                    Поменять
+                </button>
+                <span>Отмена</span>
             </div>
         </section>
-    </form>
 @endforeach
+    </form>
 </main>
-    <script>
-        function modifyInner(id) {
-            const elFormM = document.getElementById('f-'+id);
-            // const elDescr = document.getElementById('line-'+id);
-            const elDiv = document.getElementById('h-'+id);
-            const elInput = document.getElementById('i-'+id);
-            const elDn = document.getElementById('dn-'+id);
-            const blur = document.getElementById('blur');
-            const body = document.getElementsByTagName('body')[0];
-            const addr = window.location.origin+'//'; //+'/admod'
-            let top = Math.abs(body.getBoundingClientRect().top);
-
-            body.classList.add('overflow');
-            blur.classList.remove('hide');
-            blur.classList.add('blur');
-            elDn.setAttribute('name', 'dn');
-            elDiv.classList.remove('hide');
-            elFormM.classList.remove('hide');
-            document.getElementById('line-'+id).setAttribute('style', 'z-index: 2');
-            elDiv.setAttribute('style', 'z-index: 2');
-            elInput.setAttribute('name', 'i-'.id);
-        }
-        document.getElementById('formR').onclick = function(ev) {
-            let target = ev.target;
-            let targetId = target.getAttribute('app-data');
-            if (targetId != null) {
-                modifyInner(targetId);
-            }
-        }
-        // el.forEach(function(oneEl) {
-        //     let p = oneEl.addEventListener("click", function(){modifyInner(2)}, false);
-        //     console.log(p);
-        // })
-    </script>
+<script src="{{asset('/js/changephoto.js')}}"></script>
 </article>
 @endsection

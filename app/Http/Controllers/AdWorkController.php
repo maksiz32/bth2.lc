@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Adldap\Laravel\Facades\Adldap;
+use Illuminate\Support\Facades\Storage;
 use Cript;
 
 class AdWorkController extends Controller
@@ -347,14 +348,34 @@ public function adViewEdit(Request $request) {
             'ouDepartments' => $ouDepartments, 'ouPersons' => $ouPersons,
             'companyDN' => $base_dn]);
 }
+
+public function adPhoto(Request $request) {
+    $input = $request->all();
+    $name = uniqid();
+    $path = $request->pic->storeAs('tmp', $name, 'my_files');
+    dd($path);
+    $photo = file_get_contents($input['pic']);
+    // $ds=ldap_connect("brn-dc.rgs.ru");  // LDAP сервер
+    $base_dn = $input['companyDN'];
+    $ldapuser = $input['ldapuser'];
+    $ldappass = decrypt($input['ldappass']); //Password
+    $modification = [
+        'arr' => [
+            'dn' => $input['dn'],
+            'thumbnailPhoto' => $photo
+        ]
+    ];
+    // dd($modification);
+    $this->LDAPModify ($ldapuser, $ldappass, $modification);
+    Storage::disk("my_files")->delete("tmp/".$name);
+}
     
 public function adModify(Request $request) {
         $input = $request->all();
-        $ds=ldap_connect("brn-dc.rgs.ru");  // LDAP сервер
+        // $ds=ldap_connect("brn-dc.rgs.ru");  // LDAP сервер
         $base_dn = $input['companyDN'];
         $ldapuser = $input['ldapuser'];
         $ldappass = decrypt($input['ldappass']); //Password
-        
     if (isset($input['main1'])) {
         $arrInput = $input['main1'];
         foreach ($arrInput as &$arrInp) {
@@ -465,6 +486,7 @@ if (isset($input['main3'])) {
             }
         }
         $modification = $arrInput;
+        // dd($modification);
     $this->LDAPModify ($ldapuser, $ldappass, $modification);
 }
         

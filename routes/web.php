@@ -165,6 +165,7 @@ Route::get('/ad/persons', 'AdWorkController@listOuPersons');
 Route::match(["get", "post", "put"], '/adlist', 'AdWorkController@adViewEdit');
 Route::match(["get", "post", "put"], '/adphotochng', 'AdWorkController@adViewEditPhoto');
 Route::match(["get", "post", "put"], '/admod', 'AdWorkController@adModify');
+Route::match(["get", "post", "put"], '/adphoto', 'AdWorkController@adPhoto');
 
 //Контроллер для работы с изображениями (resize)
 Route::get('/image', 'ImageController@input');
