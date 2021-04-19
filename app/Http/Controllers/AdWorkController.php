@@ -12,135 +12,153 @@ class AdWorkController extends Controller
     //Задаю общие переменные
     //Переменная префикса пути
     private $mainOuPath = "rgs.ru/Structure/ПАО Росгосстрах/Филиал ПАО Росгосстрах в Брянской области";
+    
+    //Переменная Фильтра2 (персоналии)
+    private $filter2 = '(&(objectcategory=Person)(!(userAccountControl=514))'
+                    . '(!(userAccountControl=66050))(!(title=Страховой агент))'
+                    . '(!(title=Специалист по исследованию рынка))'
+                    . '(!(title=Страховой консультант))'
+                    . '(!(title=Tech))'
+                    . '(!(title=Разнорабочий))'
+                    . '(!(title=Уборщик))'
+                    . '(!(title=Уборщица))'
+                    . '(!(title=Охранник))'
+                    . '(!(title=Дворник))'
+                    . '(!(title=Водитель))'
+                    . '(!(title=Генеральный директор))'
+                    . '(!(givenname=Scan*)))';
+
+    //Папка для сохранения подписей в виде html-страниц
+    private $dir = "k:/Signatures/";
 
     public function __construct()
     {
         $this->middleware('isADAdmin')->only('listOuPersons');
     }
     
-function removeDirectory($dir) {
-    //Очищает все внутри переданной директории (папки и файлы), а затем и саму 
-    //директорию пересоздает
-        if ($objs = glob($dir."/*")) {
-            foreach($objs as $obj) {
-        is_dir($obj) ? removeDirectory($obj) : unlink($obj);
+    function removeDirectory($directory) {
+        //Очищает все внутри переданной директории (папки и файлы), а затем и саму 
+        //директорию пересоздает
+            if ($objs = glob($directory."/*")) {
+                foreach($objs as $obj) {
+            is_dir($obj) ? removeDirectory($obj) : unlink($obj);
+                }
+            }
+        @mkdir($directory);
+        rmdir($directory);
+    }    
+
+    function LDAPSearch($ldapuser, $ldappass, $base_dn, $filter, $justthese) {
+        $ldappass = decrypt($ldappass);
+        //Можно через главный контроллер Домена - rgs-rootdc-01.rgs.ru
+        $ds=ldap_connect("brn-dc.rgs.ru");  // LDAP сервер
+            if (!$ds) {
+                return view ('adirectory.errad')->with('message', 'Недоступен контроллер домена');
+            } else { //If the server is correct and avalaible
+                if (!@ldap_bind($ds, $ldapuser, $ldappass)) { //привязка LDAP with Password
+                    ldap_close($ds);
+                    return view ('adirectory.errad')->with('message', 'Некорректный пароль');
+                } else {
+            $ouRegions = ldap_search($ds, $base_dn, $filter, $justthese) or die ("Error in search query: ".ldap_error($ds));
+            $ouRegions = ldap_get_entries($ds, $ouRegions);
+                unset($ouRegions['count']);
+            ldap_close($ds);
+                return $ouRegions;
             }
         }
-    @mkdir($dir);
-    rmdir($dir);
-}    
+    }
 
-function LDAPSearch($ldapuser, $ldappass, $base_dn, $filter, $justthese) {
-    $ldappass = decrypt($ldappass);
-    //Можно через главный контроллер Домена - rgs-rootdc-01.rgs.ru
-    $ds=ldap_connect("brn-dc.rgs.ru");  // LDAP сервер
+    function LDAPModify ($ldapuser, $ldappass, $modification) {
+        $ldappass = decrypt($ldappass);
+        //Можно через главный контроллер Домена - rgs-rootdc-01.rgs.ru
+        $ds=ldap_connect("brn-dc.rgs.ru");  // LDAP сервер
         if (!$ds) {
             return view ('adirectory.errad')->with('message', 'Недоступен контроллер домена');
         } else { //If the server is correct and avalaible
-            if (!@ldap_bind($ds, $ldapuser, $ldappass)) { //привязка LDAP with Password
+            if (!@ldap_bind($ds, $ldapuser, $ldappass)) { //привязка LDAP with a Password
                 ldap_close($ds);
-                return view ('adirectory.errad')->with('message', 'Некорректный пароль');
+                    return false;
             } else {
-        $ouRegions = ldap_search($ds, $base_dn, $filter, $justthese) or die ("Error in search query: ".ldap_error($ds));
-        $ouRegions = ldap_get_entries($ds, $ouRegions);
-            unset($ouRegions['count']);
-        ldap_close($ds);
-            return $ouRegions;
-        }
-    }
-}
-
-function LDAPModify ($ldapuser, $ldappass, $modification) {
-    $ldappass = decrypt($ldappass);
-    //Можно через главный контроллер Домена - rgs-rootdc-01.rgs.ru
-    $ds=ldap_connect("brn-dc.rgs.ru");  // LDAP сервер
-    if (!$ds) {
-        return view ('adirectory.errad')->with('message', 'Недоступен контроллер домена');
-    } else { //If the server is correct and avalaible
-        if (!@ldap_bind($ds, $ldapuser, $ldappass)) { //привязка LDAP with a Password
-            ldap_close($ds);
-                return false;
-        } else {
-//Сохраняю данные 
-        foreach($modification as $arrModify1) {
-            if ($arrModify1) {
-                $myDN = $arrModify1['dn'];
-                unset($arrModify1['dn']);
-                    foreach ($arrModify1 as $key=>$value) {
-                        if (!is_array($value)) {
-                            $arrModify = array($key => $value);
-                            ldap_mod_replace($ds, $myDN, $arrModify);
-                        } else {
-                            $arrModify[$key] = array();
-                            @ldap_mod_del($ds, $myDN, $arrModify);
+    //Сохраняю данные 
+            foreach($modification as $arrModify1) {
+                if ($arrModify1) {
+                    $myDN = $arrModify1['dn'];
+                    unset($arrModify1['dn']);
+                        foreach ($arrModify1 as $key=>$value) {
+                            if (!is_array($value)) {
+                                $arrModify = array($key => $value);
+                                ldap_mod_replace($ds, $myDN, $arrModify);
+                            } else {
+                                $arrModify[$key] = array();
+                                @ldap_mod_del($ds, $myDN, $arrModify);
+                            }
                         }
-                    }
+                }
+            }
+            ldap_close($ds);
+            return true;
             }
         }
-        ldap_close($ds);
-        return true;
-        }
     }
-}
-function unique_multidim_array($array, $key) {
-    //Аналог функции array_unique() для многомерных массивов
-    $temp_array = array();
-    $i = 0;
-    $key_array = array();
-   
-    foreach($array as $val) {
-        if (!in_array($val[$key], $key_array)) {
-            $key_array[$i] = $val[$key];
-            $temp_array[$i] = $val;
+    function unique_multidim_array($array, $key) {
+        //Аналог функции array_unique() для многомерных массивов
+        $temp_array = array();
+        $i = 0;
+        $key_array = array();
+    
+        foreach($array as $val) {
+            if (!in_array($val[$key], $key_array)) {
+                $key_array[$i] = $val[$key];
+                $temp_array[$i] = $val;
+            }
+            $i++;
         }
-        $i++;
+        return $temp_array;
     }
-    return $temp_array;
-}
-function fillFealds ($ouRegions, $ouForChange) {
-    foreach ($ouForChange as $region) {
-        $canName = explode("/", $region['canonicalname'][0]);
-        $mainCount = count(explode("/", $this->mainOuPath));
-        $slaveCount = count($canName);
-        for ($i = $mainCount; $i < $slaveCount - 1; $i++) {
-            foreach ($ouRegions as $regMain) {
-                if ($regMain['name'][0] == $canName[$i]) {
-                    if(isset($regMain['postaladdress'])) {
-                        $rT['postaladdress'] = $regMain['postaladdress'][0];
-                    }
-                    if ($canName[$mainCount] != 'Дирекция') {
-                        if(isset($regMain['telephonenumber'])) {
-                            $rT['telephonenumber'] = $regMain['telephonenumber'][0];
+    function fillFealds ($ouRegions, $ouForChange) {
+        foreach ($ouForChange as $region) {
+            $canName = explode("/", $region['canonicalname'][0]);
+            $mainCount = count(explode("/", $this->mainOuPath));
+            $slaveCount = count($canName);
+            for ($i = $mainCount; $i < $slaveCount - 1; $i++) {
+                foreach ($ouRegions as $regMain) {
+                    if ($regMain['name'][0] == $canName[$i]) {
+                        if(isset($regMain['postaladdress'])) {
+                            $rT['postaladdress'] = $regMain['postaladdress'][0];
                         }
-                    } else if ($canName[$slaveCount - 2] != 'Дирекция') {
-                        foreach ($ouRegions as $reg2) {
-                            if ($reg2['name'][0] == $canName[$slaveCount - 2]) {
-                                if(isset($reg2['telephonenumber'])) {
-                                    $rT['telephonenumber'] = $reg2['telephonenumber'][0];
+                        if ($canName[$mainCount] != 'Дирекция') {
+                            if(isset($regMain['telephonenumber'])) {
+                                $rT['telephonenumber'] = $regMain['telephonenumber'][0];
+                            }
+                        } else if ($canName[$slaveCount - 2] != 'Дирекция') {
+                            foreach ($ouRegions as $reg2) {
+                                if ($reg2['name'][0] == $canName[$slaveCount - 2]) {
+                                    if(isset($reg2['telephonenumber'])) {
+                                        $rT['telephonenumber'] = $reg2['telephonenumber'][0];
+                                    }
                                 }
                             }
                         }
+                        if (isset($region['title']) && $region['title'][0] == 'Территориальный директор') {
+                            $rT['telephonenumber'] = '(4832) 67-11-70, 67-11-82';
+                        }
+                        if(isset($regMain['postalcode'])) {
+                            $rT['postalcode'] = $regMain['postalcode'][0];
+                        }
+                        if(isset($rT)) {
+                            $rT['dn'] = $region['dn'];
+                            $arrModifyP[] = $rT;
+                        }
+                        unset($rT);
                     }
-                    if (isset($region['title']) && $region['title'][0] == 'Территориальный директор') {
-                        $rT['telephonenumber'] = '(4832) 67-11-70, 67-11-82';
-                    }
-                    if(isset($regMain['postalcode'])) {
-                        $rT['postalcode'] = $regMain['postalcode'][0];
-                    }
-                    if(isset($rT)) {
-                        $rT['dn'] = $region['dn'];
-                        $arrModifyP[] = $rT;
-                    }
-                    unset($rT);
                 }
             }
         }
+        
+        //Удаляю повторяющиеся записи в массиве
+        $arrModifyP = $this->unique_multidim_array($arrModifyP,'dn');
+        return $arrModifyP;
     }
-    
-    //Удаляю повторяющиеся записи в массиве
-    $arrModifyP = $this->unique_multidim_array($arrModifyP,'dn');
-    return $arrModifyP;
-}
 
 //
 //    public function adldapt() {
@@ -246,10 +264,11 @@ public function adldapView() {
         $companyDN .= $a1[count($a1)-$i].$j;
         }
         unset($a1);
-        $ldapuser = "RGSMAIN\\".$userName;  // Login Domain admin
+        $ldapuser = "RGSMAIN\\".$userName;  // Login only Domain admin
         return view ('adirectory.formad', ['ldapuser' => $ldapuser, 
             'company' => $company, 'companyDN' => $companyDN]);
 }
+
 public function adViewEditPhoto(Request $request) {
     $input = $request->all();
         if (!$input) {
@@ -259,23 +278,10 @@ public function adViewEditPhoto(Request $request) {
     $company = $input['company'];
     $ldapuser = $input['ldapuser'];
     (array_key_exists('pass', $input))?$ldappass = encrypt($input['pass']):$ldappass = ''; //Password
-            $filter2 = '(&(objectcategory=Person)(!(userAccountControl=514))'
-                    . '(!(userAccountControl=66050))(!(title=Страховой агент))'
-                    . '(!(title=Специалист по исследованию рынка))'
-                    . '(!(title=Страховой консультант))'
-                    . '(!(title=Tech))'
-                    . '(!(title=Разнорабочий))'
-                    . '(!(title=Уборщик))'
-                    . '(!(title=Уборщица))'
-                    . '(!(title=Охранник))'
-                    . '(!(title=Дворник))'
-                    . '(!(title=Водитель))'
-                    . '(!(title=Генеральный директор))'
-                    . '(!(givenname=Scan*)))';
-            $justthese2 = array("canonicalName", "name", "givenName", "thumbnailPhoto", 
-                "middlename", "sn", "title", "department", "oubkid", "sAMAccountName");
-            
-            $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter2, $justthese2);
+    $justthese2 = array("canonicalName", "name", "givenName", "thumbnailPhoto", 
+        "middlename", "sn", "title", "department", "oubkid", "sAMAccountName");
+    
+    $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $this->filter2, $justthese2);
         if (!is_array($ouPersons)) {
             return view ('adirectory.errad')->with('message', $ouPersons);
         }
@@ -283,77 +289,65 @@ public function adViewEditPhoto(Request $request) {
     return view('adirectory.listphoto', ['ldapuser' => $ldapuser, 'ldappass' => encrypt($ldappass), 
         'ouPersons' => $ouPersons, 'companyDN' => $base_dn]);
 }
+
 public function adViewEdit(Request $request) {
     $input = $request->all();
-        if (!$input) {
-            return redirect()->action('AdWorkController@adldapView');
-        }
+    if (!$input) {
+        return redirect()->action('AdWorkController@adldapView');
+    }
     $base_dn = $input['companyDN'];
     $company = $input['company'];
     $ldapuser = $input['ldapuser'];
     (array_key_exists('pass', $input))?$ldappass = encrypt($input['pass']):$ldappass = ''; //Password
-            $filter = '(&(objectcategory=organizationalUnit)'
-                    . '(&(!(ou='.$company.'))'
-                    . '(!(name=Groups))'
-                    . '(!(name=Inactive))'
-                    . '(!(name=Servers))'
-                    . '(!(name=Service Accounts))'
-                    . '(!(name=Scan))'
-                    . '(!(name=Технэкспро))))';
-            $justthese = array("ou", "canonicalName", "distinguishedname", "name", "displayname", "objectclass",
-                "postalCode", "postalAddress", "telephonenumber", "company", "givenName", "userAccountControl");
-            $filter2 = '(&(objectcategory=Person)(!(userAccountControl=514))'
-                    . '(!(userAccountControl=66050))(!(title=Страховой агент))'
-                    . '(!(title=Специалист по исследованию рынка))'
-                    . '(!(title=Страховой консультант))'
-                    . '(!(title=Tech))'
-                    . '(!(title=Разнорабочий))'
-                    . '(!(title=Уборщик))'
-                    . '(!(title=Уборщица))'
-                    . '(!(title=Охранник))'
-                    . '(!(title=Дворник))'
-                    . '(!(title=Водитель))'
-                    . '(!(title=Генеральный директор))'
-                    . '(!(givenname=Scan*)))';
-            $justthese2 = array("canonicalName", "name", "postalCode", "postalAddress", 
-                "telephoneNumber", "company", "givenName", 
-                "middlename", "sn", "title", "department","ipphone", "oubkid", "sAMAccountName");
-            
-            $ouRegions = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter, $justthese);
-            $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter2, $justthese2);
-        if (!is_array($ouPersons)) {
-            return view ('adirectory.errad')->with('message', $ouPersons);
-        }
-        if (!is_array($ouRegions)) {
-            return view ('adirectory.errad')->with('message', $ouRegions);
-        }
-            $ouRegionsTop = array_filter($ouRegions, function ($var) {
-                if (!preg_match('/^(na_)/', $var['name'][0])) {
-                $canName = explode("/", $var['canonicalname'][0]);
-                if (count($canName) == 5) {
-                    return $var;
-                }
-                }
-            });
-            $ouDepartments = array_filter($ouRegions, function ($var) {
-                if (!preg_match('/^(na_)/', $var['name'][0])) {
-                $canName = explode("/", $var['canonicalname'][0]);
-                if (count($canName) > 5) {
-                    return $var;
-                }
-                }
-            });
-        return view ('adirectory.whochange', ['ouRegionsTop' => $ouRegionsTop, 
-            'ldapuser' => $ldapuser, 'ldappass' => encrypt($ldappass), 
-            'ouDepartments' => $ouDepartments, 'ouPersons' => $ouPersons,
-            'companyDN' => $base_dn]);
+    $filter = '(&(objectcategory=organizationalUnit)'
+            . '(&(!(ou='.$company.'))'
+            . '(!(name=Groups))'
+            . '(!(name=Inactive))'
+            . '(!(name=Servers))'
+            . '(!(name=Service Accounts))'
+            . '(!(name=Scan))'
+            . '(!(name=Технэкспро))))';
+    $justthese = array("ou", "canonicalName", "distinguishedname", "name", "displayname", "objectclass",
+        "postalCode", "postalAddress", "telephonenumber", "company", "givenName", "userAccountControl");
+    $justthese2 = array("canonicalName", "name", "postalCode", "postalAddress", 
+        "telephoneNumber", "company", "givenName", "thumbnailPhoto", 
+        "middlename", "sn", "title", "department","ipphone", "oubkid", "sAMAccountName");
+    
+    $ouRegions = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter, $justthese);
+    $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $this->filter2, $justthese2);
+    if (!is_array($ouPersons)) {
+        return view ('adirectory.errad')->with('message', $ouPersons);
+    }
+    if (!is_array($ouRegions)) {
+        return view ('adirectory.errad')->with('message', $ouRegions);
+    }
+        $ouRegionsTop = array_filter($ouRegions, function ($var) {
+            if (!preg_match('/^(na_)/', $var['name'][0])) {
+            $canName = explode("/", $var['canonicalname'][0]);
+            if (count($canName) == 5) {
+                return $var;
+            }
+            }
+        });
+        $ouDepartments = array_filter($ouRegions, function ($var) {
+            if (!preg_match('/^(na_)/', $var['name'][0])) {
+            $canName = explode("/", $var['canonicalname'][0]);
+            if (count($canName) > 5) {
+                return $var;
+            }
+            }
+        });
+    return view ('adirectory.whochange', ['ouRegionsTop' => $ouRegionsTop, 
+        'ldapuser' => $ldapuser, 'ldappass' => encrypt($ldappass), 
+        'ouDepartments' => $ouDepartments, 'ouPersons' => $ouPersons,
+        'companyDN' => $base_dn]);
 }
 
 public function adPhoto(Request $request) {
     $input = $request->all();
     $name = uniqid();
     $path = $request->pic->storeAs('tmp', $name, 'my_files');
-    dd($path);
+    // dd($path);
     $photo = file_get_contents($input['pic']);
     // $ds=ldap_connect("brn-dc.rgs.ru");  // LDAP сервер
     $base_dn = $input['companyDN'];
@@ -367,15 +361,15 @@ public function adPhoto(Request $request) {
     ];
     // dd($modification);
     $this->LDAPModify ($ldapuser, $ldappass, $modification);
-    Storage::disk("my_files")->delete("tmp/".$name);
+    Storage::disk("my_files")->delete("/tmp/".$name);
 }
     
 public function adModify(Request $request) {
-        $input = $request->all();
-        // $ds=ldap_connect("brn-dc.rgs.ru");  // LDAP сервер
-        $base_dn = $input['companyDN'];
-        $ldapuser = $input['ldapuser'];
-        $ldappass = decrypt($input['ldappass']); //Password
+    $input = $request->all();
+    // $ds=ldap_connect("brn-dc.rgs.ru");  // LDAP сервер
+    $base_dn = $input['companyDN'];
+    $ldapuser = $input['ldapuser'];
+    $ldappass = decrypt($input['ldappass']); //Password
     if (isset($input['main1'])) {
         $arrInput = $input['main1'];
         foreach ($arrInput as &$arrInp) {
@@ -449,103 +443,60 @@ public function adModify(Request $request) {
                     . '(!(name=Servers))'
                     . '(!(name=Service Accounts))'
                     . '(!(name=Технэкспро))))';
-        $filter2 = '(&(objectcategory=Person)(!(userAccountControl=514))'
-                    . '(!(userAccountControl=66050))(!(title=Страховой агент))'
-                    . '(!(title=Специалист по исследованию рынка))'
-                    . '(!(title=Страховой консультант))'
-                    . '(!(title=Tech))'
-                    . '(!(title=Разнорабочий))'
-                    . '(!(title=Уборщик))'
-                    . '(!(title=Уборщица))'
-                    . '(!(title=Охранник))'
-                    . '(!(title=Дворник))'
-                    . '(!(title=Водитель))'
-                    . '(!(title=Генеральный директор))'
-                    . '(!(givenname=Scan*)))';
         $justthise = array("ou", "canonicalName", "name", "objectclass",
                 "postalCode", "postalAddress", "telephoneNumber", "company");
         $justthise2 = array("canonicalName", "postalCode", "postalAddress", "telephoneNumber", "givenName", 
                 "company", "mail", "middlename", "sn", "title", "department", "samaccauntname", "ipphone");
     $ouRegions = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter, $justthise);
-    $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter2, $justthise2);
+    $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $this->filter2, $justthise2);
     $arrModifyP = $this->fillFealds($ouRegions, $ouPersons);
 
-//Размазываю данные в Пользователи            
-if ($arrModifyP) {
-    $this->LDAPModify($ldapuser, $ldappass, $arrModifyP);
-}
-                
-//Добавляю в Пользователи данные введенные вручную
-if (isset($input['main3'])) {
-    $arrInput = $input['main3'];
-        foreach ($arrInput as &$arrInp) {
-            foreach ($arrInp as $key=>$value) {
-                if ($value === null) {
-                    $arrInp[$key] = array();
+    //Размазываю данные в Пользователи            
+    if ($arrModifyP) {
+        $this->LDAPModify($ldapuser, $ldappass, $arrModifyP);
+    }
+                    
+    //Добавляю в Пользователи данные введенные вручную
+    if (isset($input['main3'])) {
+        $arrInput = $input['main3'];
+            foreach ($arrInput as &$arrInp) {
+                foreach ($arrInp as $key=>$value) {
+                    if ($value === null) {
+                        $arrInp[$key] = array();
+                    }
                 }
             }
-        }
-        $modification = $arrInput;
-        // dd($modification);
-    $this->LDAPModify ($ldapuser, $ldappass, $modification);
-}
-        
-//Набираю все данные из Домена - 3 (Пользователей)!!!
-    $filter2 = '(&(objectcategory=Person)(!(userAccountControl=514))'
-                . '(!(userAccountControl=66050))(!(title=Страховой агент))'
-                . '(!(title=Специалист по исследованию рынка))'
-                . '(!(title=Страховой консультант))'
-                . '(!(title=Уборщик))'
-                . '(!(title=Уборщица))'
-                . '(!(title=Охранник))'
-                . '(!(title=Дворник))'
-                . '(!(title=Водитель))'
-                . '(!(title=Генеральный директор))'
-                . '(!(givenname=Scan*)))';
-    $justthese2 = array("canonicalName", "givenName", "company", "sn", "title", "department", "sAMAccountName","postalCode", "postalAddress", "telephoneNumber", "ipphone");
-    $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter2, $justthese2);            
+            $modification = $arrInput;
+            // dd($modification);
+        $this->LDAPModify ($ldapuser, $ldappass, $modification);
+    }
+            
+    //Набираю все данные из Домена - 3 (Пользователей)!!!
+        $justthese2 = array("canonicalName", "givenName", "company", "sn", "title", "department", "sAMAccountName","postalCode", "postalAddress", "telephoneNumber", "ipphone");
+        $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $this->filter2, $justthese2);            
 
-    $dir = "k:/Signatures/";
-    $dirFonts = "k:/fonts/";
-//    $fonts = [
-//        "AktivGroteskCorpMedium-Regular.eot",
-//        "AktivGroteskCorpMedium-Regular.woff2",
-//        "AktivGroteskCorpMedium-Regular.woff",
-//        "AktivGroteskCorpMedium-Regular.ttf",
-//        "ArialNarrow.eot",
-//        "ArialNarrow.woff",
-//        "ArialNarrow.ttf",
-//        "ArialNarrow-Bold.eot",
-//        "ArialNarrow-Bold.woff",
-//        "ArialNarrow-Bold.ttf"
-//    ];
-//File::rmdir($directory); Laravel рекурсивно удаляет
-    $isDel = $this->removeDirectory($dir);
-    @mkdir($dir, 0755);
-//    foreach ($fonts as $font) {
-//        @copy($dirFonts.$font, $dir.$font);
-//    }
-//dd($ouPersons);
-foreach ($ouPersons as $perS) {
-    isset($perS["sn"][0])?$sn=$perS["sn"][0]:$sn='';
-    isset($perS["givenname"][0])?$gn=$perS["givenname"][0]:$gn='';
-    isset($perS["title"][0])?$title=$perS["title"][0]:$title='';
-    //isset($perS["department"][0])?$dep=$perS["department"][0]:$dep='';
-    isset($perS["company"][0])?$comp=$perS["company"][0]:$comp='';
-    isset($perS["postalcode"][0])?$pc=$perS["postalcode"][0]:$pc='';
-    isset($perS["postaladdress"][0])?$pa=$perS["postaladdress"][0]:$pa='';
-    isset($perS["telephonenumber"][0])?$tn=$perS["telephonenumber"][0]:$tn='';
-    isset($perS["ipphone"][0])?$ipp=", вн. ".$perS["ipphone"][0]:$ipp='';
-    $canName = explode("/", $perS["canonicalname"][0]);
-    $dep = $canName[count($canName) - 2];
-    ($dep === $canName[4])?$topOrg = '':$topOrg = $canName[4];
-        if($title !== "Директор") {
-            $textDir = '<div>'.$title.'</div>
-            <div>'.$dep.'</div>
-            <div>'.$topOrg.'</div>';
-        } else {
-            $textDir = '<div>Директор Филиала</div>';
-        }
+        $this->removeDirectory($this->dir);
+        @mkdir($this->dir, 0755);
+    foreach ($ouPersons as $perS) {
+        isset($perS["sn"][0])?$sn=$perS["sn"][0]:$sn='';
+        isset($perS["givenname"][0])?$gn=$perS["givenname"][0]:$gn='';
+        isset($perS["title"][0])?$title=$perS["title"][0]:$title='';
+        //isset($perS["department"][0])?$dep=$perS["department"][0]:$dep='';
+        isset($perS["company"][0])?$comp=$perS["company"][0]:$comp='';
+        isset($perS["postalcode"][0])?$pc=$perS["postalcode"][0]:$pc='';
+        isset($perS["postaladdress"][0])?$pa=$perS["postaladdress"][0]:$pa='';
+        isset($perS["telephonenumber"][0])?$tn=$perS["telephonenumber"][0]:$tn='';
+        isset($perS["ipphone"][0])?$ipp=", вн. ".$perS["ipphone"][0]:$ipp='';
+        $canName = explode("/", $perS["canonicalname"][0]);
+        $dep = $canName[count($canName) - 2];
+        ($dep === $canName[4])?$topOrg = '':$topOrg = $canName[4];
+            if($title !== "Директор") {
+                $textDir = '<div>'.$title.'</div>
+                <div>'.$dep.'</div>
+                <div>'.$topOrg.'</div>';
+            } else {
+                $textDir = '<div>Директор Филиала</div>';
+            }
 $text_php = '<!DOCTYPE html>
 <html>
     <head>
@@ -628,7 +579,7 @@ $text_php = '<!DOCTYPE html>
 if (isset($perS["samaccountname"])) {
     $f_name = $perS["samaccountname"][0];
 }
-$fo = fopen ($dir.$f_name.".htm", "w");
+$fo = fopen ($this->dir.$f_name.".htm", "w");
 
 //Записываю в файл текст
 $text_php = iconv('UTF-8', 'cp1251', $text_php);//Конвертирую в Windows-1251 (ANSI)
@@ -642,15 +593,15 @@ if(extension_loaded('zip')) {
 $zip = new \ZipArchive(); // подгружаем библиотеку zip
 $zip_name = "RGS_AD_".time().".zip"; // имя файла
 if($zip->open($zip_name, \ZIPARCHIVE::CREATE | \ZIPARCHIVE::OVERWRITE)!==TRUE) {
-$error .= "* Sorry ZIP creation failed at this time";
-die("cannot open {$zip_name} for writing.");
+    $error .= "* Sorry ZIP creation failed at this time";
+    die("cannot open {$zip_name} for writing.");
 }
 
 
-$iterator = new \DirectoryIterator($dir);
+$iterator = new \DirectoryIterator($this->dir);
 foreach ($iterator as $file) {
     if ($file->isFile()) {
-$zip->addFile($dir.$file); // добавляем файлы в zip архив
+$zip->addFile($this->dir.$file); // добавляем файлы в zip архив
 }
 }
 $zip->close();
@@ -678,36 +629,25 @@ unlink($zip_name);
 }
 
     public function listOuPersons() {
-        $ldapuser="RGSMAIN\\MVManzulin";
-        $ldappass=encrypt("123456Qw");
+        // $ldapuser="RGSMAIN\\MVManzulin";
+        // $ldappass=encrypt("123456Qw");
         $base_dn="OU=Филиал ПАО Росгосстрах в Брянской области,OU=ПАО Росгосстрах,OU=Structure,DC=rgs,DC=ru";
-        $filter2 = '(&(objectcategory=Person)(!(userAccountControl=514))'
-                . '(!(userAccountControl=66050))(!(title=Страховой агент))'
-                . '(!(title=Специалист по исследованию рынка))'
-                . '(!(title=Страховой консультант))'
-                . '(!(title=Уборщик))'
-                . '(!(title=Уборщица))'
-                . '(!(title=Охранник))'
-                . '(!(title=Дворник))'
-                . '(!(title=Водитель))'
-                . '(!(title=Генеральный директор))'
-                . '(!(givenname=Scan*)))';
-    $justthese2 = array("sn", "givenName", "title", "sAMAccountName", "department");
-    $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter2, $justthese2);
-    foreach($ouPersons as $pers) {
-        isset($pers["sn"][0])?$sn=$pers["sn"][0]:$sn='';
-        isset($pers["givenname"][0])?$givenname=$pers["givenname"][0]:$givenname='';
-        isset($pers["title"][0])?$title=$pers["title"][0]:$title='';
-        isset($pers["samaccountname"][0])?$samaccountname=$pers["samaccountname"][0]:$samaccountname='';
-        isset($pers["department"][0])?$department=$pers["department"][0]:$department='';
-        $arrPers[] = [
-            'name' => $sn." ".$givenname,
-            'work' => $title,
-            'user_name' => $samaccountname,
-            'dep' => $department
-        ];
-    }
-    $r = json_encode($arrPers, JSON_UNESCAPED_UNICODE);
-    return $r;
+        $justthese2 = array("sn", "givenName", "title", "sAMAccountName", "department");
+        $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $this->filter2, $justthese2);
+        foreach($ouPersons as $pers) {
+            isset($pers["sn"][0])?$sn=$pers["sn"][0]:$sn='';
+            isset($pers["givenname"][0])?$givenname=$pers["givenname"][0]:$givenname='';
+            isset($pers["title"][0])?$title=$pers["title"][0]:$title='';
+            isset($pers["samaccountname"][0])?$samaccountname=$pers["samaccountname"][0]:$samaccountname='';
+            isset($pers["department"][0])?$department=$pers["department"][0]:$department='';
+            $arrPers[] = [
+                'name' => $sn." ".$givenname,
+                'work' => $title,
+                'user_name' => $samaccountname,
+                'dep' => $department
+            ];
+        }
+        $r = json_encode($arrPers, JSON_UNESCAPED_UNICODE);
+        return $r;
     }
 }

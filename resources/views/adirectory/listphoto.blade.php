@@ -43,7 +43,8 @@
                 <button class="personline-group-btn__submit" type="submit" onclick="sendPhoto({{$loop->index}})">
                     Поменять
                 </button>
-                <button type="reset" class="personline-group-btn__reset">Отмена</button>
+                <button type="reset" onclick="returnModify({{$loop->index}})" 
+                class="personline-group-btn__reset">Отмена</button>
             </div>
         </section>
 @endforeach
