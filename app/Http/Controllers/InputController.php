@@ -8,6 +8,7 @@ use App\Http\Requests\BirthdayRequest;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Email;
 use Mail;
+use Illuminate\Support\Facades\Storage;
 
 class InputController extends Controller
 {
@@ -153,19 +154,20 @@ class InputController extends Controller
         $data = ["dataB" => Birthday::where('id', $id)->first(), 
             "monthM" => Birthday::monthM($id)];
         $name = $dataC->nameF . " " . $dataC->nameN;
-        $pathPDF = 'pdf/birthday.pdf';
+        $pathPDF = 'birthday.pdf';
+        $path = public_path('pdf/'.$pathPDF);
         $pdf = PDF::loadView('pdf.birthday', $data);
-        if ($pdf->save($pathPDF)) {
-        $mails = Email::first();
-        $mail_add = $mails->email;
-        
-        Mail::send('pdf.email', $data, function($message) use ($pathPDF, $mail_add) {
-            //$message->Host = gethostbyname('tls://smtp.gmail.com');
-                $message->from('birthdays@bryansk.rgs.ru', 'Birthday');
-                $message->to($mail_add);
-                $message->subject('Поздравление с Днем Рождения');
-                $message->attach(asset($pathPDF));
-            });
+        if ($pdf->save($path)) {
+            $mails = Email::first();
+            $mail_add = $mails->email;
+
+            Mail::send('pdf.email', $data, function($message) use ($path, $mail_add) {
+                //$message->Host = gethostbyname('tls://smtp.gmail.com');
+                    $message->from('birthdays@bryansk.rgs.ru', 'Birthday');
+                    $message->to($mail_add);
+                    $message->subject('Поздравление с Днем Рождения');
+                    $message->attach($path);
+                });
             return redirect("/all")->with("status", "Поздравление для " . $name . " отправлено");
         }
         return redirect("/all")->with("status", "Поздравление для " . $name . " не было отправлено");
