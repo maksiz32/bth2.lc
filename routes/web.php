@@ -163,7 +163,9 @@ Route::get('/arm', function () {
 Route::get('/ad', 'AdWorkController@adldapView');
 Route::get('/ad/persons', 'AdWorkController@listOuPersons');
 Route::match(["get", "post", "put"], '/adlist', 'AdWorkController@adViewEdit');
+Route::match(["get", "post", "put"], '/adphotochng', 'AdWorkController@adViewEditPhoto');
 Route::match(["get", "post", "put"], '/admod', 'AdWorkController@adModify');
+Route::match(["get", "post", "put"], '/adphoto', 'AdWorkController@adPhoto');
 
 //Контроллер для работы с изображениями (resize)
 Route::get('/image', 'ImageController@input');
@@ -179,7 +181,7 @@ Route::get('/car/{dateMain?}', 'CarController@main');
 Route::get('/car/{id}/delete', 'CarController@delete');
 
 //Контроллер регулирования доступа к разделам по ip-адресам
-Route::get('/caraccess/', 'AccessIpController@index');
+Route::get('/caraccess', 'AccessIpController@index');
 Route::post('/caraccess/enable', 'AccessIpController@save');
 Route::get('/caraccess/{id}/disable', 'AccessIpController@destroy');
 
