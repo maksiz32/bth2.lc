@@ -159,18 +159,28 @@ class InputController extends Controller
         $pdf = PDF::loadView('pdf.birthday', $data);
         if ($pdf->save($path)) {
             $mails = Email::first();
-            $mail_add = $mails->email;
 
+            $mail_add = $mails->email;
+            //Отправляю с вложением
             Mail::send('pdf.email', $data, function($message) use ($path, $mail_add) {
-                //$message->Host = gethostbyname('tls://smtp.gmail.com');
                     $message->from('birthdays@bryansk.rgs.ru', 'Birthday');
                     $message->to($mail_add);
                     $message->subject('Поздравление с Днем Рождения');
                     $message->attach($path);
                 });
             return redirect("/all")->with("status", "Поздравление для " . $name . " отправлено");
+        } else {
+            $mails = Email::first();
+            $mail_add = $mails->email;
+            
+            //Отправляю без вложения
+            Mail::send('pdf.email', $data, function($message) use ($mail_add) {
+                    $message->from('birthdays@bryansk.rgs.ru', 'Birthday');
+                    $message->to($mail_add);
+                    $message->subject('Поздравление с Днем Рождения');
+                });
+            return redirect("/all")->with("status", "Поздравление для " . $name . " отправлено");
         }
-        return redirect("/all")->with("status", "Поздравление для " . $name . " не было отправлено");
     }
     
     public function delOne(Birthday $id) {

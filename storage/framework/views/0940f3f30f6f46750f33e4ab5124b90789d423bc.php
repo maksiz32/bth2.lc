@@ -2,11 +2,20 @@
 <?php $__env->startSection('content'); ?>
 <article class="container main_page">
     <div class="hide" id="blur"></div>
-    <?php if($message = Session::get('message')): ?>
-    <div class="alert alert-danger" role="alert">
-        <?php echo e(Session::get('message')); ?>
+    <?php if(isset($message)): ?>
+        <div class="alert alert-danger" role="alert">
+            <?php echo e($message); ?>
 
-    </div>
+        </div>
+    <?php endif; ?>
+    <?php if(count($errors)>0): ?>
+        <div class="alert alert-danger" role="alert">
+            <ul>
+                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li><?php echo e($error); ?></li>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </ul>
+        </div>
     <?php endif; ?>
 <main id="formR">
     <form method="post" id="formF" enctype="multipart/form-data">
@@ -24,7 +33,7 @@
             <input type="hidden" id="dn-<?php echo e($loop->index); ?>" value="<?php echo e($pers['dn']); ?>">
                 <div class="personline__img personline__rounded" id="img-<?php echo e($loop->index); ?>" app-data="<?php echo e($loop->index); ?>">
                     <?php if(isset($pers['thumbnailphoto'][0])): ?>
-                    <img width="60" height="60" class="personline__rounded" app-data="<?php echo e($loop->index); ?>" 
+                    <img width="50" height="60" class="personline__rounded" app-data="<?php echo e($loop->index); ?>" 
                         src="<?php echo e('data:image/jpeg;base64,'.base64_encode($pers['thumbnailphoto'][0])); ?>">
                     <?php else: ?>
                     <span class="personline__noimg" app-data="<?php echo e($loop->index); ?>">

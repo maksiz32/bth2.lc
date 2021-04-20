@@ -23,7 +23,7 @@ class CarPolicy
     //Не использую
     public function manipulate(Booking $book) {
         $user = getenv('REMOTE_USER');
-        dd($user);
+        // dd($user);
         return (BryanskPortal::isAdmin($user) || 
                 $book->who == BryanskPortal::getName($user));
     }
