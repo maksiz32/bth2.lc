@@ -3,10 +3,19 @@
 @section('content')
 <article class="container main_page">
     <div class="hide" id="blur"></div>
-    @if ($message = Session::get('message'))
-    <div class="alert alert-danger" role="alert">
-        {{ Session::get('message') }}
-    </div>
+    @if (isset($message))
+        <div class="alert alert-danger" role="alert">
+            {{ $message }}
+        </div>
+    @endif
+    @if(count($errors)>0)
+        <div class="alert alert-danger" role="alert">
+            <ul>
+                @foreach($errors->all() as $error)
+                <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 <main id="formR">
     <form method="post" id="formF" enctype="multipart/form-data">
@@ -22,7 +31,7 @@
             <input type="hidden" id="dn-{{$loop->index}}" value="{{ $pers['dn'] }}">
                 <div class="personline__img personline__rounded" id="img-{{$loop->index}}" app-data="{{$loop->index}}">
                     @if (isset($pers['thumbnailphoto'][0]))
-                    <img width="60" height="60" class="personline__rounded" app-data="{{$loop->index}}" 
+                    <img width="50" height="60" class="personline__rounded" app-data="{{$loop->index}}" 
                         src="{{'data:image/jpeg;base64,'.base64_encode($pers['thumbnailphoto'][0])}}">
                     @else
                     <span class="personline__noimg" app-data="{{$loop->index}}">

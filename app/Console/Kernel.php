@@ -36,22 +36,33 @@ class Kernel extends ConsoleKernel
             $month = date('m', time('now'));
             $yestoday = DB::table('birthdays')->whereMonth('date',$month)->whereDay('date',$day)->get();
             $count = $yestoday->count();
-        if ($count > 0) {
-            foreach ($yestoday as $yes) {
-        $data = ["dataB" => Birthday::where('id', $yes->id)->first(), 
-            "monthM" => Birthday::monthM($yes->id)];
-        $pathPDF = 'c:\openserver\domains\bth2.lc\public\pdf\birthday.pdf';
-        $pdf = PDF::loadView('pdf.timebirthday', $data);
-        if ($pdf->save($pathPDF)) {
-        $mails = Email::first();
-        $mail_add = $mails->email;
-        Mail::send('pdf.email', $data, function($message) use ($pathPDF, $mail_add) {
-                $message->from('birthdays@bryansk.rgs.ru', 'Birthday');
-                $message->to($mail_add);
-                $message->subject('Поздравление с Днем Рождения');
-                $message->attach($pathPDF);});
-            }sleep(130);
-            }}
+            if ($count > 0) {
+                foreach ($yestoday as $yes) {
+                    $data = ["dataB" => Birthday::where('id', $yes->id)->first(), 
+                        "monthM" => Birthday::monthM($yes->id)];
+                    $pathPDF = 'c:\openserver\domains\bth2.lc\public\pdf\birthday.pdf';
+                    $pdf = PDF::loadView('pdf.timebirthday', $data);
+                    if ($pdf->save($pathPDF)) {
+                        $mails = Email::first();
+                        $mail_add = $mails->email;
+                        Mail::send('pdf.email', $data, function($message) use ($pathPDF, $mail_add) {
+                            $message->from('birthdays@bryansk.rgs.ru', 'Birthday');
+                            $message->to($mail_add);
+                            $message->subject('Поздравление с Днем Рождения');
+                            $message->attach($pathPDF);
+                        });
+                    } else {
+                        $mails = Email::first();
+                        $mail_add = $mails->email;
+                        Mail::send('pdf.email', $data, function($message) use ($mail_add) {
+                            $message->from('birthdays@bryansk.rgs.ru', 'Birthday');
+                            $message->to($mail_add);
+                            $message->subject('Поздравление с Днем Рождения');
+                        });
+                    }
+                    sleep(130);
+                }
+            }
         })->dailyAt('08:00');
     }
 

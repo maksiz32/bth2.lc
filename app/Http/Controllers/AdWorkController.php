@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Adldap\Laravel\Facades\Adldap;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\File\File;
 use Cript;
 
 class AdWorkController extends Controller
@@ -15,18 +16,29 @@ class AdWorkController extends Controller
     
     //Переменная Фильтра2 (персоналии)
     private $filter2 = '(&(objectcategory=Person)(!(userAccountControl=514))'
-                    . '(!(userAccountControl=66050))(!(title=Страховой агент))'
-                    . '(!(title=Специалист по исследованию рынка))'
-                    . '(!(title=Страховой консультант))'
-                    . '(!(title=Tech))'
-                    . '(!(title=Разнорабочий))'
-                    . '(!(title=Уборщик))'
-                    . '(!(title=Уборщица))'
-                    . '(!(title=Охранник))'
-                    . '(!(title=Дворник))'
-                    . '(!(title=Водитель))'
-                    . '(!(title=Генеральный директор))'
-                    . '(!(givenname=Scan*)))';
+        . '(!(userAccountControl=66050))(!(title=Страховой агент))'
+        . '(!(title=Специалист по исследованию рынка))'
+        . '(!(title=Страховой консультант))'
+        . '(!(title=Tech))'
+        . '(!(title=Разнорабочий))'
+        . '(!(title=Уборщик))'
+        . '(!(title=Уборщица))'
+        . '(!(title=Охранник))'
+        . '(!(title=Дворник))'
+        . '(!(title=Водитель))'
+        . '(!(title=Генеральный директор))'
+        . '(!(givenname=Scan*)))';
+    //Набираю все данные из домена по OU
+    private function get_filter($company) {
+        return '(&(objectcategory=organizationalUnit)'
+        . '(&(!(ou='.$company.'))'
+        . '(!(name=Groups))'
+        . '(!(name=Inactive))'
+        . '(!(name=Servers))'
+        . '(!(name=Service Accounts))'
+        . '(!(name=Scan))'
+        . '(!(name=Технэкспро))))';
+    }
 
     //Папка для сохранения подписей в виде html-страниц
     private $dir = "k:/Signatures/";
@@ -269,11 +281,15 @@ public function adldapView() {
             'company' => $company, 'companyDN' => $companyDN]);
 }
 
-public function adViewEditPhoto(Request $request) {
-    $input = $request->all();
-        if (!$input) {
-            return redirect()->action('AdWorkController@adldapView');
-        }
+public function adViewEditPhoto(Request $request, array $input = null) {
+    if($request) {
+        $input = $request->all();
+            // if (!$input) {
+            //     return redirect()->action('AdWorkController@adldapView');
+            // }
+    } elseif (!$input) {
+        return redirect()->action('AdWorkController@adldapView');
+    }
     $base_dn = $input['companyDN'];
     $company = $input['company'];
     $ldapuser = $input['ldapuser'];
@@ -299,21 +315,13 @@ public function adViewEdit(Request $request) {
     $company = $input['company'];
     $ldapuser = $input['ldapuser'];
     (array_key_exists('pass', $input))?$ldappass = encrypt($input['pass']):$ldappass = ''; //Password
-    $filter = '(&(objectcategory=organizationalUnit)'
-            . '(&(!(ou='.$company.'))'
-            . '(!(name=Groups))'
-            . '(!(name=Inactive))'
-            . '(!(name=Servers))'
-            . '(!(name=Service Accounts))'
-            . '(!(name=Scan))'
-            . '(!(name=Технэкспро))))';
     $justthese = array("ou", "canonicalName", "distinguishedname", "name", "displayname", "objectclass",
         "postalCode", "postalAddress", "telephonenumber", "company", "givenName", "userAccountControl");
     $justthese2 = array("canonicalName", "name", "postalCode", "postalAddress", 
         "telephoneNumber", "company", "givenName", "thumbnailPhoto", 
         "middlename", "sn", "title", "department","ipphone", "oubkid", "sAMAccountName");
     
-    $ouRegions = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter, $justthese);
+    $ouRegions = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $this->get_filter($company), $justthese);
     $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $this->filter2, $justthese2);
     if (!is_array($ouPersons)) {
         return view ('adirectory.errad')->with('message', $ouPersons);
@@ -344,24 +352,43 @@ public function adViewEdit(Request $request) {
 }
 
 public function adPhoto(Request $request) {
-    $input = $request->all();
-    $name = uniqid();
-    $path = $request->pic->storeAs('tmp', $name, 'my_files');
-    // dd($path);
-    $photo = file_get_contents($input['pic']);
-    // $ds=ldap_connect("brn-dc.rgs.ru");  // LDAP сервер
-    $base_dn = $input['companyDN'];
-    $ldapuser = $input['ldapuser'];
-    $ldappass = decrypt($input['ldappass']); //Password
-    $modification = [
-        'arr' => [
-            'dn' => $input['dn'],
-            'thumbnailPhoto' => $photo
-        ]
-    ];
-    // dd($modification);
-    $this->LDAPModify ($ldapuser, $ldappass, $modification);
-    Storage::disk("my_files")->delete("/tmp/".$name);
+    $message = "Ошибка загрузки файла";
+    if (!is_null($request->pic)) {
+        $max_size = 1024*1024*2; //Не более 2 Мб файл
+        $message = "Разрешены изображения не более 2 Мб";
+        if ($request->pic->getClientSize() <= $max_size) {
+            $valid_mime = ['image/gif', 'image/jpeg', 'image/png', 'image/bmp'];
+            $message = "Некорректный тип файла";
+            if (in_array($request->pic->getClientMimeType(), $valid_mime)) {
+                $input = $request->all();
+                $name = uniqid();
+                $path = $request->pic->storeAs('tmp', $name, 'my_files');
+                $photo = file_get_contents($input['pic']);
+                $base_dn = $input['companyDN'];
+                $ldapuser = $input['ldapuser'];
+                $ldappass = decrypt($input['ldappass']); //Password
+                $modification = [
+                    'arr' => [
+                        'dn' => $input['dn'],
+                        'thumbnailPhoto' => $photo
+                    ]
+                ];
+                // dd($modification);
+                $this->LDAPModify ($ldapuser, $ldappass, $modification);
+                Storage::disk("my_files")->delete($path);
+                $justthese2 = array("canonicalName", "name", "givenName", "thumbnailPhoto", 
+                    "middlename", "sn", "title", "department", "oubkid", "sAMAccountName");
+                
+                $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $this->filter2, $justthese2);
+                if (!is_array($ouPersons)) {
+                    return view ('adirectory.errad')->with('message', $ouPersons);
+                }
+                $message = "Изображение обновлено";
+            }
+        }
+    }
+    return view('adirectory.listphoto', ['ldapuser' => $ldapuser, 'ldappass' => encrypt($ldappass), 
+        'ouPersons' => $ouPersons, 'companyDN' => $base_dn, 'message' => $message]);
 }
     
 public function adModify(Request $request) {
@@ -383,17 +410,9 @@ public function adModify(Request $request) {
         $this->LDAPModify ($ldapuser, $ldappass, $modification);
     }
 
-//Набираю все данные из Домена (только по ОУ)
-    $filter = '(&(objectcategory=organizationalUnit)'
-                    . '(&(!(ou=Филиал ПАО Росгосстрах в Брянской области))'
-                    . '(!(name=Groups))'
-                    . '(!(name=Inactive))'
-                    . '(!(name=Servers))'
-                    . '(!(name=Service Accounts))'
-                    . '(!(name=Технэкспро))))';
     $justthese = array("ou", "canonicalName", "name", "objectclass",
                 "postalCode", "postalAddress", "telephonenumber", "company");
-    $ouRegions = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter, $justthese);
+    $ouRegions = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $this->get_filter($base_dn), $justthese);
     //Здесь набираю Головные подразделения
         $ouRegionsTD = array_filter($ouRegions, function ($var) {
             if (!preg_match('/^(na_)/', $var['name'][0])) {
@@ -434,20 +453,12 @@ public function adModify(Request $request) {
         //dd($modification);
         $this->LDAPModify ($ldapuser, $ldappass, $modification);
     }
-                
-//Набираю все данные из Домена - ПОВТОРНО (и ОУ, и Пользователей)!!!
-        $filter = '(&(objectcategory=organizationalUnit)'
-                    . '(&(!(ou=Филиал ПАО Росгосстрах в Брянской области))'
-                    . '(!(name=Groups))'
-                    . '(!(name=Inactive))'
-                    . '(!(name=Servers))'
-                    . '(!(name=Service Accounts))'
-                    . '(!(name=Технэкспро))))';
+        
         $justthise = array("ou", "canonicalName", "name", "objectclass",
                 "postalCode", "postalAddress", "telephoneNumber", "company");
         $justthise2 = array("canonicalName", "postalCode", "postalAddress", "telephoneNumber", "givenName", 
                 "company", "mail", "middlename", "sn", "title", "department", "samaccauntname", "ipphone");
-    $ouRegions = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $filter, $justthise);
+    $ouRegions = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $this->get_filter($base_dn), $justthise);
     $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $this->filter2, $justthise2);
     $arrModifyP = $this->fillFealds($ouRegions, $ouPersons);
 
