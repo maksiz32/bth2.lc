@@ -45,7 +45,8 @@ class AdWorkController extends Controller
 
     public function __construct()
     {
-        $this->middleware('isADAdmin')->only('listOuPersons');
+        $this->middleware('isADAdmin')->only('listOuPersons', 'adViewEditPhoto', 
+                                        'adViewEdit', 'adPhoto');
     }
     
     function removeDirectory($directory) {
@@ -354,8 +355,8 @@ public function adViewEdit(Request $request) {
 public function adPhoto(Request $request) {
     $message = "Ошибка загрузки файла";
     if (!is_null($request->pic)) {
-        $max_size = 1024*1024*2; //Не более 2 Мб файл
-        $message = "Разрешены изображения не более 2 Мб";
+        $max_size = 1024*1024*1; //Не более 2 Мб файл
+        $message = "Разрешены изображения не более 1 Мб";
         if ($request->pic->getClientSize() <= $max_size) {
             $valid_mime = ['image/gif', 'image/jpeg', 'image/png', 'image/bmp'];
             $message = "Некорректный тип файла";

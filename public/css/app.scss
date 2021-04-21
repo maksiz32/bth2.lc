@@ -1,31 +1,7 @@
-@font-face {
-    font-family: 'Aktiv Grotesk Corp6';
-    src: url('../fonts/my/AktivGroteskCorpMedium-Regular.eot');
-    src: url('../fonts/my/AktivGroteskCorpMedium-Regular.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/my/AktivGroteskCorpMedium-Regular.woff2') format('woff2'),
-        url('../fonts/my/AktivGroteskCorpMedium-Regular.woff') format('woff'),
-        url('../fonts/my/AktivGroteskCorpMedium-Regular.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Celestina';
-    src: url('../fonts/my/Celestina.woff2') format('woff2'),
-        url('../fonts/my/Celestina.woff') format('woff'),
-        url('../fonts/my/Celestina.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Devroye Unicode';
-    src: url('../fonts/my/DevroyeUnicode.eot');
-    src: url('../fonts/my/DevroyeUnicode.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/my/DevroyeUnicode.woff2') format('woff2'),
-        url('../fonts/my/DevroyeUnicode.woff') format('woff'),
-        url('../fonts/my/DevroyeUnicode.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
+@import 'fonts';
+
+$myGrayColor: rgb(88, 87, 87);
+$borderItems: 1px solid $myGrayColor;
 
 .Celestina {
     font-family: 'Celestina';
@@ -486,4 +462,76 @@ td input {
     z-index: 2;
     left: 20px;
     right: 20px;
+}
+.serverform {
+    background-color: #eceef0;
+    border: 1px solid #e3e8ec;
+    border-radius: 3px;
+    padding: 15px;
+
+    &-top, .serverform-main, .serverform-btn {
+        padding: 10px;
+    }
+
+    &-top {
+        max-width: 50%;
+        text-align: center;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0px 0px 40px cornflowerblue;
+    }
+
+    &-main {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+
+        &__file {
+            max-width: 100%;
+            border: 2px solid rgb(152, 198, 250);
+            border-radius: 5px;
+            background-color: rgb(212, 212, 212);
+
+            &:hover {
+                box-shadow: 0 0 4px 2px rgb(152, 198, 250);
+                background-color: rgb(236, 236, 236);
+            }
+        }
+
+        &__choys {
+            margin: 0 0 10px 0;
+            background-color: #f3f7fa;
+            max-width: 45px;
+            border-radius: 5px;
+            border: $borderItems;
+            box-sizing: border-box;
+
+            &:hover {
+                box-shadow: 0 0 2px $myGrayColor;
+            }
+
+            &:focus {
+                box-shadow: 0 0 2px $myGrayColor;
+                border: $borderItems !important;
+            }
+        }
+    }
+
+    &-btn {
+        text-align: center;
+        
+        & > button {
+            border: $borderItems;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 0 30px 0 0;
+        }
+        &__submit {
+            background-color: rgb(177, 228, 243);
+        }
+
+        &__reset {
+            background-color: #fff;
+        }
+    }
 }
