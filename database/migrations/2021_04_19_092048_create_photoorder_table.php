@@ -11,7 +11,6 @@ class CreatePhotoorderTable extends Migration
         Schema::create('photoorders', function (Blueprint $table) {
             $table->increments('id');
             $table->string('view');
-            $table->integer('num');
             $table->string('path');
             $table->timestamps();
         });

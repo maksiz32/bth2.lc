@@ -105,7 +105,7 @@
                 <div class="card-orders" id="div{{$tech->id}}">
                     <input type="hidden" id="model{{ $tech->id }}" value="{{ old('model', $tech->model) }}">
                     <input type="hidden" id="tech{{ $tech->id }}" value="{{ old('tech', $tech->tech) }}">
-                        <img src="{{ asset('img/tech/'.$tech->photo) }}" class="img-thumbnail h110" />
+                        <img width="120" alt="{!! $tech->tech !!}" src="{{ asset('img/tech/'.$tech->photo) }}" class="img-thumbnail h110" />
                     <div class="flex-child-grow">
                         <h4 class="dashboard-table-text">{!! $tech->tech !!}</h4>
                         <span class="dashboard-table-timestamp text-muted">Картридж {{ $tech->model }}</span>

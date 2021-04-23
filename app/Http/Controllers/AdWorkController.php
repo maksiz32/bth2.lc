@@ -355,6 +355,7 @@ public function adViewEdit(Request $request) {
 public function adPhoto(Request $request) {
     $message = "Ошибка загрузки файла";
     if (!is_null($request->pic)) {
+        //Надо бы через константу
         $max_size = 1024*1024*1; //Не более 2 Мб файл
         $message = "Разрешены изображения не более 1 Мб";
         if ($request->pic->getClientSize() <= $max_size) {

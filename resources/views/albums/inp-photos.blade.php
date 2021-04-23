@@ -31,12 +31,12 @@
     </div>
     <div class="row text-center">
         <div class="col-lg-12" id="forview" style="display:none;">
-                            Идёт загрузка фотографий. Пожалуйста подождите
-                    <div class="spinner-border text-danger" role="status">
-                        <span class="sr-only">Loading...</span>
-                        <span class="spinner-grow spinner-grow-sm d-none" role="status" aria-hidden="true">
-                        </span>
-                    </div>
+                    Идёт загрузка фотографий. Пожалуйста подождите
+            <div class="spinner-border text-danger" role="status">
+                <span class="sr-only">Loading...</span>
+                <span class="spinner-grow spinner-grow-sm d-none" role="status" aria-hidden="true">
+                </span>
+            </div>
         </div>
     </div>
     <form action="{{ action('AlbumController@savePhotos') }}" method="post" enctype="multipart/form-data">
@@ -47,7 +47,7 @@
         {{ csrf_field() }}
             <div class="col-lg-7">
                 <label for="photo1">Выберите файл:</label>
-                <input type="file" class="form-control-file" name="photo1[]" multiple required  accept="image/*">
+                <input type="file" class="form-control-file" name="photo1[]" multiple required accept="image/*">
             </div>
         </div>
         <br/><br/>
