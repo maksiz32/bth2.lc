@@ -27,7 +27,7 @@
                     В блоке <span id="form_block" class="serverform-top__block">A</span> загружено 
                     <span id="form_count" class="serverform-top__count">{{$countImgs}}</span> фотографий:
                 </p>
-                <div class="serverform-top-pic">
+                <div class="serverform-top-pic" id="imgsBlock">
                     @if(isset($images))
                     @foreach($images as $img)
                     <img src="{{asset('/img/server/' . $img->path)}}" width="80" 
@@ -44,7 +44,7 @@
                     <option value="C">C</option>
                     <option value="D">D</option>
                 </select>
-                <label for="pic">Выберите изображения (не более 15 штук -если выбрали больше 15, загрузятся только 15- и не более 1.5 Mб каждое):</label>
+                <label for="pic">Выберите изображения (не более 15 штук - если выбрали больше 15, загрузятся только 15 и не более 1.5 Mб каждое):</label>
                 <input type="file" name="pic[]" class="serverform-main__file" 
                     multiple required accept="image/*" id="file">
             </section>

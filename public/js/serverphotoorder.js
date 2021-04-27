@@ -12,14 +12,25 @@ document.getElementById('file').onclick = function() {
 
 //Получить значение View и обновить данные при смене типа
 document.getElementById('chngView').onchange = function(ev) {
+    var location = window.location.origin;
     let target = ev.target;
-    let selView = target.options[target.selectedIndex].value;
+    const selView = target.options[target.selectedIndex].value;
 
-    const location = window.location.origin;
     let request = new XMLHttpRequest();
-    request.open('GET', location + '/serverimg/' + selView, false);
+    request.open('GET', location + '/api/serverimg/' + selView, false);
     request.send();
-    console.log(request.responseText);
+    // console.warn(request.responseText);
+
     let arrResp = JSON.parse(request.responseText);
-    console.log(arrResp);
+    const countPhoto = parseInt(arrResp.count);
+
+    const letterBlock = document.getElementById('form_block')
+    letterBlock.innerText = selView;
+    const countBlock = letterBlock.nextElementSibling;
+    countBlock.innerText = countPhoto;
+    arrImgs = arrResp.imgs.map(function(index) {
+        return '<img src="'+location+'/img/server/'+index.path+
+            '" width="80" class="serverform-top-pic__img">';
+    });
+    document.getElementById('imgsBlock').innerHTML = arrImgs.join(' ');
 }

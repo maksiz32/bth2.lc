@@ -177,7 +177,6 @@ Route::match(['post', 'get'], '/resize', 'ImageController@resize');
 // });
 Route::get('/inputserv', 'PhotoorderController@input');
 Route::put('/actionserv', 'PhotoorderController@inputAction');
-Route::get('/serverimg/{view}', 'PhotoorderController@changeViewImg');
 
 //Контроллер заявок на автомобиль
 Route::get('/car/create/{date?}', 'CarController@inputBook');

@@ -46,12 +46,11 @@ class PhotoorderController extends Controller
     public function changeViewImg($var) {
         $count = Photoorder::getCountImgs($var);
         $images = Photoorder::getPathImagesByLetter($var);
-        $arr[] = [
-            'count' => $count,
-            'imgs' => $images
+        $arr = [
+            "count" => $count,
+            "imgs" => $images
         ];
-        dd($arr);
         $req = json_encode($arr, JSON_UNESCAPED_UNICODE);
-        return $req;
+        echo $req;
     }
 }
