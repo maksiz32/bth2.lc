@@ -170,6 +170,7 @@
             request.open('GET', location + '/ad/persons', false);
             request.send();
             var arrResp = JSON.parse(request.responseText);
+            console.log(arrResp);
             
         });
     </script>

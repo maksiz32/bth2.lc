@@ -642,8 +642,9 @@ unlink($zip_name);
 }
 
     public function listOuPersons() {
-        // $ldapuser="RGSMAIN\\MVManzulin";
-        // $ldappass=encrypt("123456Qw");
+        $ldapuser="RGSMAIN\\MVManzulin";
+        $ldappass=encrypt("123456Qw");
+        
         $base_dn="OU=Филиал ПАО Росгосстрах в Брянской области,OU=ПАО Росгосстрах,OU=Structure,DC=rgs,DC=ru";
         $justthese2 = array("sn", "givenName", "title", "sAMAccountName", "department");
         $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $this->filter2, $justthese2);
@@ -661,6 +662,6 @@ unlink($zip_name);
             ];
         }
         $r = json_encode($arrPers, JSON_UNESCAPED_UNICODE);
-        return $r;
+        echo $r;
     }
 }
