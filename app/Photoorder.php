@@ -41,7 +41,7 @@ class Photoorder extends Model
                 $isCreate = Photoorder::create($createArr);
                 // $path = $request->pic->storeAs('img/server', $name, 'my_files');
             }
-            dd($createArr);
+            return 'OK';
         }
     }
 }

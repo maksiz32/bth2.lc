@@ -41,7 +41,8 @@ class PhotoorderController extends Controller
             return redirect()->action('PhotoorderController@input', 
                 ['message' => 'Добавляемые данные не прошли проверку']);
         }
-        return 'ok';
+        return redirect()->action('PhotoorderController@input', 
+            ['message' => "Добавлены фотографии в тип {$letter}"]);
     }
     public function changeViewImg($var) {
         $count = Photoorder::getCountImgs($var);

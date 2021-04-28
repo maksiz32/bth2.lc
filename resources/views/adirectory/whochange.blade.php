@@ -49,7 +49,7 @@ $i = 1;
             <input type="hidden" id="dn1-{{ $i }}" value="{{ $reg['dn'] }}">
             <table class="table table-striped table-bordered">
                 <tr>
-                    <td colspan="3">{{ $reg['name'][0] }}</td>
+                    <td colspan="3">{{$reg['name'][0]}} <strong>({{$reg['oubkid'][0]}})</strong></td>
                 </tr>
                 <tr>
                     <td width="220">
@@ -107,7 +107,7 @@ $i = 1;
             <input type="hidden" id="dn2-{{ $i }}" value="{{ $dep['dn'] }}">
             <table class="table table-striped table-bordered">
                 <tr>
-                    <td colspan="3"><strong>{{ $dep['name'][0] }}</strong> - {{ $canName[4] }}</td>
+                    <td colspan="3"><strong>{{$dep['name'][0]}} ({{$dep['oubkid'][0]}})</strong> - {{ $canName[4] }}</td>
                 </tr>
                 <tr>
                     <td width="220">

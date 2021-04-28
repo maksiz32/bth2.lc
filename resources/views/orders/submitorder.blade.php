@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Подтверждение отправки')
-@section('content')@push("head")
+@section('content')
+@push("head")
 <script>
     $(document).ready(function() {
         $('#forclick').on('click', function(){

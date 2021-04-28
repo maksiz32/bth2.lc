@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('title', "Оформление заказа картриджей и расходных материалов")
 @section('content')
+@push("head")
+<script src="{{asset('/js/serverphotoorder.js')}}" defer></script>
+@endpush
 <article>
     <div class="container main_page">
     @if (isset($message))
@@ -42,7 +45,6 @@
                     <option value="A" selected>A</option>
                     <option value="B">B</option>
                     <option value="C">C</option>
-                    <option value="D">D</option>
                 </select>
                 <label for="pic">Выберите изображения (не более 15 штук - если выбрали больше 15, загрузятся только 15 и не более 1.5 Mб каждое):</label>
                 <input type="file" name="pic[]" class="serverform-main__file" 
@@ -59,5 +61,5 @@
         </form>
     </div>
 </article>
-<script src="{{asset('/js/serverphotoorder.js')}}"></script>
+
 @endsection
