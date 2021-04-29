@@ -486,6 +486,14 @@ td input {
 
         &-pic {
             margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+
+            &__img {
+                margin: 10px;
+            }
         }
     }
 

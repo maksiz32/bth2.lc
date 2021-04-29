@@ -18,6 +18,7 @@ class PhotoorderController extends Controller
     }
 
     public function input($message = null) {
+        $message = Input::get('message');
         $countI = Photoorder::getCountImgs('A');
         $imagesPath = Photoorder::getPathImagesByLetter('A');
         return view('server.input', ['countImgs' => $countI, 

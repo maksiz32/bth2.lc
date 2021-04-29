@@ -33,8 +33,8 @@
                 <div class="serverform-top-pic" id="imgsBlock">
                     @if(isset($images))
                     @foreach($images as $img)
-                    <img src="{{asset('/img/server/' . $img->path)}}" width="80" 
-                        class="serverform-top-pic__img">
+                    <img src="{{asset('/img/server/' . $img->path)}}" width="100" 
+                        class="serverform-top-pic__img" alt="{{$img->path}}">
                     @endforeach
                     @endif
                 </div>

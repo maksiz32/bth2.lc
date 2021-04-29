@@ -30,7 +30,7 @@ document.getElementById('chngView').onchange = function(ev) {
     countBlock.innerText = countPhoto;
     arrImgs = arrResp.imgs.map(function(index) {
         return '<img src="'+location+'/img/server/'+index.path+
-            '" width="80" class="serverform-top-pic__img">';
+            '" width="100" class="serverform-top-pic__img" alt="'+index.path+'">';
     });
     document.getElementById('imgsBlock').innerHTML = arrImgs.join(' ');
 }

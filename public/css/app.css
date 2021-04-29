@@ -618,6 +618,18 @@ td input {
 
 .serverform-top-pic {
   margin: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  padding: 20px;
+}
+
+.serverform-top-pic__img {
+  margin: 10px;
 }
 
 .serverform-main {
