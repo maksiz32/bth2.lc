@@ -498,7 +498,7 @@ public function adModify(Request $request) {
         isset($perS["company"][0])?$comp=$perS["company"][0]:$comp='';
         isset($perS["postalcode"][0])?$pc=$perS["postalcode"][0]:$pc='';
         isset($perS["postaladdress"][0])?$pa=$perS["postaladdress"][0]:$pa='';
-        isset($perS["telephonenumber"][0])?$tn=$perS["telephonenumber"][0]:$tn='';
+        // isset($perS["telephonenumber"][0])?$tn=$perS["telephonenumber"][0]:$tn='';
         isset($perS["ipphone"][0])?$ipp=", вн. ".$perS["ipphone"][0]:$ipp='';
         $canName = explode("/", $perS["canonicalname"][0]);
         $dep = $canName[count($canName) - 2];
@@ -562,7 +562,7 @@ $text_php = '<!DOCTYPE html>
         <br/>
         <div>'.$comp.'</div>
         <div>'.$pc.", ".$pa.'</div>
-        <div>'.$tn.$ipp.'</div>
+        <div>+74832 77-24-25'.$ipp.'</div>
         <div><a href="https://www.rgs.ru"><span style="text-decoration: underline">www.RGS.ru</span></a></div>
         </p>
         </div>

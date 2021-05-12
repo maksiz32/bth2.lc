@@ -50,7 +50,7 @@
 
                 </p>
             <div class="hide personline-group" id="h-<?php echo e($loop->index); ?>">
-                <label for="i-<?php echo e($loop->index); ?>">Выберите фото на компьютере, чтобы изменить в Домене</label>
+                <label for="i-<?php echo e($loop->index); ?>">Выберите фото на компьютере, чтобы изменить в Домене (не более 1 Мб)</label>
                 <input class="personline-group-file" type="file" accept="image/*" 
                 id="i-<?php echo e($loop->index); ?>" placeholder="Выберите фото на компьютере, чтобы изменить в Домене">
                 <button class="personline-group-btn__submit" type="submit" onclick="sendPhoto(<?php echo e($loop->index); ?>)">
