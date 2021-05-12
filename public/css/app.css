@@ -586,4 +586,127 @@ td input {
   left: 20px;
   right: 20px;
 }
+
+.serverform {
+  background-color: #eceef0;
+  border: 1px solid #e3e8ec;
+  border-radius: 3px;
+  padding: 15px;
+}
+
+.serverform-top, .serverform .serverform-main, .serverform .serverform-btn {
+  padding: 10px;
+}
+
+.serverform-top {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 0 auto;
+  max-width: 90%;
+  min-height: 40vh;
+  text-align: center;
+  background-color: white;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 40px cornflowerblue;
+          box-shadow: 0px 0px 40px cornflowerblue;
+}
+
+.serverform-top-pic {
+  margin: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  padding: 20px;
+}
+
+.serverform-top-pic__img {
+  margin: 10px;
+}
+
+.serverform-main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.serverform-main__file {
+  max-width: 100%;
+  border: 2px solid #98c6fa;
+  border-radius: 5px;
+  background-color: #d4d4d4;
+}
+
+.serverform-main__file:hover {
+  -webkit-box-shadow: 0 0 4px 2px #98c6fa;
+          box-shadow: 0 0 4px 2px #98c6fa;
+  background-color: #ececec;
+  cursor: pointer;
+}
+
+.serverform-main__choys {
+  margin: 0 0 10px 0;
+  background-color: #f3f7fa;
+  max-width: 45px;
+  border-radius: 5px;
+  border: 1px solid #585757;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.serverform-main__choys:hover {
+  -webkit-box-shadow: 0 0 2px #585757;
+          box-shadow: 0 0 2px #585757;
+  cursor: pointer;
+}
+
+.serverform-main__choys:focus {
+  -webkit-box-shadow: 0 0 2px #585757;
+          box-shadow: 0 0 2px #585757;
+  border: 1px solid #585757 !important;
+}
+
+.serverform-btn {
+  text-align: center;
+}
+
+.serverform-btn > button {
+  border: 1px solid #585757;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 0 30px 0 0;
+}
+
+.serverform-btn > button:hover {
+  cursor: pointer;
+  background-color: #03458b;
+  color: #fff;
+}
+
+.serverform-btn > button:active {
+  background-color: #000;
+  color: #fff;
+}
+
+.serverform-btn__submit {
+  background-color: #b1e4f3;
+}
+
+.serverform-btn__reset {
+  background-color: #fff;
+}
 /*# sourceMappingURL=app.css.map */

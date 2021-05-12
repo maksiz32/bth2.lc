@@ -46,7 +46,7 @@
                 {{ (isset($pers['title'][0]))?" - ".$pers['title'][0]:'' }}
                 </p>
             <div class="hide personline-group" id="h-{{$loop->index}}">
-                <label for="i-{{$loop->index}}">Выберите фото на компьютере, чтобы изменить в Домене</label>
+                <label for="i-{{$loop->index}}">Выберите фото на компьютере, чтобы изменить в Домене (не более 1 Мб)</label>
                 <input class="personline-group-file" type="file" accept="image/*" 
                 id="i-{{$loop->index}}" placeholder="Выберите фото на компьютере, чтобы изменить в Домене">
                 <button class="personline-group-btn__submit" type="submit" onclick="sendPhoto({{$loop->index}})">

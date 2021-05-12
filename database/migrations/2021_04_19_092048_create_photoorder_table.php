@@ -6,23 +6,18 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreatePhotoorderTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        //
+        Schema::create('photoorders', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('view');
+            $table->string('path');
+            $table->timestamps();
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        //
+        Schema::dropIfExists('photoorders');
     }
 }

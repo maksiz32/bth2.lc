@@ -68,12 +68,12 @@ class AlbumController extends Controller
             $album->fill($request->all())->save();
             return redirect()->action('AlbumController@allphotos');
         } else {
-        $path1 = (Album::max('id')) + 2;
-        $path = public_path().'/img/albums/'.$path1;
-        //dd($path);
-        File::makeDirectory($path, 0775);
-        $request->request->add(['path' => $path1]);
-        Album::create($request->all());
+            $path1 = (Album::max('id')) + 2;
+            $path = public_path().'/img/albums/'.$path1;
+            //dd($path);
+            File::makeDirectory($path, 0775);
+            $request->request->add(['path' => $path1]);
+            Album::create($request->all());
         return redirect()->action('AlbumController@addInAlbum', ['id' => $path1]);
         }
     }
@@ -115,29 +115,29 @@ class AlbumController extends Controller
     
     public function savePhotos(Request $request) {
         foreach($request->photo1 as $image) {
-        $time_r = time();
-        $name = $time_r . '_albums' . '.' . $image->getClientOriginalExtension();
-        $name2 = 'tmb_' . $name;
-        $id = $request->id;
-        $path = $image->storeAs('img/albums/'.$id.'/', $name, 'my_files');
-        Image::make($image)->resize(null,160, function ($constraint) {
-                    $constraint->aspectRatio();
-                    })->save(public_path().'/img/albums/'.$id.'/'.$name2, 100);
-        Image::make(public_path().'/img/albums/'.$id.'/'.$name)
-                ->save(public_path().'/img/albums/'.$id.'/'.$name, 100);
-        /* Сохранение с автоматическим добавлением "водяного знака"
-        Image::make($image)->resize(null,160, function ($constraint) {
-                    $constraint->aspectRatio();
-                    })->insert(public_path().'/img/tmb_watermark.png', 'bottom-right', 10, 10)
-                            ->save(public_path().'/img/albums/'.$id.'/'.$name2, 100);
-        Image::make(public_path().'/img/albums/'.$id.'/'.$name)
-                ->insert(public_path().'/img/watermark.png', 'bottom-right', 200, 50)
-                ->save(public_path().'/img/albums/'.$id.'/'.$name, 100);
-         * 
-         */
-        $request->request->add(['photo' => $name, 'id_albums' => $id]);
-        $tech = Photo::create($request->all());
-        sleep(1);
+            $time_r = time();
+            $name = $time_r . '_albums' . '.' . $image->getClientOriginalExtension();
+            $name2 = 'tmb_' . $name;
+            $id = $request->id;
+            $path = $image->storeAs('img/albums/'.$id.'/', $name, 'my_files');
+            Image::make($image)->resize(null,160, function ($constraint) {
+                        $constraint->aspectRatio();
+                        })->save(public_path().'/img/albums/'.$id.'/'.$name2, 100);
+            Image::make(public_path().'/img/albums/'.$id.'/'.$name)
+                    ->save(public_path().'/img/albums/'.$id.'/'.$name, 100);
+            /* Сохранение с автоматическим добавлением "водяного знака"
+            Image::make($image)->resize(null,160, function ($constraint) {
+                        $constraint->aspectRatio();
+                        })->insert(public_path().'/img/tmb_watermark.png', 'bottom-right', 10, 10)
+                                ->save(public_path().'/img/albums/'.$id.'/'.$name2, 100);
+            Image::make(public_path().'/img/albums/'.$id.'/'.$name)
+                    ->insert(public_path().'/img/watermark.png', 'bottom-right', 200, 50)
+                    ->save(public_path().'/img/albums/'.$id.'/'.$name, 100);
+            * 
+            */
+            $request->request->add(['photo' => $name, 'id_albums' => $id]);
+            $tech = Photo::create($request->all());
+            sleep(1);
         }
         return redirect()->action('AlbumController@album', ['id' => $id]);
     }

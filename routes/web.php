@@ -171,6 +171,13 @@ Route::match(["get", "post", "put"], '/adphoto', 'AdWorkController@adPhoto');
 Route::get('/image', 'ImageController@input');
 Route::match(['post', 'get'], '/resize', 'ImageController@resize');
 
+//Контроллер для ежемесячного отчета по серверной
+// Route::get('/inputserv', function () {
+//   return view('server.input');
+// });
+Route::get('/inputserv', 'PhotoorderController@input');
+Route::put('/actionserv', 'PhotoorderController@inputAction');
+
 //Контроллер заявок на автомобиль
 Route::get('/car/create/{date?}', 'CarController@inputBook');
 Route::match(['post', 'put'], '/avto/plusAvto', 'CarController@saveAvto');
@@ -186,7 +193,7 @@ Route::post('/caraccess/enable', 'AccessIpController@save');
 Route::get('/caraccess/{id}/disable', 'AccessIpController@destroy');
 
 //Контроллер для Базы Знаний ИТ
-Route::get('/wiki', 'WikiController@main');
+Route::get('/wiki', 'WikiController@main'); 
 Route::get('/wiki/{id}', 'WikiController@wikiOne');
 Route::get('/wikisys/{id?}', 'WikiController@viewSys');
 Route::get('/wikisystems/{id}', 'WikiController@systemOne');

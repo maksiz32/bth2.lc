@@ -45,7 +45,8 @@ class AdWorkController extends Controller
 
     public function __construct()
     {
-        $this->middleware('isADAdmin')->only('listOuPersons');
+        $this->middleware('isADAdmin')->only('listOuPersons', 'adViewEditPhoto', 
+                                        'adViewEdit', 'adPhoto');
     }
     
     function removeDirectory($directory) {
@@ -316,7 +317,7 @@ public function adViewEdit(Request $request) {
     $ldapuser = $input['ldapuser'];
     (array_key_exists('pass', $input))?$ldappass = encrypt($input['pass']):$ldappass = ''; //Password
     $justthese = array("ou", "canonicalName", "distinguishedname", "name", "displayname", "objectclass",
-        "postalCode", "postalAddress", "telephonenumber", "company", "givenName", "userAccountControl");
+        "postalCode", "OUBKID", "postalAddress", "telephonenumber", "company", "givenName", "userAccountControl");
     $justthese2 = array("canonicalName", "name", "postalCode", "postalAddress", 
         "telephoneNumber", "company", "givenName", "thumbnailPhoto", 
         "middlename", "sn", "title", "department","ipphone", "oubkid", "sAMAccountName");
@@ -354,8 +355,9 @@ public function adViewEdit(Request $request) {
 public function adPhoto(Request $request) {
     $message = "Ошибка загрузки файла";
     if (!is_null($request->pic)) {
-        $max_size = 1024*1024*2; //Не более 2 Мб файл
-        $message = "Разрешены изображения не более 2 Мб";
+        //Надо бы через константу
+        $max_size = 1024*1024*1; //Не более 2 Мб файл
+        $message = "Разрешены изображения не более 1 Мб";
         if ($request->pic->getClientSize() <= $max_size) {
             $valid_mime = ['image/gif', 'image/jpeg', 'image/png', 'image/bmp'];
             $message = "Некорректный тип файла";
@@ -496,7 +498,7 @@ public function adModify(Request $request) {
         isset($perS["company"][0])?$comp=$perS["company"][0]:$comp='';
         isset($perS["postalcode"][0])?$pc=$perS["postalcode"][0]:$pc='';
         isset($perS["postaladdress"][0])?$pa=$perS["postaladdress"][0]:$pa='';
-        isset($perS["telephonenumber"][0])?$tn=$perS["telephonenumber"][0]:$tn='';
+        // isset($perS["telephonenumber"][0])?$tn=$perS["telephonenumber"][0]:$tn='';
         isset($perS["ipphone"][0])?$ipp=", вн. ".$perS["ipphone"][0]:$ipp='';
         $canName = explode("/", $perS["canonicalname"][0]);
         $dep = $canName[count($canName) - 2];
@@ -560,7 +562,7 @@ $text_php = '<!DOCTYPE html>
         <br/>
         <div>'.$comp.'</div>
         <div>'.$pc.", ".$pa.'</div>
-        <div>'.$tn.$ipp.'</div>
+        <div>+74832 77-24-25'.$ipp.'</div>
         <div><a href="https://www.rgs.ru"><span style="text-decoration: underline">www.RGS.ru</span></a></div>
         </p>
         </div>
@@ -640,8 +642,9 @@ unlink($zip_name);
 }
 
     public function listOuPersons() {
-        // $ldapuser="RGSMAIN\\MVManzulin";
-        // $ldappass=encrypt("123456Qw");
+        $ldapuser="RGSMAIN\\MVManzulin";
+        $ldappass=encrypt("123456Qw");
+
         $base_dn="OU=Филиал ПАО Росгосстрах в Брянской области,OU=ПАО Росгосстрах,OU=Structure,DC=rgs,DC=ru";
         $justthese2 = array("sn", "givenName", "title", "sAMAccountName", "department");
         $ouPersons = $this->LDAPSearch($ldapuser, $ldappass, $base_dn, $this->filter2, $justthese2);
@@ -659,6 +662,6 @@ unlink($zip_name);
             ];
         }
         $r = json_encode($arrPers, JSON_UNESCAPED_UNICODE);
-        return $r;
+        echo $r;
     }
 }

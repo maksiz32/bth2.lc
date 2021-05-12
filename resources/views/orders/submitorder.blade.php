@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Подтверждение отправки')
-@section('content')@push("head")
+@section('content')
+@push("head")
 <script>
     $(document).ready(function() {
         $('#forclick').on('click', function(){
@@ -156,9 +157,11 @@
             var id = e.target.getAttribute('data-id');
             console.log(id);
             var request = new XMLHttpRequest();
-            request.open('GET', 'http://10.32.1.23/ad/persons', false);
+            const location = window.location.origin;
+            request.open('GET', location + '/ad/persons', false);
             request.send();
             var arrResp = JSON.parse(request.responseText);
+            console.log(arrResp);
             
         });
     </script>
