@@ -193,7 +193,7 @@ Route::post('/caraccess/enable', 'AccessIpController@save');
 Route::get('/caraccess/{id}/disable', 'AccessIpController@destroy');
 
 //Контроллер для Базы Знаний ИТ
-Route::get('/wiki', 'WikiController@main');
+Route::get('/wiki', 'WikiController@main'); 
 Route::get('/wiki/{id}', 'WikiController@wikiOne');
 Route::get('/wikisys/{id?}', 'WikiController@viewSys');
 Route::get('/wikisystems/{id}', 'WikiController@systemOne');
