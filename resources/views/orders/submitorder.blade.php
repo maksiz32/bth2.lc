@@ -199,18 +199,17 @@
                     trMany[i].addEventListener('click', function(ev) {
                         const names = document.getElementsByName('appName');
                         const firms = document.getElementsByName('appFirm');
-                        const userName = document.getElementById('appName');
-                        const firm = document.getElementById('appFirm');
-                        const name = document.getElementById('appUserName');
-                        for(let nameTemp in names) {
-                            names[nameTemp].innerText = ev.target.parentElement.cells[0].innerText;
+                        const userName = document.getElementsByName('adName');
+                        const firm = document.getElementsByName('firm');
+                        const name = document.getElementsByName('username');
+                        for (let j = 0; j < names.length; j++) {
+                            names[j].innerText = ev.target.parentElement.cells[0].innerText;
+                            name[j].value = ev.target.parentElement.cells[0].innerText;
+                            userName[j].value = ev.target.parentElement.cells[1].innerText;
+                            firm[j].value = ev.target.parentElement.cells[3].innerText;
+                            firms[j].innerText = ev.target.parentElement.cells[3].innerText;
                         }
-                        name.value = ev.target.parentElement.cells[0].innerText;
-                        userName.value = ev.target.parentElement.cells[1].innerText;
-                        for(let firmTemp in firms) {
-                            firms[firmTemp].innerText = ev.target.parentElement.cells[2].innerText;
-                        }
-                        firm.value = ev.target.parentElement.cells[2].innerText;
+
                         tblMain.removeAttribute('style');
                         mainDiv.classList.add('pers');
                         mainDiv.classList.remove('perstop');
