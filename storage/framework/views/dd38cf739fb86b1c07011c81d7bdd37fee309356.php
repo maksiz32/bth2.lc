@@ -1,8 +1,9 @@
 <?php $__env->startSection('title', 'Подтверждение отправки'); ?>
-<?php $__env->startSection('content'); ?><?php $__env->startPush("head"); ?>
+<?php $__env->startSection('content'); ?>
+<?php $__env->startPush("head"); ?>
 <script>
     $(document).ready(function() {
-        $('#forclick').on('click', function(){
+        $('#firstBtn').on('click', function(){
             $('#first').css('display', 'none');
             $('#second').css('display', 'block');
         });
@@ -62,7 +63,7 @@
     <?php echo e($orders->links()); ?>
 
     <?php endif; ?>
-    <div id="pers">
+    <div id="pers" class="perstop">
         
     </div>
     <form action="<?php echo e(action('OrderController@submitOrder')); ?>" method="post">
@@ -71,7 +72,7 @@
 
             <?php echo e(csrf_field()); ?>
 
-    <table class="table table-striped">
+    <table class="table table-striped" id="tblMain">
         <thead>
             <tr>
                 <th>IP-адрес</th>
@@ -96,15 +97,18 @@
                     <?php echo e($order->created); ?>
 
                 </td>
-                <td>
+                <td name="appFirm">
                     <?php echo e($order->firm); ?>
 
                 </td>
-                <td style="cursor: pointer" class="tdtoclick" data-id="<?php echo e($order->order_id); ?>">
+                <td <?php if(!$nobutton): ?> style="cursor: pointer" class="tdtoclick" <?php endif; ?> 
+                    name="appName">
 <!--                    onclick="window.location.reload()"-->
                     <?php echo e($order->user_name); ?>
 
+                <?php if(!$nobutton): ?>
                     <div class="my-info">Нажми чтобы изменить</div>
+                <?php endif; ?>
                 </td>
                 <td>
                     <?php echo $order->tech; ?>
@@ -115,20 +119,28 @@
 
                 </td>
                 <td>
+            <?php if(!$nobutton): ?>
                     <input type="hidden" value="<?php echo e($order->created); ?>" name="dateO">
                     <input type="hidden" value="<?php echo e($order->real_ip); ?>" name="ip">
-                    <input type="hidden" value="<?php echo e($order->ad_name); ?>" name="adName">
+                    <input type="hidden" value="<?php echo e($order->ad_name); ?>" name="adName" 
+                    id="appName">
+                    <input type="hidden" value="<?php echo e($order->firm); ?>" name="firm" 
+                    id="appFirm">
+                    <input type="hidden" value="<?php echo e($order->user_name); ?>" name="username" 
+                    id="appUserName">
                     <input type="hidden" value="<?php echo e($order->order_id); ?>" name="ordId[]">
                     <input type="hidden" value="<?php echo e($order->id); ?>" name="remainId[]">
                     <input type="hidden" value="<?php echo e($order->tech_id); ?>" name="techId[]">
                     <input type="text" value="<?php echo e($order->count_m); ?>" id="inpNum<?php echo e($order->id); ?>" name="count[]">
-            <?php if(!$nobutton): ?>
                     <div>
                         <i class="bi bi-dash-square s500 orderMinus" 
                         onclick="doMinus(<?php echo e($order->id); ?>)"></i>
                         <i class="bi bi-plus-square orderPlus s500" 
                         onclick="doPlus(<?php echo e($order->id); ?>)"></i>
                     </div>
+            <?php else: ?>
+                    <?php echo e($order->count_m); ?>
+
             <?php endif; ?>
                 </td>
                 <td <?php if($order->count <= 5): ?> <?php echo e(_('class=td-red')); ?><?php endif; ?>>
@@ -144,16 +156,16 @@
             </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             <?php if(!$nobutton): ?>
-            <tr class="bg-warning" id="forclick">
+            <tr class="bg-warning">
                 <td class="success" colspan="9" style="text-align: center" id="first">
-                    <button type="submit" class="btn btn-info btn-lg">Подтвердить</button>
+                    <button type="submit" class="btn btn-info btn-lg" id="firstBtn">Подтвердить</button>
                 </td>
                 <td class="success" colspan="9" style="text-align: center; display: none" id="second">
                     Отправляю
                 </td>
             </tr>
             <tr class="bg-success">
-                <td class="success" colspan="9" style="text-align: center" id="first">
+                <td class="success" colspan="9" style="text-align: center">
                     <a class="btn btn-light btn-lg">Добавить картриджи</a>
                 </td>
             </tr>
@@ -163,15 +175,60 @@
     </form>
     <script>
         $("td[class=tdtoclick").click(function(e) {
-            var id = e.target.getAttribute('data-id');
-            console.log(id);
+            // const id = e.target.getAttribute('data-id');
+            // console.log(id);
             var request = new XMLHttpRequest();
             const location = window.location.origin;
             request.open('GET', location + '/ad/persons', false);
             request.send();
-            var arrResp = JSON.parse(request.responseText);
-            console.log(arrResp);
-            
+            const arrResp = JSON.parse(request.responseText);
+            if (arrResp.length > 0) {
+                const tblMain = document.getElementById('tblMain');
+                tblMain.setAttribute('style', 'visibility: hidden');
+                const mainDiv = document.getElementById('pers');
+                mainDiv.classList.remove('pers');
+                mainDiv.classList.add('perstop');
+                const title = document.createElement('h2');
+                title.innerText = 'Выберите получателя данного заказа';
+                mainDiv.appendChild(title);
+                const table = document.createElement('table');
+                mainDiv.appendChild(table);
+                arrResp.forEach(function(el) {
+                    const tr = document.createElement('tr');
+                    tr.setAttribute('name', 'tr');
+                    tr.classList.add('inputusers');
+                    table.appendChild(tr);
+                    elements = ['name', 'user_name', 'work', 'dep'];
+                    elements.forEach(function(elem) {
+                        let tempEl = document.createElement('td');
+                        tempEl.innerText = el[elem];
+                        tr.appendChild(tempEl);
+                    })
+                })
+                trMany = document.getElementsByName('tr');
+                for (let i = 0; i < trMany.length; i++){
+                    trMany[i].addEventListener('click', function(ev) {
+                        const names = document.getElementsByName('appName');
+                        const firms = document.getElementsByName('appFirm');
+                        const userName = document.getElementById('appName');
+                        const firm = document.getElementById('appFirm');
+                        const name = document.getElementById('appUserName');
+                        for(let nameTemp in names) {
+                            names[nameTemp].innerText = ev.target.parentElement.cells[0].innerText;
+                        }
+                        name.value = ev.target.parentElement.cells[0].innerText;
+                        userName.value = ev.target.parentElement.cells[1].innerText;
+                        for(let firmTemp in firms) {
+                            firms[firmTemp].innerText = ev.target.parentElement.cells[2].innerText;
+                        }
+                        firm.value = ev.target.parentElement.cells[2].innerText;
+                        tblMain.removeAttribute('style');
+                        mainDiv.classList.add('pers');
+                        mainDiv.classList.remove('perstop');
+                        table.parentNode.removeChild(table);
+                    });
+                }
+            }
         });
     </script>
     <?php if(RGSPortal::isAdmin(getenv('REMOTE_USER'))): ?>

@@ -84,9 +84,13 @@ class Order extends Model
     public static function submitOrderAdmin($request) {
         $confirmed = 1;
         //В orders.db подтвердить confirmed и изменить count_м.
+        //
         for ($i=0; $i<count($request->ordId); $i++) {
             $data = Order::where('id', $request->ordId[$i])->first();
             if ($data) {
+                $data->user_name = $request->username;
+                $data->ad_name = $request->adName;
+                $data->firm = $request->firm;
                 $data->confirmed = $confirmed;
                 $data->count_m = $request->count[$i];
                 $data->save();

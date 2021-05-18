@@ -709,4 +709,24 @@ td input {
 .serverform-btn__reset {
   background-color: #fff;
 }
+
+.inputusers {
+  border-bottom: 1px solid gray;
+}
+
+.inputusers:hover {
+  background-color: #cbd4cb;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.pers {
+  z-index: -1;
+}
+
+.perstop {
+  position: absolute;
+  z-index: 3;
+  background-color: #fff;
+}
 /*# sourceMappingURL=app.css.map */

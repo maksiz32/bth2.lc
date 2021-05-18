@@ -43,3 +43,4 @@ storage/framework/cache/*
 /public/img/albums/35/
 /public/img/albums/36/
 /public/img/albums/37/
+.env

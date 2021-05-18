@@ -564,3 +564,20 @@ td input {
         }
     }
 }
+.inputusers {
+    border-bottom: 1px solid gray;
+
+    &:hover {
+        background-color: rgb(203, 212, 203);
+        font-weight: 800;
+        cursor: pointer;
+    }
+}
+.pers {
+    z-index: -1;
+}
+.perstop {
+    position: absolute;
+    z-index: 3;
+    background-color: #fff;
+}
