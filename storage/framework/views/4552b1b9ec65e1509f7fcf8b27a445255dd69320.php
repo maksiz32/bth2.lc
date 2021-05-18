@@ -25,12 +25,12 @@
                 </p>
             </div>
     <?php endif; ?>
-            <?php if($message = Session::get('error')): ?>
+    <?php if($message = Session::get('error')): ?>
             <div class="alert alert-danger" role="alert">
                 <?php echo e(Session::get('error')); ?>
 
             </div>
-            <?php endif; ?>
+    <?php endif; ?>
         </div>
     </div>
 </article>

@@ -25,11 +25,11 @@
                 </p>
             </div>
     @endif
-            @if ($message = Session::get('error'))
+    @if ($message = Session::get('error'))
             <div class="alert alert-danger" role="alert">
                 {{ Session::get('error') }}
             </div>
-            @endif
+    @endif
         </div>
     </div>
 </article>
