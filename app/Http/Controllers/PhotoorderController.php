@@ -24,6 +24,7 @@ class PhotoorderController extends Controller
         return view('server.input', ['countImgs' => $countI, 
             'images' => $imagesPath, 'message' => $message]);
     }
+
     public function inputAction(Request $request) {
         $countUploads = 0;
         $imgs = Input::file('pic');
@@ -45,6 +46,7 @@ class PhotoorderController extends Controller
         return redirect()->action('PhotoorderController@input', 
             ['message' => "Добавлены фотографии в тип {$letter}"]);
     }
+
     public function changeViewImg($var) {
         $count = Photoorder::getCountImgs($var);
         $images = Photoorder::getPathImagesByLetter($var);
@@ -54,5 +56,17 @@ class PhotoorderController extends Controller
         ];
         $req = json_encode($arr, JSON_UNESCAPED_UNICODE);
         echo $req;
+    }
+
+    public function pushPhotoToServer()
+    {
+        $letter = ['A', 'B', 'C'];
+        foreach($letter as $let) {
+            ${"arr".$let} = Photoorder::getPathImagesByLetter($let)->toArray();
+        }
+        foreach($letter as $let) {
+            ${"arrKey".$let} = array_rand(${"arr".$let}, 3);
+        }
+        dd($arrKeyA);
     }
 }
