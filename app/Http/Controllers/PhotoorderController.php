@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Photoorder;
 use App\Http\Requests\PhotoorderRequest;
+use DateTime;
 use Illuminate\Support\Facades\Input;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -60,12 +61,18 @@ class PhotoorderController extends Controller
 
     public function pushPhotoToServer()
     {
+        $netPath = "\\\\ktj-fs-01.rgs.ru\\regions$\\Кроссовые комнаты\\Брянская область\\Дирекция\\";
+        $dirDate = date('m.Y', time());
         $letter = ['A', 'B', 'C'];
         foreach($letter as $let) {
             ${"arr".$let} = Photoorder::getPathImagesByLetter($let)->toArray();
         }
         foreach($letter as $let) {
             ${"arrKey".$let} = array_rand(${"arr".$let}, 3);
+        }
+        if(!file_exists($netPath . $dirDate)) {
+            dd($netPath . $dirDate);
+            @mkdir($netPath . $dirDate, 0755);
         }
         dd($arrKeyA);
     }
