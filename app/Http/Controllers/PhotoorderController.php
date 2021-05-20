@@ -8,6 +8,7 @@ use App\Photoorder;
 use App\Http\Requests\PhotoorderRequest;
 use DateTime;
 use Illuminate\Support\Facades\Input;
+use SplFileInfo;
 use Symfony\Component\HttpFoundation\File\File;
 
 class PhotoorderController extends Controller
@@ -61,7 +62,8 @@ class PhotoorderController extends Controller
 
     public function pushPhotoToServer()
     {
-        $netPath = "\\\\ktj-fs-01.rgs.ru\\regions$\\Кроссовые комнаты\\Брянская область\\Дирекция\\";
+        $netPath = '\\\\ktj-fs-01.rgs.ru\regions$\Кроссовые комнаты\Брянская область\Дирекция';
+        // $netPath = '\\\\10.32.1.8\sys\запись$\Брянская область';
         $dirDate = date('m.Y', time());
         $letter = ['A', 'B', 'C'];
         foreach($letter as $let) {
@@ -70,10 +72,32 @@ class PhotoorderController extends Controller
         foreach($letter as $let) {
             ${"arrKey".$let} = array_rand(${"arr".$let}, 3);
         }
-        if(!file_exists($netPath . $dirDate)) {
-            dd($netPath . $dirDate);
-            @mkdir($netPath . $dirDate, 0755);
+        if(!file_exists("\"{$netPath}\\{$dirDate}\"")) {
+            $commandLan = "mkdir \"{$netPath}\\{$dirDate}\"";
+            $textPhp = iconv('UTF-8', 'cp1251', $commandLan);//Конвертирую в Windows-1251 (ANSI)
+            exec($textPhp);
         }
-        dd($arrKeyA);
+
+        $pathMy = public_path().'/img/server/';
+        $pathLan = "{$netPath}\\{$dirDate}";
+        $pathLan = iconv('UTF-8', 'cp1251', $pathLan);//Конвертирую в Windows-1251 (ANSI)
+        foreach($arrKeyA as $arr) {
+            $newName = uniqid() . uniqid();
+            $ext = (new SplFileInfo($pathMy.$arrA[$arr]['path']))->getExtension();
+            copy($pathMy.$arrA[$arr]['path'], "{$pathLan}\\{$newName}.{$ext}");
+        }
+        foreach($arrKeyB as $arr) {
+            $newName = uniqid() . uniqid();
+            $ext = (new SplFileInfo($pathMy.$arrB[$arr]['path']))->getExtension();
+            copy($pathMy.$arrB[$arr]['path'], "{$pathLan}\\{$newName}.{$ext}");
+        }
+        foreach($arrKeyC as $arr) {
+            $newName = uniqid() . uniqid();
+            $ext = (new SplFileInfo($pathMy.$arrC[$arr]['path']))->getExtension();
+            copy($pathMy.$arrC[$arr]['path'], "{$pathLan}\\{$newName}.{$ext}");
+        }
+
+        return redirect()->action('PhotoorderController@input', 
+            ['message' => "Отчет был отправлен, проверяй!"]);
     }
 }

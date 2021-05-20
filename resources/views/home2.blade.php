@@ -41,7 +41,7 @@
                     <a href="/inputserv" class="btn btn-light stretched-link">Добавить и просмотреть фотки для отчета</a>
                 </p>
                 <p>
-                    <a href="#" class="btn btn-light stretched-link">Ручная отправка отчета</a>
+                    <a href="/pushphoto" class="btn btn-light stretched-link">Ручная отправка отчета</a>
                 </p>
             </div>
         </div>

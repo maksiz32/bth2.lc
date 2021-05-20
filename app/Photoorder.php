@@ -24,8 +24,7 @@ class Photoorder extends Model
             //
         } else {
             foreach($request as $image) {
-                $time_r = time();
-                $name = $time_r . uniqid() . '.' . $image->getClientOriginalExtension();
+                $name = uniqid() . uniqid() . '.' . $image->getClientOriginalExtension();
                 $name2 = 'tmb_' . $name;
                 // $image->storeAs('img/albums/'.$id.'/', $name, 'my_files');
                 Image::make($image)->resize(800, null, function ($constraint) {
