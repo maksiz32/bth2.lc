@@ -10,6 +10,7 @@ use DateTime;
 use Illuminate\Support\Facades\Input;
 use SplFileInfo;
 use Symfony\Component\HttpFoundation\File\File;
+use Mail;
 
 class PhotoorderController extends Controller
 {
@@ -81,14 +82,32 @@ class PhotoorderController extends Controller
         $pathMy = public_path().'/img/server/';
         $pathLan = "{$netPath}\\{$dirDate}";
         $pathLan = iconv('UTF-8', 'cp1251', $pathLan);//Конвертирую в Windows-1251 (ANSI)
+        $sendedPhotos = "";
         foreach($letter as $let) {
+            $sendedPhotos .= "{$let}: ";
+            $sendedPaths = "";
+            if (isset($newName)) {
+                unset($newName);
+            }
             foreach(${"arrKey".$let} as $arr) {
+                $separator = (!isset($newName)) ? "" : ", ";
                 $newName = uniqid() . uniqid();
                 $ext = (new SplFileInfo($pathMy.${"arr".$let}[$arr]['path']))->getExtension();
+                $sendedPaths .= $separator . $newName . '.' . $ext;
                 copy($pathMy.${"arr".$let}[$arr]['path'], "{$pathLan}\\{$newName}.{$ext}");
             }
+            $sendedPhotos .= $sendedPaths . "\r\n";
         }
-        
+
+        //НАДО ДОБАВИТЬ ОТПРАВКУ МЫЛА МНЕ, ЧТО ТАКИЕ-ТО ФОТКИ ВЫЛОЖЕНЫ УСПЕШНО
+            $text = 'Фото серверной успешно вложены в папку ' . $dirDate . ':' . "\r\n" . "\r\n" . "\r\n" .
+                $sendedPhotos . "\r\n" . "\r\n" . "\r\n" .
+                'Не скучай!  ;-)';
+            Mail::raw($text, function($formail) {
+                $formail->from('report@bryansk.rgs.ru', "Фотоотчет");
+                $formail->to(['it@bryansk.rgs.ru']);
+                $formail->subject('Отправка фотоотчета серверной');
+            });
 
         return redirect()->action('PhotoorderController@input', 
             ['message' => "Отчет был отправлен, проверяй!"]);

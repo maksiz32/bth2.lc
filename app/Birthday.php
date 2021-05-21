@@ -16,4 +16,9 @@ class Birthday extends Model
                 ->where('birthdays.id', '=', $id)
                 ->first();
     }
+
+    public static function selectPhoneByName($nameSlice) {
+        return Birthday::select('phone')->where('nameF', $nameSlice[0])
+                        ->where('nameN', $nameSlice[1])->first();
+    }
 }

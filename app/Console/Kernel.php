@@ -9,6 +9,8 @@ use App\Birthday;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Email;
 use Mail;
+use App\Photoorder;
+use SplFileInfo;
 
 class Kernel extends ConsoleKernel
 {
@@ -66,7 +68,6 @@ class Kernel extends ConsoleKernel
         })->dailyAt('08:00');
 
         //Для отчета по серверной:
-        /*
         $schedule->call(function() {
             $netPath = '\\\\ktj-fs-01.rgs.ru\regions$\Кроссовые комнаты\Брянская область\Дирекция';
             $dirDate = date('m.Y', time());
@@ -79,31 +80,40 @@ class Kernel extends ConsoleKernel
             }
             if(!file_exists("\"{$netPath}\\{$dirDate}\"")) {
                 $commandLan = "mkdir \"{$netPath}\\{$dirDate}\"";
-                $textPhp = iconv('UTF-8', 'cp1251', $commandLan);//Конвертирую в Windows-1251 (ANSI)
+                $textPhp = iconv('UTF-8', 'cp1251', $commandLan);
                 exec($textPhp);
             }
 
             $pathMy = public_path().'/img/server/';
             $pathLan = "{$netPath}\\{$dirDate}";
-            $pathLan = iconv('UTF-8', 'cp1251', $pathLan);//Конвертирую в Windows-1251 (ANSI)
-            foreach($arrKeyA as $arr) {
-                $newName = uniqid() . uniqid();
-                $ext = (new SplFileInfo($pathMy.$arrA[$arr]['path']))->getExtension();
-                copy($pathMy.$arrA[$arr]['path'], "{$pathLan}\\{$newName}.{$ext}");
+            $pathLan = iconv('UTF-8', 'cp1251', $pathLan);
+            $sendedPhotos = "";
+            foreach($letter as $let) {
+                $sendedPhotos .= "{$let}: ";
+                $sendedPaths = "";
+                if (isset($newName)) {
+                    unset($newName);
+                }
+                foreach(${"arrKey".$let} as $arr) {
+                    $separator = (!isset($newName)) ? "" : ", ";
+                    $newName = uniqid() . uniqid();
+                    $ext = (new SplFileInfo($pathMy.${"arr".$let}[$arr]['path']))->getExtension();
+                    $sendedPaths .= $separator . $newName . '.' . $ext;
+                    copy($pathMy.${"arr".$let}[$arr]['path'], "{$pathLan}\\{$newName}.{$ext}");
+                }
+                $sendedPhotos .= $sendedPaths . "\r\n";
             }
-            foreach($arrKeyB as $arr) {
-                $newName = uniqid() . uniqid();
-                $ext = (new SplFileInfo($pathMy.$arrB[$arr]['path']))->getExtension();
-                copy($pathMy.$arrB[$arr]['path'], "{$pathLan}\\{$newName}.{$ext}");
-            }
-            foreach($arrKeyC as $arr) {
-                $newName = uniqid() . uniqid();
-                $ext = (new SplFileInfo($pathMy.$arrC[$arr]['path']))->getExtension();
-                copy($pathMy.$arrC[$arr]['path'], "{$pathLan}\\{$newName}.{$ext}");
-            }
-            НАДО ДОБАВИТЬ ОТПРАВКУ МЫЛА МНЕ, ЧТО ТАКИЕ-ТО ФОТКИ ВЫЛОЖЕНЫ УСПЕШНО
+
+            //МЫЛO МНЕ, ЧТО ФОТКИ ВЫЛОЖЕНЫ УСПЕШНО
+                $text = 'Фото серверной успешно вложены в папку ' . $dirDate . ':' . "\r\n" . "\r\n" . "\r\n" .
+                    $sendedPhotos . "\r\n" . "\r\n" . "\r\n" .
+                    'Не скучай!  ;-)';
+                Mail::raw($text, function($formail) {
+                    $formail->from('report@bryansk.rgs.ru', "Фотоотчет");
+                    $formail->to(['it@bryansk.rgs.ru']);
+                    $formail->subject('Отправка фотоотчета серверной');
+                });
         })->monthlyOn(10, '10:00');
-        */
     }
 
     /**

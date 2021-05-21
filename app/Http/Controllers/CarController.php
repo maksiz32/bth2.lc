@@ -33,13 +33,7 @@ class CarController extends Controller {
             'm' => date('m', strtotime($forBook)),
             'y' => date('Y', strtotime($forBook))
         ];
-        $bookings = Booking::select('bookings.date', 'bookings.who',
-                                'bookings.target', 'bookings.phone', 'bookings.time_start',
-                                'count_time', 'avtos.number', 'avtos.model', 'avtos.driver',
-                                'avtos.phone_driver')->join('avtos', 'avtos.id', '=', 'bookings.id_avto')
-                        ->whereMonth('bookings.date', $forBook['m'])
-                        ->whereYear('bookings.date', $forBook['y'])
-                        ->orderBy('bookings.date', 'desc')->get();
+        $bookings = Booking::selectAllDataByMounthAndDay($forBook);
         foreach ($bookings as $book) {
             $day = explode('-', $book->date);
             $arrDay[] = $day[2];
@@ -94,12 +88,10 @@ class CarController extends Controller {
     public function inputBook($date, Car $car) {
         $name = BryanskPortal::getName(getenv('REMOTE_USER'));
         $nameSlice = explode(" ", $name);
-        $phone = Birthday::select('phone')->where('nameF', $nameSlice[0])
-                        ->where('nameN', $nameSlice[1])->first();
+        $phone = Birthday::selectPhoneByName($nameSlice);
         $avtos = Avto::all();
         $date = date('Y-m-d', strtotime($date));
-        $bookings = Booking::join('avtos', 'avtos.id', '=', 'bookings.id_avto')
-                        ->where('bookings.date', $date)->get();
+        $bookings = Booking::getAvtosByDay($date);
         return view('car.editbooking', ['dateBook' => $date, 'avtos' => $avtos,
             'bookings' => $bookings, 'car' => $car, 'name' => $name,
             'phoneMe' => $phone]);
@@ -111,8 +103,7 @@ class CarController extends Controller {
                             . 'автомобиль на время после 18:00. (Ночной тариф - '
                             . '2 счетчика ;-) ).');
         }
-        $doubleCar = Booking::where('date', $request->date)
-                        ->where('id_avto', $request->id_avto)->get();
+        $doubleCar = Booking::getOneAvtoByDayAndAvtoId($request->date, $request->id_avto);
         if (count($doubleCar) > 0) {
             foreach ($doubleCar as $car) {
                 for ($i = $request->time_start; $i < ($request->time_start + $request->count_time); $i++) {
@@ -192,14 +183,7 @@ class CarController extends Controller {
             'm' => date('m', strtotime($forBook)),
             'y' => date('Y', strtotime($forBook))
         ];
-        $bookings = Booking::select('bookings.id as id', 'bookings.date', 'bookings.who',
-                                'bookings.target', 'bookings.phone', 'bookings.time_start',
-                                'count_time', 'avtos.number', 'avtos.model', 'avtos.driver',
-                                'avtos.phone_driver', 'avtos.id as avid')
-                        ->join('avtos', 'avtos.id', '=', 'bookings.id_avto')
-                        ->whereMonth('bookings.date', $forBook['m'])
-                        ->whereYear('bookings.date', $forBook['y'])
-                        ->orderBy('bookings.date', 'desc')->get();
+        $bookings = Booking::selectAllDataByMounthAndDay($forBook);
         $mechanits = Avto::select('avtos.*')
                         ->join('bookings', 'bookings.id_avto', '=', 'avtos.id')
                         ->groupBy('avtos.id')->get();
