@@ -56,7 +56,7 @@ class AdWorkController extends Controller
         //директорию пересоздает
             if ($objs = glob($directory."/*")) {
                 foreach($objs as $obj) {
-            is_dir($obj) ? removeDirectory($obj) : unlink($obj);
+                    is_dir($obj) ? $this->removeDirectory($obj) : unlink($obj);
                 }
             }
         @mkdir($directory);
@@ -590,52 +590,53 @@ $text_php = '<!DOCTYPE html>
         </div>
     </body>
 </html>';
-//Открываю файл. Если его не существует, делается попытка его создать
-if (isset($perS["samaccountname"])) {
-    $f_name = $perS["samaccountname"][0];
-}
-$fo = fopen ($this->dir.$f_name.".htm", "w");
+    //Открываю файл. Если его не существует, делается попытка его создать
+    if (isset($perS["samaccountname"])) {
+        $f_name = $perS["samaccountname"][0];
+    }
+    $fo = fopen ($this->dir.$f_name.".htm", "w");
 
-//Записываю в файл текст
-$text_php = iconv('UTF-8', 'cp1251', $text_php);//Конвертирую в Windows-1251 (ANSI)
-    fwrite ($fo, $text_php);
-//Закрываю файл
-    fclose ($fo);
-}
+    //Записываю в файл текст
+    $text_php = iconv('UTF-8', 'cp1251', $text_php);//Конвертирую в Windows-1251 (ANSI)
+        fwrite ($fo, $text_php);
+    //Закрываю файл
+        fclose ($fo);
+    }
 
-if(extension_loaded('zip')) {
-// проверяем выбранные файлы
-$zip = new \ZipArchive(); // подгружаем библиотеку zip
-$zip_name = "RGS_AD_".time().".zip"; // имя файла
-if($zip->open($zip_name, \ZIPARCHIVE::CREATE | \ZIPARCHIVE::OVERWRITE)!==TRUE) {
-    $error .= "* Sorry ZIP creation failed at this time";
-    die("cannot open {$zip_name} for writing.");
-}
+    if(extension_loaded('zip')) {
+    // проверяем выбранные файлы
+    $zip = new \ZipArchive(); // подгружаем библиотеку zip
+    $zip_name = "RGS_AD_".time().".zip"; // имя файла
+    $error = '';
+    if($zip->open($zip_name, \ZIPARCHIVE::CREATE | \ZIPARCHIVE::OVERWRITE)!==TRUE) {
+        $error .= "* Sorry ZIP creation failed at this time";
+        die("cannot open {$zip_name} for writing.");
+    }
 
 
-$iterator = new \DirectoryIterator($this->dir);
-foreach ($iterator as $file) {
-    if ($file->isFile()) {
-$zip->addFile($this->dir.$file); // добавляем файлы в zip архив
-}
-}
-$zip->close();
-if(file_exists($zip_name)) {
-    
-### ВАРИАНТ С ОТКЛИКОМ ###
-#  А ЕСЛИ БЕЗ return  ?
-return response()->download($zip_name)->deleteFileAfterSend(true);
-#
-#
-#
-// отдаём файл на скачивание
-header('Content-type: application/zip');
-header('Content-Disposition: attachment; filename="'.$zip_name.'"');
-readfile($zip_name);
-// удаляем zip файл если он существует
-unlink($zip_name);
-}
-}
+    $iterator = new \DirectoryIterator($this->dir);
+    foreach ($iterator as $file) {
+        if ($file->isFile()) {
+    $zip->addFile($this->dir.$file); // добавляем файлы в zip архив
+    }
+    }
+    $zip->close();
+    if(file_exists($zip_name)) {
+        
+    ### ВАРИАНТ С ОТКЛИКОМ ###
+    #  А ЕСЛИ БЕЗ return  ?
+    return response()->download($zip_name)->deleteFileAfterSend(true);
+    #
+    #
+    #
+    // отдаём файл на скачивание
+    header('Content-type: application/zip');
+    header('Content-Disposition: attachment; filename="'.$zip_name.'"');
+    readfile($zip_name);
+    // удаляем zip файл если он существует
+    unlink($zip_name);
+    }
+    }
     //dd($myDN);
     return view ('adirectory.whochange', ['ouRegionsTop' => $ouRegionsTop, 
             'ldapuser' => $ldapuser, 'ldappass' => encrypt($ldappass), 
