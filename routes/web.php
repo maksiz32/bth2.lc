@@ -1,4 +1,5 @@
 <?php
+
 Route::get('/login', function () {
     return view('auth.login');
 });
@@ -177,6 +178,7 @@ Route::match(['post', 'get'], '/resize', 'ImageController@resize');
 // });
 Route::get('/inputserv', 'PhotoorderController@input');
 Route::put('/actionserv', 'PhotoorderController@inputAction');
+Route::get('/pushphoto', 'PhotoorderController@pushPhotoToServer');
 
 //Контроллер заявок на автомобиль
 Route::get('/car/create/{date?}', 'CarController@inputBook');
