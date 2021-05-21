@@ -16,7 +16,7 @@ class PhotoorderController extends Controller
     private $maxFilesUpload = 15;
     public function __construct()
     {
-        $this->middleware('isADAdmin')/*->except('listOuPersons')*/;
+        $this->middleware('isADAdmin');
     }
 
     public function input($message = null) {
@@ -81,21 +81,14 @@ class PhotoorderController extends Controller
         $pathMy = public_path().'/img/server/';
         $pathLan = "{$netPath}\\{$dirDate}";
         $pathLan = iconv('UTF-8', 'cp1251', $pathLan);//Конвертирую в Windows-1251 (ANSI)
-        foreach($arrKeyA as $arr) {
-            $newName = uniqid() . uniqid();
-            $ext = (new SplFileInfo($pathMy.$arrA[$arr]['path']))->getExtension();
-            copy($pathMy.$arrA[$arr]['path'], "{$pathLan}\\{$newName}.{$ext}");
+        foreach($letter as $let) {
+            foreach(${"arrKey".$let} as $arr) {
+                $newName = uniqid() . uniqid();
+                $ext = (new SplFileInfo($pathMy.${"arr".$let}[$arr]['path']))->getExtension();
+                copy($pathMy.${"arr".$let}[$arr]['path'], "{$pathLan}\\{$newName}.{$ext}");
+            }
         }
-        foreach($arrKeyB as $arr) {
-            $newName = uniqid() . uniqid();
-            $ext = (new SplFileInfo($pathMy.$arrB[$arr]['path']))->getExtension();
-            copy($pathMy.$arrB[$arr]['path'], "{$pathLan}\\{$newName}.{$ext}");
-        }
-        foreach($arrKeyC as $arr) {
-            $newName = uniqid() . uniqid();
-            $ext = (new SplFileInfo($pathMy.$arrC[$arr]['path']))->getExtension();
-            copy($pathMy.$arrC[$arr]['path'], "{$pathLan}\\{$newName}.{$ext}");
-        }
+        
 
         return redirect()->action('PhotoorderController@input', 
             ['message' => "Отчет был отправлен, проверяй!"]);
