@@ -13,6 +13,7 @@ class CreateAvtoTable extends Migration
             $table->string('number',6);
             $table->string('model',30);
             $table->string('driver',30);
+            $table->string('carphoto');
             $table->string('phone_driver',10)->unique();
             $table->timestamps();
         });
