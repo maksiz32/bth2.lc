@@ -26,7 +26,7 @@
             </ul>
         </div>
     @endif
-    <form action="{{ action('CarController@saveAvto') }}" method="post">
+    <form action="{{ action('CarController@saveAvto') }}" method="post" enctype="multipart/form-data">
     <div class="form-row">
         @if($car->id)
         {{ method_field('PUT') }}
@@ -48,6 +48,10 @@
             <div class="form-group col-lg-3">
                 <label for="phone_driver" class="control-label">Телефон (10 символов):</label>
                 <input type="text" class="form-control" name="phone_driver" value="{{ old('phone_driver', $car->phone_driver) }}" required>
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="carphoto" class="control-label">Можно загрузить фото:</label>
+                <input type="file" class="form-control" name="carphoto" accept="image/*">
             </div>
     </div>  
         <button type="submit" class="btn btn-primary">Сохранить</button>

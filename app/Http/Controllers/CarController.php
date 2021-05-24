@@ -12,6 +12,7 @@ use Mail;
 use App\BryanskPortal;
 use App\NewMail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class CarController extends Controller {
 
@@ -59,6 +60,7 @@ class CarController extends Controller {
             'model' => 'required|max:30',
             'driver' => 'required|string|max:30',
             'phone_driver' => 'required|digits:10',
+            'carphoto' => 'image|max:1000',
                 ], [
             'number.required' => 'Номер машины - это обязательное поле',
             'number.max' => 'Номер машины - не более 6 символов',
@@ -69,6 +71,8 @@ class CarController extends Controller {
             'driver.max' => 'Водитель - не более 30 символов',
             'phone_driver.required' => 'Телефон водителя - это обязательное поле',
             'phone_driver.digits' => 'Телефон водителя - не более 10 символов',
+            'carphoto.image' => 'Разрешены только картинки',
+            'carphoto.max' => 'Размер изображения - не более 1Мб',
         ]);
         if ($request->has('id')) {
             $r = Avto::find($request->id);
@@ -76,6 +80,13 @@ class CarController extends Controller {
         } else {
             $r = new Avto;
             $mes = 'Запись добавлена';
+        }
+        $img = Input::file('carphoto');
+        if ($request->carphoto) {
+            if (!file_exists(public_path('img/car'))) {
+                @mkdir(public_path('img/car'), 0755);
+            }
+            Avto::savePhoto($img);
         }
         $r->number = $request->number;
         $r->model = $request->model;
@@ -89,7 +100,7 @@ class CarController extends Controller {
         $name = BryanskPortal::getName(getenv('REMOTE_USER'));
         $nameSlice = explode(" ", $name);
         $phone = Birthday::selectPhoneByName($nameSlice);
-        $avtos = Avto::all();
+        $avtos = Avto::all()->sortBy('viewid');
         $date = date('Y-m-d', strtotime($date));
         $bookings = Booking::getAvtosByDay($date);
         return view('car.editbooking', ['dateBook' => $date, 'avtos' => $avtos,

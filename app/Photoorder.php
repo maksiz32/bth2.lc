@@ -19,26 +19,32 @@ class Photoorder extends Model
         return Photoorder::select('path')->where('view', $letter)->get();
     }
 
+    public static function saveOnePic($img, $letter) {
+        $name = uniqid() . uniqid() . '.' . $img->getClientOriginalExtension();
+        $name2 = 'tmb_' . $name;
+        Image::make($img)->resize(800, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save(public_path().'/img/server/'.$name, 100);
+        Image::make($img)->resize(120, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save(public_path().'/img/server/'.$name2, 100);
+        $createArr = [
+            'view' => $letter,
+            'path' => $name
+        ];
+        
+        
+        Photoorder::create($createArr);
+        // $path = $request->pic->storeAs('img/server', $name, 'my_files');
+    }
+
     public static function saveAllPics($request, $letter) {
         if (gettype($request) === 'object') {
-            //
+            Photoorder::saveOnePic($request->pic, $letter);
+            return 'OK';
         } else {
             foreach($request as $image) {
-                $name = uniqid() . uniqid() . '.' . $image->getClientOriginalExtension();
-                $name2 = 'tmb_' . $name;
-                // $image->storeAs('img/albums/'.$id.'/', $name, 'my_files');
-                Image::make($image)->resize(800, null, function ($constraint) {
-                                $constraint->aspectRatio();
-                            })->save(public_path().'/img/server/'.$name, 100);
-                Image::make($image)->resize(120, null, function ($constraint) {
-                                $constraint->aspectRatio();
-                            })->save(public_path().'/img/server/'.$name2, 100);
-                $createArr = [
-                    'view' => $letter,
-                    'path' => $name
-                ];
-                $isCreate = Photoorder::create($createArr);
-                // $path = $request->pic->storeAs('img/server', $name, 'my_files');
+                Photoorder::saveOnePic($image, $letter);
             }
             return 'OK';
         }

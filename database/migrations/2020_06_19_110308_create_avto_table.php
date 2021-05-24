@@ -10,6 +10,7 @@ class CreateAvtoTable extends Migration
     {
         Schema::create('avtos', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('wiewid')->default(5);
             $table->string('number',6);
             $table->string('model',30);
             $table->string('driver',30);

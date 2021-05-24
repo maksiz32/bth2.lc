@@ -2,7 +2,7 @@
 @section('title', "Заказать автомобиль на дату ".$dateBook)
 @section('content')
 @push("head")
-    <script src="{{ asset('/js/jquery-ui.min.js') }}"></script>
+    <!-- <script src="{{ asset('/js/jquery-ui.min.js') }}"></script> -->
 <script>
     $(document).ready(function(){
         $('#subm').css('display', 'block');
@@ -51,25 +51,33 @@
     @endif
     <form action="{{ action('CarController@saveBook') }}" method="post">
     <div class="form-row">
-        <div class="form-group col-12">
+        <h2 class="form-group col-12">
             Забронировать на дату: 
             <span class="badge badge-primary">
                 {{date('d-m-Y', strtotime($dateBook))}}
             </span>
-        </div>
+        </h2>
         {{ csrf_field() }}
         <input type="hidden" name="who" value="{{$name}}">
         <input type="hidden" name="ip" value="{{getenv('REMOTE_ADDR')}}">
         <input type="hidden" name="date" value="{{$dateBook}}">
             <div class="form-group col-12">
-                <label for="id_avto" class="control-label">Выбрать машину:</label>
+            <h3>Выбрать машину:</h3>
+                @foreach($avtos as $avto)
+                <div style="background-image: url('{{$avto->carphoto}}')">
+                    <h4>{{$avto->driver}}</h4>
+                    <h4>{{$avto->model}}</h4>
+                    <h4>{{$avto->number}}</h4>
+                </div>
+                @endforeach
+                <!-- <label for="id_avto" class="control-label">Выбрать машину:</label>
                 <select name="id_avto">
                     @foreach($avtos as $avto)
                     <option class="small" value="{{$avto->id}}">
                         {{$avto->driver." ".$avto->model." ".$avto->number}}
                     </option>
                     @endforeach
-                </select>
+                </select> -->
             </div>
             <div class="form-group col-md-6">
                 <?php
