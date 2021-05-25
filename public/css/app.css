@@ -729,4 +729,70 @@ td input {
   z-index: 3;
   background-color: #fff;
 }
+
+.carcard {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.carcard-items {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.carcard-items-unit {
+  background-repeat: no-repeat;
+  margin: 0 20px;
+  width: 250px;
+  height: 170px;
+  background-size: cover;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  background-position: center;
+}
+
+.carcard-items-unit__text {
+  margin: 0;
+  padding: 0;
+  background-color: rgba(248, 88, 136, 0.6);
+  font-size: large;
+  font-weight: bolder;
+}
+
+.carcard-items-unit:hover {
+  background-color: violet;
+  background-blend-mode: screen;
+  cursor: pointer;
+  -webkit-box-shadow: 0 0 27px 5px green;
+          box-shadow: 0 0 27px 5px green;
+}
+
+.carard-items-unit__checked, .carard-items-unit__checked span {
+  background-color: #fff;
+  color: #000;
+  -webkit-box-shadow: 0 0 27px 5px darkgreen;
+          box-shadow: 0 0 27px 5px darkgreen;
+}
+
+.secondForm {
+  visibility: hidden;
+}
 /*# sourceMappingURL=app.css.map */

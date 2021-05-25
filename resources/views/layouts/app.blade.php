@@ -18,7 +18,7 @@
     <link href="{{ asset('/css/bootstrap-reboot.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/open-iconic-bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{asset('/css/app.css')}}" rel="stylesheet">
+    <link href="{{asset('/css/app.css?')}}<?php echo(mt_rand(0, 9999))?>" rel="stylesheet">
     <script src="{{ asset('/js/jquery.js') }}"></script>
     <script src="{{ asset('/js/bootstrap.js') }}"></script>
     <script src="{{ asset('/js/bootstrap.bundle.js') }}"></script>

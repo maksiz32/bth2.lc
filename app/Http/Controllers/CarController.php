@@ -81,12 +81,12 @@ class CarController extends Controller {
             $r = new Avto;
             $mes = 'Запись добавлена';
         }
-        $img = Input::file('carphoto');
         if ($request->carphoto) {
             if (!file_exists(public_path('img/car'))) {
                 @mkdir(public_path('img/car'), 0755);
             }
-            Avto::savePhoto($img);
+            $name = Avto::savePhoto($request->carphoto);
+            $r->carphoto = $name;
         }
         $r->number = $request->number;
         $r->model = $request->model;
