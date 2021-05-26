@@ -68,15 +68,15 @@
                     <?php $path = asset('/img/car/'.$avto->carphoto)?>
                     <div class="carcard-items-unit" style="background-image: url('<?=$path?>')" 
                             app-data="{{$avto->id}}" id="card{{$avto->id}}">
-                        <span class="carcard-items-unit__text" app-data="{{$avto->id}}" 
+                        <span class="carcard-items-unit__text" 
                                 name="titleCard">
                             {{$avto->driver}}
                         </span>
-                        <span class="carcard-items-unit__text check-hide" app-data="{{$avto->id}}" 
+                        <span class="carcard-items-unit__text check-hide" 
                                 name="hideText{{$avto->id}}">
                             {{$avto->model}}
                         </span>
-                        <span class="carcard-items-unit__text check-hide" app-data="{{$avto->id}}" 
+                        <span class="carcard-items-unit__text check-hide" 
                                 name="hideText{{$avto->id}}">
                             {{$avto->number}}
                         </span>
@@ -146,7 +146,7 @@
                 </div>
                 <div class="btn-group mt-5" id="subm">
                     <button type="submit" class="btn btn-primary">Сохранить</button>
-                    <button type="reset" class="btn btn-secondary">Отмена</button>
+                    <!-- <button type="reset" class="btn btn-secondary">Отмена</button> -->
                 </div>
             </div>
         </div>
@@ -169,64 +169,31 @@
 <script>
     const card = document.getElementsByClassName('carcard-items-unit');
     const form = document.getElementById('carForm')
-    const titleCard = document.getElementsByName('titleCard')
-    for(let i = 0; i < titleCard; i++) {
-        titleCard[i].addEventListener('mouseover', function(e) {
-            const id = e.target.getAttribute('app-data')
-            const textEtc = document.getElementsByName('hideText'+id)
-            for(let j = 0; j < textEtc.length; j++) {
-                textEtc[j].classList.remove('check-hide')
-                textEtc[j].addEventListener('mouseover', function() {
-                    for(let k = 0; k < textEtc.length; k++) {
-                        textEtc[k].classList.remove('check-hide');
-                    }
-                })
-                textEtc[j].addEventListener('mouseout', function(elem) {
-                    for(let elem in textEtc) {
-                        textEtc[elem].classList.add('check-hide');
-                    }
-                })
-            }
-        })
-        titleCard[i].addEventListener('click', function(e) {
-            const id = e.target.getAttribute('app-data')
-            // const element = document.getElementById('card'+id)
-            clickElement(e.target.parent)
-        })
-    }
     for(let i = 0; i < card.length; i++) {
         card[i].addEventListener('mouseover', function(el) {
-            const id = el.target.getAttribute('app-data');
-            const textEtc = document.getElementsByName('hideText'+id)
-            for(let j = 0; j < textEtc.length; j++) {
-                textEtc[j].classList.remove('check-hide')
-                textEtc[j].addEventListener('mouseover', function() {
-                    for(let k = 0; k < textEtc.length; k++) {
-                        textEtc[k].classList.remove('check-hide');
-                    }
-                })
-                textEtc[j].addEventListener('mouseout', function() {
-                    for(let k = 0; k < textEtc.length; k++) {
-                        textEtc[k].classList.add('check-hide');
-                    }
-                })
-                textEtc[j].addEventListener('click', function (e) {
-                    const id = e.target.getAttribute('app-data')
-                    // const element = document.getElementById('card'+id)
-                    clickElement(e.target.parent)
-                })
+            elem = rightElement(el);
+            for (let i = 0; i < elem.childNodes.length; i++) {
+                if(elem.childNodes[i].nodeName == 'SPAN' && 
+                        elem.childNodes[i].getAttribute('name') !== 'titleCard')
+                    elem.childNodes[i].classList.remove('check-hide')
             }
         })
         card[i].addEventListener('mouseout', function(el) {
-            const id = el.target.getAttribute('app-data');
-            const textEtc = document.getElementsByName('hideText'+id)
-            for(let j = 0; j < textEtc.length; j++) {
-                textEtc[j].classList.add('check-hide')
+            elem = rightElement(el);
+            for (let i = 0; i < elem.childNodes.length; i++) {
+                if(elem.childNodes[i].nodeName == 'SPAN' && 
+                        elem.childNodes[i].getAttribute('name') !== 'titleCard')
+                    elem.childNodes[i].classList.add('check-hide')
             }
         })
-        card[i].addEventListener('click', function(ev) {
-            clickElement(ev.target)
+        card[i].addEventListener('click', function(el) {
+            elem = rightElement(el);
+            clickElement(elem)
         })
+    }
+    function rightElement(el) {
+        let elem = (el.target.tagName == 'SPAN') ? el.target.parentElement : el.target;
+        return elem;
     }
     function checkCar(ev) {
         const id = ev.getAttribute('app-data');
@@ -236,10 +203,10 @@
         el.setAttribute('id', 'idAvto')
         el.value = id
         form.appendChild(el);
-        ev.classList.add('carard-items-unit__checked')
+        ev.classList.add('carcard-items-unit__checked')
         ev.setAttribute('id', 'checkCar')
         const secondForm = document.getElementById('secondForm')
-            secondForm.classList.remove('secondForm')
+        secondForm.classList.remove('secondForm')
         secondForm.setAttribute('app-view', '1')
     }
     function validSecondView() {
@@ -251,18 +218,20 @@
         }
     }
     function clickElement(ev) {
-        console.log(ev)
         validSecondView()
             if (el = document.getElementById('idAvto')) {
                 form.removeChild(el)
                 ev.classList.remove('carcard-items-unit__checked')
                 ev.removeAttribute('id')
+                ev.removeAttribute('checked');
                 if (lastCar = document.getElementById('checkCar')) {
                     lastCar.classList.remove('carcard-items-unit__checked')
                     lastCar.removeAttribute('id')
+                    
                     checkCar(ev)
                 }
             } else {
+                ev.setAttribute('checked', '');
                 checkCar(ev)
             }
     }

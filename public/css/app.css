@@ -785,11 +785,14 @@ td input {
           box-shadow: 0 0 27px 5px green;
 }
 
-.carard-items-unit__checked, .carard-items-unit__checked span {
+.carcard-items-unit__checked {
+  -webkit-box-shadow: 0 0 27px 5px darkblue;
+          box-shadow: 0 0 27px 5px darkblue;
+}
+
+.carcard-items-unit:hover span {
   background-color: #fff;
   color: #000;
-  -webkit-box-shadow: 0 0 27px 5px darkgreen;
-          box-shadow: 0 0 27px 5px darkgreen;
 }
 
 .secondForm {
