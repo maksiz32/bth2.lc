@@ -80,7 +80,7 @@
                     @endforeach
                 </div>
             </div>
-            <div id="secondForm" class="secondForm">
+            <div id="secondForm" class="form-group col-12 secondForm">
                 <div class="form-group col-md-6">
                     <?php
                     $times = [
@@ -139,10 +139,6 @@
                     <div class="btn btn-danger" id="no">НЕТ</div>
                     <div class="btn btn-light" id="yes">ДА</div>
                     <input type="text" id="regions" name="regions" style="visibility: hidden">
-                </div>
-                <div class="btn-group mt-5" id="subm">
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                    <button type="reset" class="btn btn-secondary">Отмена</button>
                 </div>
             </div>
         </div>
