@@ -251,11 +251,11 @@
         }
     }
     function clickElement(ev) {
+        console.log(ev)
         validSecondView()
             if (el = document.getElementById('idAvto')) {
                 form.removeChild(el)
                 ev.target.classList.remove('carard-items-unit__checked')
-                console.log(ev)
                 ev.target.removeAttribute('id')
                 if (lastCar = document.getElementById('checkCar')) {
                     lastCar.classList.remove('carard-items-unit__checked')
