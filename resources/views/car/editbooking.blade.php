@@ -190,8 +190,8 @@
         })
         titleCard[i].addEventListener('click', function(e) {
             const id = e.target.getAttribute('app-data')
-            const element = document.getElementById('card'+id)
-            clickElement(element)
+            // const element = document.getElementById('card'+id)
+            clickElement(e.target.parent)
         })
     }
     for(let i = 0; i < card.length; i++) {
@@ -212,8 +212,8 @@
                 })
                 textEtc[j].addEventListener('click', function (e) {
                     const id = e.target.getAttribute('app-data')
-                    const element = document.getElementById('card'+id)
-                    clickElement(element)
+                    // const element = document.getElementById('card'+id)
+                    clickElement(e.target.parent)
                 })
             }
         })
@@ -225,19 +225,19 @@
             }
         })
         card[i].addEventListener('click', function(ev) {
-            clickElement(ev)
+            clickElement(ev.target)
         })
     }
     function checkCar(ev) {
-        const id = ev.target.getAttribute('app-data');
+        const id = ev.getAttribute('app-data');
         const el = document.createElement('input')
         el.setAttribute('type', 'hidden')
         el.setAttribute('name', 'id_avto')
         el.setAttribute('id', 'idAvto')
         el.value = id
         form.appendChild(el);
-        ev.target.classList.add('carard-items-unit__checked')
-        ev.target.setAttribute('id', 'checkCar')
+        ev.classList.add('carard-items-unit__checked')
+        ev.setAttribute('id', 'checkCar')
         const secondForm = document.getElementById('secondForm')
             secondForm.classList.remove('secondForm')
         secondForm.setAttribute('app-view', '1')
@@ -255,10 +255,10 @@
         validSecondView()
             if (el = document.getElementById('idAvto')) {
                 form.removeChild(el)
-                ev.target.classList.remove('carard-items-unit__checked')
-                ev.target.removeAttribute('id')
+                ev.classList.remove('carcard-items-unit__checked')
+                ev.removeAttribute('id')
                 if (lastCar = document.getElementById('checkCar')) {
-                    lastCar.classList.remove('carard-items-unit__checked')
+                    lastCar.classList.remove('carcard-items-unit__checked')
                     lastCar.removeAttribute('id')
                     checkCar(ev)
                 }
