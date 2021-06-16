@@ -18,7 +18,7 @@
     <link href="<?php echo e(asset('/css/bootstrap-reboot.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('/css/open-iconic-bootstrap.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('/css/bootstrap-icons.css')); ?>" rel="stylesheet">
-    <link href="<?php echo e(asset('/css/app.css?')); ?><?php echo(mt_rand(0, 9999))?>" rel="stylesheet">
+    <link href="<?php echo e(asset('/css/app.css?')); ?>" rel="stylesheet">
     <script src="<?php echo e(asset('/js/jquery.js')); ?>"></script>
     <script src="<?php echo e(asset('/js/bootstrap.js')); ?>"></script>
     <script src="<?php echo e(asset('/js/bootstrap.bundle.js')); ?>"></script>
