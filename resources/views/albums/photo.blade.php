@@ -26,7 +26,8 @@
 function beLink($numCount, $countPhotosOnPage, $path) {
     $answer = "";
     if (($numCount != $countPhotosOnPage) || (!$countPhotosOnPage)){
-        $answer = "href='http://10.32.1.23/album/$path/$numCount' class='badge badge-secondary'";
+        $pathServ = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'];
+        $answer = "href='$pathServ/album/$path/$numCount' class='badge badge-secondary'";
     } else {
         $answer = "class='badge badge-light'";
     }
