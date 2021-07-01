@@ -118,7 +118,7 @@ return [
                 |
                 */
 
-                'domain_controllers' => explode(' ', env('ADLDAP_CONTROLLERS', 'brn-dc.rgs.ru')),
+                'domain_controllers' => explode(' ', env('ADLDAP_CONTROLLERS')),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -129,7 +129,7 @@ return [
                 |
                 */
 
-                'port' => env('ADLDAP_PORT', 389),
+                'port' => env('ADLDAP_PORT'),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -142,7 +142,7 @@ return [
                 |
                 */
 
-                'timeout' => env('ADLDAP_TIMEOUT', 5),
+                'timeout' => env('ADLDAP_TIMEOUT'),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -187,8 +187,8 @@ return [
                 |
                 */
 
-                'admin_username' => env('ADLDAP_ADMIN_USERNAME', 'MVManzulin@rgs.ru'),
-                'admin_password' => env('ADLDAP_ADMIN_PASSWORD', '123456Qw'),
+                'admin_username' => env('ADLDAP_ADMIN_USERNAME'),
+                'admin_password' => env('ADLDAP_ADMIN_PASSWORD'),
 
                 /*
                 |--------------------------------------------------------------------------
